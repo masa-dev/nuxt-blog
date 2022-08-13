@@ -5,9 +5,12 @@
 </template>
 
 <script lang="ts">
-import { Vue } from "vue-property-decorator";
+import { Vue, Component } from "nuxt-property-decorator";
 
-export default class AboutComponent extends Vue {
+@Component({
+  name: "About"
+})
+export default class About extends Vue {
   private about = "about"
 }
 </script>

@@ -1,14 +1,15 @@
 <template>
   <header class="navbar navbar-dark bg-dark justify-content-center">
-    <b-navbar toggleable="lg" type="dark" variant="dark" class="container-xxl">
-      <b-navbar-brand href="#">My Blog</b-navbar-brand>
+    <b-navbar toggleable="md" type="dark" variant="dark" class="container-xxl">
+      <b-navbar-brand href="/">My Blog</b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="#">Post</b-nav-item>
-          <b-nav-item href="#">Note</b-nav-item>
+          <b-nav-item href="/post/page/1">Post</b-nav-item>
+          <b-nav-item href="/note/page/1">Note</b-nav-item>
+          <b-nav-item href="/tag">Tag</b-nav-item>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
@@ -16,7 +17,7 @@
           <b-nav-form>
             <b-form-input
               size="sm"
-              class="mr-sm-2"
+              class="mr-sm-2 px-3 rounded-pill"
               placeholder="検索単語"
             ></b-form-input>
             <b-button size="sm" class="my-2 my-sm-0" type="submit"
@@ -30,15 +31,6 @@
 </template>
 
 <style lang="scss" scoped>
-.container-xxl {
-  width: 100%;
-}
-
-@media only screen and (min-width: 1400px) {
-  .container-xxl {
-    width: 1320px;
-  }
-}
 </style>
 
 <script lang="ts">

@@ -1,12 +1,10 @@
 <template>
   <div>
-    <h1>Post一覧</h1>
-    <div v-for="post in posts" :key="post.id">
-      <img :src="post.image.url" />
-      <nuxt-link :to="`/post/${post.id}`">{{ post.title }}</nuxt-link>
+    <div v-for="note in notes" :key="note.id">
+      <nuxt-link :to="`/note/${note.id}`">{{ note.title }}</nuxt-link>
     </div>
     <b-pagination-nav
-      :number-of-pages="pageMeta.rows"
+      :number-of-pages="noteMeta.rows"
       :link-gen="linkGen"
       align="center"
       pills
@@ -18,43 +16,43 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { paramToString } from '../../util/searchParam'
-import { PostList } from '../../types/api'
+import { NoteList } from '../../types/api'
 import { Config } from '../../types/config'
 import axios from 'axios'
 import blogConfig from '../../blog.config'
 
 @Component({
-  name: 'PostHome',
+  name: 'NoteHome',
 })
-export default class PostHome extends Vue {
+export default class NoteHome extends Vue {
   private linkGen(pageNum: number) {
-    return `/post/page/${pageNum}`
+    return `/note/page/${pageNum}`
   }
 
   async asyncData({ $config, params }: any) {
     const page: number = params.p || 1
     console.log(page)
     const query = paramToString({
-      limit: blogConfig.post.limit,
+      limit: blogConfig.note.limit,
       offset: (page - 1) * 1,
     })
     const config = $config as Config
 
-    const PostRes = await axios.get(`${config.apiUrl}/post?${query}`, {
+    const noteRes = await axios.get(`${config.apiUrl}/note?${query}`, {
       headers: { 'X-MICROCMS-API-KEY': config.apiKey },
     })
 
-    const postList = PostRes.data as PostList
+    const noteList = noteRes.data as NoteList
 
-    const pageMeta = {
-      rows: Math.ceil(postList.totalCount / postList.limit),
-      perPage: postList.limit,
+    const noteMeta = {
+      rows: Math.ceil(noteList.totalCount / noteList.limit),
+      perPage: noteList.limit,
       currentPage: page,
     }
 
     return {
-      posts: postList.contents,
-      pageMeta: pageMeta,
+      notes: noteList.contents,
+      noteMeta: noteMeta,
     }
   }
 }

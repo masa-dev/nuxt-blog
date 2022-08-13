@@ -1,0 +1,15 @@
+@import './variables';
+
+.container-xxl {
+  width: 100%;
+}
+
+.page-item > .page-link {
+  border: 0;
+}
+
+@media only screen and (min-width: $content-width) {
+  .container-xxl {
+    width: $content-width;
+  }
+}
