@@ -21,6 +21,8 @@ jobs:
         touch .env
         echo API_URL=${{ secrets.API_URL }} > .env
         echo API_KEY=${{ secrets.API_KEY }} >> .env
+    - name: Install npm package
+      run: docker-compose exec -T nuxt-app bash -c "cd /app && npm install"
     - name: Build Nuxt app
       # run: docker exec -t nuxt-app /bin/bash -c "cd /app && npm run generate"
       run: docker-compose exec -T nuxt-app bash -c "cd /app && npm run generate"
