@@ -1,0 +1,7 @@
+FROM node:16.16-bullseye
+
+WORKDIR /app
+
+RUN apt-get install
+RUN cd nuxt-app && \
+    npm install &&

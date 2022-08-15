@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nuxt-app:
+    container_name: "nuxt-app"
+    build:
+      context: "./"
+      dockerfile: "Dockerfile.CI"
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nuxt-app/:/app
+    working_dir: /app
+    environment:
+      TZ: "Asia/Tokyo" 
