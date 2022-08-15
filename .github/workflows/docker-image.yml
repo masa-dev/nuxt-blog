@@ -17,10 +17,12 @@ jobs:
     - name: Compose up docker
       # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       run: docker compose up -d
+    - name: Create .env file
+      run: |
+        touch .env
+        echo API_URL=${{ secrets.API_URL }} > .env
+        echo API_KEY=${{ secrets.API_KEY }} >> .env
     - name: Build Nuxt app
-      env:
-        API_KEY: ${{ secrets.API_KEY }}
-        API_URL: ${{ secrets.API_URL }}
       run: docker exec -t nuxt-app /bin/bash -c "cd /app && npm run generate"
     - name: Display Result
       run: docker exec -t nuxt-app /bin/bash -c "cd /app/dist && ls -al"
