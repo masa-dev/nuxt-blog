@@ -14,8 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
+    - name: Compose up docker
       # run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
       run: docker compose up -d
-    - name: build
-      run: docker exec -dt nuxt-app ls -al
+    - name: Build Nuxt app
+      run: docker exec -dt nuxt-app cd nuxt-app && npm run generate
