@@ -1,5 +1,5 @@
 <template>
-  <header class="navbar navbar-dark bg-dark justify-content-center">
+  <header class="navbar navbar-dark bg-dark justify-content-center p-container-0">
     <b-navbar toggleable="md" type="dark" variant="dark" class="container-xxl">
       <b-navbar-brand href="/">My Blog</b-navbar-brand>
 
@@ -13,6 +13,7 @@
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->
+        <!--
         <b-navbar-nav class="ml-auto py-1">
           <b-nav-form>
             <b-form-input
@@ -25,12 +26,14 @@
             >
           </b-nav-form>
         </b-navbar-nav>
+        -->
       </b-collapse>
     </b-navbar>
   </header>
 </template>
 
 <style lang="scss" scoped>
+
 </style>
 
 <script lang="ts">

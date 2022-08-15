@@ -13,3 +13,9 @@
     width: $content-width;
   }
 }
+
+@media only screen and (max-width: $content-width) {
+  .p-container-0 {
+    padding: 0;
+  }
+}
