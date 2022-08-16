@@ -1,34 +1,34 @@
-name: Docker Image CI
+# name: Docker Image CI
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+# on:
+#   push:
+#     branches: [ "main" ]
+#   pull_request:
+#     branches: [ "main" ]
 
-jobs:
+# jobs:
 
-  build:
+#   build:
 
-    runs-on: ubuntu-latest
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v3
-    - name: Compose up docker
-      run: docker compose -f docker-compose.yml up -d
-    - name: Create .env file
-      run: |
-        touch .env
-        echo API_URL=${{ secrets.API_URL }} > .env
-        echo API_KEY=${{ secrets.API_KEY }} >> .env
-    - name: Display files
-      run: docker compose exec -T nuxt-app bash -c "cd /app && ls -al"
-    - name: Install npm package
-      run: docker compose exec -T nuxt-app bash -c "cd /app && npm install"
-    - name: Build Nuxt app
-      # run: docker exec -t nuxt-app /bin/bash -c "cd /app && npm run generate"
-      run: docker compose exec -T nuxt-app bash -c "cd /app && npm run generate"
-    - name: Display Result
-      # run: docker exec -t nuxt-app /bin/bash -c "cd /app/dist && ls -al"
-      run: docker compose exec -T nuxt-app bash -c "cd /app/dist && ls -al"
+#     steps:
+#     - uses: actions/checkout@v3
+#     - name: Compose up docker
+#       run: docker compose -f docker-compose.yml up -d
+#     - name: Create .env file
+#       run: |
+#         touch .env
+#         echo API_URL=${{ secrets.API_URL }} > .env
+#         echo API_KEY=${{ secrets.API_KEY }} >> .env
+#     - name: Display files
+#       run: docker compose exec -T nuxt-app bash -c "cd /app && ls -al"
+#     - name: Install npm package
+#       run: docker compose exec -T nuxt-app bash -c "cd /app && npm install"
+#     - name: Build Nuxt app
+#       # run: docker exec -t nuxt-app /bin/bash -c "cd /app && npm run generate"
+#       run: docker compose exec -T nuxt-app bash -c "cd /app && npm run generate"
+#     - name: Display Result
+#       # run: docker exec -t nuxt-app /bin/bash -c "cd /app/dist && ls -al"
+#       run: docker compose exec -T nuxt-app bash -c "cd /app/dist && ls -al"
     
