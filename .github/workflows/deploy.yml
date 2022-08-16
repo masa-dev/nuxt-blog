@@ -34,7 +34,7 @@ jobs:
       # - name: Run Test
       #   run: cd /nuxt-app && npm test --if-present
       - name: App Deploy
-        uses: cd /nuxt-app && peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
