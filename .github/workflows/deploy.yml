@@ -22,19 +22,20 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+          cache-dependency-path: ./nuxt-app/package-lock.json
       - name: Package install
-        run: npm ci
+        run: cd ./nuxt-app && npm ci
       - name: Create .env file
         run: |
-          cd /nuxt-app && touch .env
+          cd ./nuxt-app && touch .env
           echo API_URL=${{ secrets.API_URL }} > .env
           echo API_KEY=${{ secrets.API_KEY }} >> .env
       - name: Build App
-        run: cd /nuxt-app && npm run build --if-present
+        run: cd ./nuxt-app && npm run build --if-present
       # - name: Run Test
       #   run: cd /nuxt-app && npm test --if-present
       - name: App Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: ./nuxt-app/dist
