@@ -9,8 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Create .env file
-        run: |
+      - run: |
           cd ./nuxt-app && touch .env
           echo API_URL=${{ secrets.API_URL }} > .env
           echo API_KEY=${{ secrets.API_KEY }} >> .env
