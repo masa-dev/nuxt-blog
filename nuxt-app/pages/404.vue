@@ -7,15 +7,16 @@
 </template>
 
 <script lang="ts">
-import {Vue, Component} from "vue-property-decorator";
+import { Vue, Component } from 'vue-property-decorator'
+import blogConfig from '../blog.config'
 
 @Component({
-  name: "NotFound"
+  name: 'NotFound',
 })
 export default class NotFound extends Vue {
-  public head() {
-    return { title: "404 - NotFound" }
+  private mounted() {
+    const title = blogConfig.meta.titleTemplate.replace('%s', '404 - NotFound')
+    document.title = title
   }
 }
 </script>
-
