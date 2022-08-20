@@ -27,6 +27,10 @@ import blogConfig from '../../blog.config'
   name: 'PostHome',
 })
 export default class PostHome extends Vue {
+  public head() {
+    return { title: 'Post 一覧' }
+  }
+
   private linkGen(pageNum: number) {
     return `/post/page/${pageNum}`
   }

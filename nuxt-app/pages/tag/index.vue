@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-for="tag in tags" :key="tag.id">
-      <img :src="tag.image.url">
+      <img :src="tag.image.url" />
       <nuxt-link :to="`/tag/${tag.id}`">{{ tag.name }}</nuxt-link>
     </div>
   </div>
@@ -18,6 +18,10 @@ import axios from 'axios'
   name: 'TagHome',
 })
 export default class TagHome extends Vue {
+  public head() {
+    return { title: 'Tag 一覧' }
+  }
+
   async asyncData({ $config }: any) {
     const query = paramToString({ limit: 20000, offset: 0 })
     const config = $config as Config

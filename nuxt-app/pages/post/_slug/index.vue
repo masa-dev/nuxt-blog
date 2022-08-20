@@ -30,6 +30,12 @@ import { Post } from '../../../types/api'
   name: 'PostContent',
 })
 export default class PostContent extends Vue {
+  private post!: Post
+
+  public head() {
+    return { title: `${this.post.title} - Post` }
+  }
+
   async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 

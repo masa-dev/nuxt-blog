@@ -24,6 +24,10 @@ import axios from 'axios'
   name: 'IndexPage',
 })
 export default class IndexPage extends Vue {
+  public head() {
+    return { title: 'ホーム' }
+  }
+
   async asyncData({ $config }: any) {
     const query = paramToString({ limit: 5, offset: 0 })
     const config = $config as Config

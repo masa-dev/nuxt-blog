@@ -1,16 +1,16 @@
 <template>
-  <div>
-    {{ about }}
-  </div>
+  <div>about</div>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from "nuxt-property-decorator";
+import { Vue, Component } from 'nuxt-property-decorator'
 
 @Component({
-  name: "About"
+  name: 'About',
 })
 export default class About extends Vue {
-  private about = "about"
+  public head() {
+    return { title: 'About' }
+  }
 }
 </script>

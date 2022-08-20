@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img :src="tag.image.src">
+    <img :src="tag.image.src" />
     <h1>{{ tag.name }}</h1>
   </div>
 </template>
@@ -15,6 +15,12 @@ import { Tag } from '../../../types/api'
   name: 'TagContent',
 })
 export default class TagContent extends Vue {
+  private tag!: Tag
+
+  public head() {
+    return { title: `${this.tag.name} - Tag` }
+  }
+
   async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 

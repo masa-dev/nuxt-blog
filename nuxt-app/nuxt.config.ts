@@ -31,6 +31,8 @@ export default {
   },
 
   generate: {
+    fallback: true,
+
     async routes() {
       if (!API_KEY || !API_URL) {
         throw new Error('"API_KEY" or "API_URL" is invalid');
@@ -75,7 +77,8 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    title: 'nuxt-app',
+    // title: 'nuxt-app',
+    titleTemplate: blogConfig.meta.titleTemplate,
     htmlAttrs: {
       lang: 'ja',
     },

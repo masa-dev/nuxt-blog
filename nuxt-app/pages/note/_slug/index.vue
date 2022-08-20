@@ -15,6 +15,12 @@ import { Note } from '../../../types/api'
   name: 'NoteContent',
 })
 export default class NoteContent extends Vue {
+  public note!: Note
+
+  public head() {
+    return { title: `${this.note.title} - Note` }
+  }
+
   async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 
