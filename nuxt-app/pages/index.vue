@@ -1,9 +1,8 @@
 <template>
   <div>
     <div>
-      <div v-for="post in posts" :key="post._id">
-        <p>{{ post.title }}</p>
-      </div>
+      <h2>投稿一覧</h2>
+      <PostListComponent :postList="posts" />
     </div>
     <div>
       <div v-for="note in notes" :key="note._id">

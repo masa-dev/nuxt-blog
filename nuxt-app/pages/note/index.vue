@@ -4,6 +4,7 @@
       <nuxt-link :to="`/note/${note._id}`">{{ note.title }}</nuxt-link>
     </div>
     <b-pagination-nav
+      :value="page"
       :number-of-pages="noteMeta.rows"
       :link-gen="linkGen"
       align="center"
@@ -57,6 +58,7 @@ export default class NoteHome extends Vue {
     }
 
     return {
+      page: page,
       notes: noteList.items,
       noteMeta: noteMeta,
     }

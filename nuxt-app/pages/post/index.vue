@@ -1,8 +1,9 @@
 <template>
   <div class="post-list-wrapper">
     <h1>Post一覧</h1>
-    <PostListComponent :postList="posts"/>
+    <PostListComponent :postList="posts" />
     <b-pagination-nav
+      :value="page"
       :number-of-pages="pageMeta.rows"
       :link-gen="linkGen"
       align="center"
@@ -63,6 +64,7 @@ export default class PostHome extends Vue {
     }
 
     return {
+      page: page,
       posts: postList.items,
       pageMeta: pageMeta,
     }
