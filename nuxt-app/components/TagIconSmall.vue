@@ -1,10 +1,10 @@
 <template>
   <nuxt-link
     v-if="tag"
-    :to="`/tag/${tag.id}`"
+    :to="`/tag/${tag.slug}`"
     class="tag-icon-link border rounded-pill"
   >
-    <img :src="tag.image.url" class="icon-image d-block" alt="" />
+    <img :src="tag.image.src" class="icon-image d-block" alt="" />
     <div class="icon-image-name">{{ tag.name }}</div>
   </nuxt-link>
 </template>
@@ -32,6 +32,7 @@
   width: 1.5rem;
   height: 1.5rem;
   object-fit: contain;
+  padding: 0.2rem 0;
   margin-right: 0.4rem;
 }
 

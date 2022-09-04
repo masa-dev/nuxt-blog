@@ -1,7 +1,7 @@
 <template>
   <div>
     <Header></Header>
-    <main class="container-xxl mx-auto px-4">
+    <main class="container-xxl mx-auto px-4 wf-mplus1p">
       <nuxt />
     </main>
     <Footer></Footer>
@@ -16,3 +16,10 @@ import { Vue, Component } from 'vue-property-decorator'
 })
 export default class Layout extends Vue {}
 </script>
+
+<style lang="scss" scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
+.wf-mplus1p {
+  font-family: 'Noto Sans JP';
+}
+</style>

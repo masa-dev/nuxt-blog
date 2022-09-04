@@ -1,32 +1,34 @@
-import sass from "sass";
-import axios from "axios";
-import { NoteList, PostList, TagList } from "./types/api";
-import { paramToString } from "./util/searchParam"
-import blogConfig from "./blog.config"
-const { API_KEY, API_URL } = process.env;
+import sass from 'sass'
+import axios from 'axios'
+import { NoteResponse, PostResponse, TagResponse } from './types/newtApi'
+import { paramToString } from './util/searchParam'
+import blogConfig from './blog.config'
+const { API_KEY, API_URL } = process.env
 
 export default {
   privateRuntimeConfig: {
-    apiKey: API_KEY
+    apiKey: API_KEY,
   },
 
   publicRuntimeConfig: {
     apiUrl: API_URL,
-    apiKey: process.env.NODE_ENV !== 'production' ? API_KEY : undefined
+    apiKey: process.env.NODE_ENV !== 'production' ? API_KEY : undefined,
   },
 
   router: {
     extendRoutes(routes: any, resolve: any) {
-      routes.push({
-        path: '/note/page/:p',
-        component: resolve(__dirname, 'pages/note/index.vue'),
-        name: 'NotePage',
-      },
-      {
-        path: '/post/page/:p',
-        component: resolve(__dirname, 'pages/post/index.vue'),
-        name: 'PostPage',
-      })
+      routes.push(
+        {
+          path: '/note/page/:p',
+          component: resolve(__dirname, 'pages/note/index.vue'),
+          name: 'NotePage',
+        },
+        {
+          path: '/post/page/:p',
+          component: resolve(__dirname, 'pages/post/index.vue'),
+          name: 'PostPage',
+        }
+      )
     },
   },
 
@@ -35,41 +37,61 @@ export default {
 
     async routes() {
       if (!API_KEY || !API_URL) {
-        throw new Error('"API_KEY" or "API_URL" is invalid');
+        throw new Error('"API_KEY" or "API_URL" is invalid')
       }
 
-      const routeList: string[] = [];
-      const query = paramToString({ limit: 20000 });
+      const routeList: string[] = []
+      const query = paramToString({ limit: 1000 })
       const range = (start: number, end: number): number[] =>
-        [...Array(end - start + 1)].map((_, i) => start + i);
+        [...Array(end - start + 1)].map((_, i) => start + i)
 
       try {
         const postRes = await axios.get(`${API_URL}/post?${query}`, {
-          headers: { 'X-MICROCMS-API-KEY': API_KEY },
-        });
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        })
         const noteRes = await axios.get(`${API_URL}/note?${query}`, {
-          headers: { 'X-MICROCMS-API-KEY': API_KEY },
-        });
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        })
         const tagRes = await axios.get(`${API_URL}/tag?${query}`, {
-          headers: { 'X-MICROCMS-API-KEY': API_KEY },
-        });
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        })
 
-        const posts = (postRes.data as PostList).contents;
-        const notes = (noteRes.data as NoteList).contents;
-        const tags = (tagRes.data as TagList).contents;
+        const posts = (postRes.data as PostResponse).items
+        const notes = (noteRes.data as NoteResponse).items
+        const tags = (tagRes.data as TagResponse).items
 
-        routeList.push(...posts.map(({ id }) => "/post/" + id));
-        routeList.push(...notes.map(({ id }) => "/note/" + id));
-        routeList.push(...tags.map(({ id }) => "/tag/" + id));
+        routeList.push(...posts.map(({ _id }) => '/post/' + _id))
+        routeList.push(...notes.map(({ _id }) => '/note/' + _id))
+        routeList.push(...tags.map(({ slug }) => '/tag/' + slug))
 
-        routeList.push(...range(1, Math.ceil((postRes.data as PostList).totalCount / blogConfig.post.limit)).map(p => `/post/page/${p}`));
-        routeList.push(...range(1, Math.ceil((noteRes.data as NoteList).totalCount / blogConfig.note.limit)).map(p => `/note/page/${p}`));
+        routeList.push(
+          ...range(
+            1,
+            Math.ceil(
+              (postRes.data as PostResponse).total / blogConfig.post.limit
+            )
+          ).map((p) => `/post/page/${p}`)
+        )
+        routeList.push(
+          ...range(
+            1,
+            Math.ceil(
+              (noteRes.data as NoteResponse).total / blogConfig.note.limit
+            )
+          ).map((p) => `/note/page/${p}`)
+        )
       } catch (error: any) {
-        throw error;
+        throw error
       }
 
-      return routeList;
-    }
+      return routeList
+    },
   },
 
   // Target: https://go.nuxtjs.dev/config-target
@@ -92,9 +114,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [
-    { src: '~/assets/scss/common.scss' },
-  ],
+  css: [{ src: '~/assets/scss/common.scss' }],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -117,7 +137,7 @@ export default {
   ],
 
   bootstrapVue: {
-    icons: true
+    icons: true,
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -134,7 +154,7 @@ export default {
         // sassOptions: {
         //   fiber: Fiber
         // }
-      }
+      },
     },
   },
-};
+}

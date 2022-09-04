@@ -1,12 +1,12 @@
 <template>
   <div>
     <div>
-      <div v-for="post in posts" :key="post.id">
+      <div v-for="post in posts" :key="post._id">
         <p>{{ post.title }}</p>
       </div>
     </div>
     <div>
-      <div v-for="note in notes" :key="note.id">
+      <div v-for="note in notes" :key="note._id">
         <p>{{ note.title }}</p>
       </div>
     </div>
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { paramToString } from '../util/searchParam'
-import { NoteList, PostList } from '../types/api'
+import { NoteResponse, PostResponse } from '../types/newtApi'
 import { Config } from '../types/config'
 import axios from 'axios'
 
@@ -33,19 +33,23 @@ export default class IndexPage extends Vue {
     const config = $config as Config
 
     const PostRes = await axios.get(`${config.apiUrl}/post?${query}`, {
-      headers: { 'X-MICROCMS-API-KEY': config.apiKey },
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+      },
     })
 
     const NoteRes = await axios.get(`${config.apiUrl}/note?${query}`, {
-      headers: { 'X-MICROCMS-API-KEY': config.apiKey },
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+      },
     })
 
-    const postList = PostRes.data as PostList
-    const noteList = NoteRes.data as NoteList
+    const postList = PostRes.data as PostResponse
+    const noteList = NoteRes.data as NoteResponse
 
     return {
-      posts: postList.contents,
-      notes: noteList.contents,
+      posts: postList.items,
+      notes: noteList.items,
     }
   }
 }

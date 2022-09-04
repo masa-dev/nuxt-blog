@@ -3,8 +3,8 @@
     <h1>{{ post.title }}</h1>
     <div class="post-tag-list">
       <TagIconSmall
-        v-for="tag in post.tags"
-        :key="tag.id"
+        v-for="tag in tags"
+        :key="tag._id"
         :tag="tag"
         class="mr-2 mb-2"
       />
@@ -24,7 +24,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
-import { Post } from '../../../types/api'
+import { Post, Tag, TagResponse } from '../../../types/newtApi'
 
 @Component({
   name: 'PostContent',
@@ -43,11 +43,27 @@ export default class PostContent extends Vue {
 
     try {
       const PostRes = await axios.get(`${config.apiUrl}/post/${slug}`, {
-        headers: { 'X-MICROCMS-API-KEY': config.apiKey },
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
       })
 
+      const post = PostRes.data as Post
+      const tags: Tag[] = []
+
+      for (let postTag of post.tags) {
+        const TagRes = await axios.get(`${config.apiUrl}/tag/${postTag._id}`, {
+          headers: {
+            Authorization: `Bearer ${config.apiKey}`,
+          },
+        })
+
+        tags.push(TagRes.data as Tag)
+      }
+
       return {
-        post: PostRes.data as Post,
+        post: post,
+        tags: tags,
       }
     } catch (e) {
       const axiosError = e as AxiosError

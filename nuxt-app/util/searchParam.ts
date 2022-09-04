@@ -18,7 +18,12 @@ export interface MicroCmsFindParam {
   richEditorFormat?: "html" | "object"
 }
 
-function paramToString(param: MicroCmsSearchParam | MicroCmsFindParam): string {
+export interface NewtSearchParam {
+  limit?: number
+  skip?: number
+}
+
+function paramToString(param: MicroCmsSearchParam | MicroCmsFindParam | NewtSearchParam): string {
   let sp = new URLSearchParams(param as URLSearchParams)
 
   return sp.toString()

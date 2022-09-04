@@ -27,6 +27,7 @@
           </b-nav-form>
         </b-navbar-nav>
         -->
+        <link href="https://fonts.googleapis.com/css?family=M+PLUS+1p" rel="stylesheet">
       </b-collapse>
     </b-navbar>
   </header>

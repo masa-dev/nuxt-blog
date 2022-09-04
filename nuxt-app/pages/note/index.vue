@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div v-for="note in notes" :key="note.id">
-      <nuxt-link :to="`/note/${note.id}`">{{ note.title }}</nuxt-link>
+    <div v-for="note in notes" :key="note._id">
+      <nuxt-link :to="`/note/${note._id}`">{{ note.title }}</nuxt-link>
     </div>
     <b-pagination-nav
       :number-of-pages="noteMeta.rows"
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { paramToString } from '../../util/searchParam'
-import { Note, NoteList } from '../../types/api'
+import { NoteResponse } from '../../types/newtApi'
 import { Config } from '../../types/config'
 import axios from 'axios'
 import blogConfig from '../../blog.config'
@@ -43,19 +43,21 @@ export default class NoteHome extends Vue {
     const config = $config as Config
 
     const noteRes = await axios.get(`${config.apiUrl}/note?${query}`, {
-      headers: { 'X-MICROCMS-API-KEY': config.apiKey },
+      headers: {
+        Authorization: `Bearer ${config.apiKey}`,
+      },
     })
 
-    const noteList = noteRes.data as NoteList
+    const noteList = noteRes.data as NoteResponse
 
     const noteMeta = {
-      rows: Math.ceil(noteList.totalCount / noteList.limit),
+      rows: Math.ceil(noteList.total / noteList.limit),
       perPage: noteList.limit,
       currentPage: page,
     }
 
     return {
-      notes: noteList.contents,
+      notes: noteList.items,
       noteMeta: noteMeta,
     }
   }

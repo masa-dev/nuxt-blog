@@ -9,7 +9,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
-import { Note } from '../../../types/api'
+import { Note } from '../../../types/newtApi'
 
 @Component({
   name: 'NoteContent',
@@ -28,7 +28,9 @@ export default class NoteContent extends Vue {
 
     try {
       const noteRes = await axios.get(`${config.apiUrl}/note/${slug}`, {
-        headers: { 'X-MICROCMS-API-KEY': config.apiKey },
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
       })
 
       return {

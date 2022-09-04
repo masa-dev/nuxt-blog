@@ -9,7 +9,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
-import { Tag } from '../../../types/api'
+import { Tag, TagResponse } from '../../../types/newtApi'
 
 @Component({
   name: 'TagContent',
@@ -27,12 +27,14 @@ export default class TagContent extends Vue {
     const config = $config as Config
 
     try {
-      const tagRes = await axios.get(`${config.apiUrl}/tag/${slug}`, {
-        headers: { 'X-MICROCMS-API-KEY': config.apiKey },
+      const tagRes = await axios.get(`${config.apiUrl}/tag/?slug=${slug}`, {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
       })
 
       return {
-        tag: tagRes.data as Tag,
+        tag: (tagRes.data as TagResponse).items[0],
       }
     } catch (e) {
       const axiosError = e as AxiosError
