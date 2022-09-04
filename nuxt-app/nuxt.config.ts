@@ -118,15 +118,18 @@ export default {
         href: 'https://fonts.gstatic.com',
         crossOriginIsolated: true,
       },
-      {
-        rel: 'stylesheet',
-        href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap',
-      },
+      // {
+      //   rel: 'stylesheet',
+      //   href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap',
+      // },
     ],
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: [{ src: '~/assets/scss/common.scss' }],
+  css: [
+    { src: '~/assets/scss/common.scss' },
+    { src: "~/assets/scss/font.scss" }
+  ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
