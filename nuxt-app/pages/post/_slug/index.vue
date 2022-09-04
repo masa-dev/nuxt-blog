@@ -1,6 +1,9 @@
 <template>
   <div>
     <h1>{{ post.title }}</h1>
+    <div>
+      <img :src="post.image.src" :alt="post.image.alt" class="w-100">
+    </div>
     <div class="post-tag-list">
       <TagIconSmall
         v-for="tag in tags"
@@ -24,7 +27,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
-import { Post, Tag, TagResponse } from '../../../types/newtApi'
+import { Post, Tag } from '../../../types/newtApi'
 
 @Component({
   name: 'PostContent',
