@@ -7,9 +7,21 @@ services:
       context: "./"
       dockerfile: "Dockerfile"
     ports:
-      - 50082:8080
+      - 50082:8000
     volumes:
       - ./nuxt-app/:/app
     working_dir: /app
     environment:
       TZ: "Asia/Tokyo" 
+  
+  nuxt-web:
+    container_name: "nuxt-web"
+    image: nginx:1.23.1
+    ports:
+      - 8080:8080
+    volumes:
+      - ./nuxt-app/dist/:/usr/share/nginx/html
+      - ./nginx/:/etc/nginx/conf.d/
+    working_dir: /usr/share/nginx/html
+    environment:
+      TZ: "Asia/Tokyo"
