@@ -128,7 +128,9 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     { src: '~/assets/scss/common.scss' },
-    { src: "~/assets/scss/font.scss" }
+    { src: '~/assets/scss/font.scss' },
+    { src: '~/assets/scss/prisma/prisma-base.scss' },
+    { src: '~/assets/scss/prisma/prisma-js.scss' },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins

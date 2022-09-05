@@ -1,0 +1,57 @@
+pre[class='language-js'],
+pre[class='language-javascript'],
+pre[class='language-ts'],
+pre[class='language-typescript'] {
+  background-color: #1e1e1e;
+  padding: 0;
+
+  code[class='language-js'],
+  code[class='language-javascript'],
+  code[class='language-ts'],
+  code[class='language-typescript'] {
+    display: block;
+    overflow-x: auto;
+    padding: 20px;
+    color: #8cdefc;
+
+    .token {
+      color: #fff;
+    }
+
+    .interpolation {
+      color: #8cdefc;
+    }
+
+    .operator {
+      color: #d4d3cb;
+    }
+
+    .punctuation {
+      color: #dbdbce;
+    }
+
+    .keyword {
+      color: #53b6e7;
+    }
+
+    .special-keyword {
+      color: #ca88be;
+    }
+
+    .comment {
+      color: #65a557;
+    }
+
+    .function {
+      color: #f8c555;
+    }
+
+    .string {
+      color: #e48d65;
+    }
+
+    .literal-property {
+      color: #8cdefc;
+    }
+  }
+}

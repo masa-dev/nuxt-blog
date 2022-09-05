@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{ note.title }}</h1>
-    <div v-html="note.body"></div>
+    <div v-html="body"></div>
   </div>
 </template>
 
@@ -10,6 +10,7 @@ import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
 import { Note } from '../../../types/newtApi'
+import { codeHighlight } from '../../../util/codeHighlight'
 
 @Component({
   name: 'NoteContent',
@@ -33,13 +34,20 @@ export default class NoteContent extends Vue {
         },
       })
 
+      const note = noteRes.data as Note
+
       return {
-        note: noteRes.data as Note,
+        body: note.body,
+        note: note,
       }
     } catch (e) {
       const axiosError = e as AxiosError
       redirect(axiosError.response!.status, '/note')
     }
+  }
+
+  mounted() {
+    codeHighlight()
   }
 }
 </script>
