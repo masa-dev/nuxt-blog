@@ -3,7 +3,7 @@
     <div v-for="post in postList" :key="post._id" class="post-item mb-4">
       <nuxt-link :to="`/post/${post._id}`" class="d-flex post-item-link">
         <div class="post-image-wrapper">
-          <img :src="post.image.src" :alt="post.image.alt" />
+          <img :src="post.image.src" :alt="post.image.alt"/>
         </div>
         <h2 class="m-0 pl-3">{{ post.title }}</h2>
       </nuxt-link>
@@ -32,8 +32,8 @@ export default class ItemList extends Vue {
   height: 110px;
 
   img {
-    width: inherit;
-    height: inherit;
+    width: 110px;
+    height: 110px;
     object-fit: cover;
     border-radius: 10px;
   }
