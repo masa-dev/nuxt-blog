@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2 class="mb-5 mt-4">ノート一覧</h2>
     <div v-for="note in notes" :key="note._id">
       <nuxt-link :to="`/note/${note._id}`">{{ note.title }}</nuxt-link>
     </div>
@@ -29,7 +30,7 @@ export default class NoteHome extends Vue {
   private linkGen(pageNum: number) {
     return `/note/page/${pageNum}`
   }
-  
+
   public head() {
     return { title: 'Note 一覧' }
   }

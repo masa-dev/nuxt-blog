@@ -7,8 +7,8 @@
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/post/page/1">Post</b-nav-item>
-          <b-nav-item href="/note/page/1">Note</b-nav-item>
+          <b-nav-item href="/post/">Post</b-nav-item>
+          <b-nav-item href="/note/">Note</b-nav-item>
           <b-nav-item href="/tag">Tag</b-nav-item>
         </b-navbar-nav>
 

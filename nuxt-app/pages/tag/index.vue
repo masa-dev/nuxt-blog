@@ -1,11 +1,53 @@
 <template>
-  <div>
-    <div v-for="tag in tags" :key="tag._id">
-      <img :src="tag.image.src" />
-      <nuxt-link :to="`/tag/${tag.slug}`">{{ tag.name }}</nuxt-link>
+  <div class="tag-list-wapper mb-5">
+    <h2 class="mb-5 mt-4">タグ一覧</h2>
+    <div class="d-flex flex-wrap justify-content-center">
+      <nuxt-link
+        v-for="tag in tags"
+        :key="tag._id"
+        :to="`/tag/${tag.slug}`"
+        class="mb-3 mx-2"
+      >
+        <div
+          class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-2 shadow-sm"
+        >
+          <img :src="tag.image.src" />
+          <div class="ml-3">
+            {{ tag.name }}
+          </div>
+        </div>
+      </nuxt-link>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+.tag-list-wapper {
+  width: 900px;
+  margin: 0 auto;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  text-decoration: none;
+
+  nuxt-link {
+    text-decoration: none;
+  }
+
+  .tag-item-wrapper {
+    width: 200px;
+
+    img {
+      height: 50px;
+      width: 50px;
+      object-fit: contain;
+    }
+  }
+}
+
+.rounded-2 {
+  border-radius: 10px;
+}
+</style>
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'

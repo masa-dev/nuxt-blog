@@ -1,6 +1,6 @@
 <template>
   <div class="post-list-wrapper">
-    <h1>Post一覧</h1>
+    <h2 class="mb-5 mt-4">Post一覧</h2>
     <PostListComponent :postList="posts" />
     <b-pagination-nav
       :value="page"
