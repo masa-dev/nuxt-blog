@@ -6,13 +6,13 @@
         v-for="tag in tags"
         :key="tag._id"
         :to="`/tag/${tag.slug}`"
-        class="mb-3 mx-2"
+        class="mb-3 mx-2 tag-link"
       >
         <div
           class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-2 shadow-sm"
         >
           <img :src="tag.image.src" />
-          <div class="ml-3">
+          <div class="ml-3 text-dark">
             {{ tag.name }}
           </div>
         </div>
@@ -21,6 +21,24 @@
   </div>
 </template>
 
+<style lang="scss">
+.tag-list-wapper {
+  a.tag-link {
+    &:hover {
+      text-decoration: none;
+    }
+
+    & > .tag-item-wrapper {
+      transition: 0.3s;
+      &:hover {
+        border-color: #f0f0f0 !important;
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}
+</style>
+
 <style lang="scss" scoped>
 .tag-list-wapper {
   width: 900px;
@@ -28,10 +46,6 @@
   justify-content: space-around;
   flex-wrap: wrap;
   text-decoration: none;
-
-  nuxt-link {
-    text-decoration: none;
-  }
 
   .tag-item-wrapper {
     width: 200px;
