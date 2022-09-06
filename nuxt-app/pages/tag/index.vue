@@ -1,5 +1,5 @@
 <template>
-  <div class="tag-list-wapper mb-5">
+  <div class="tag-list-wapper mb-5 n-container-xl">
     <h2 class="mb-5 mt-4">タグ一覧</h2>
     <div class="d-flex flex-wrap justify-content-center">
       <nuxt-link
@@ -41,7 +41,6 @@
 
 <style lang="scss" scoped>
 .tag-list-wapper {
-  width: 900px;
   margin: 0 auto;
   justify-content: space-around;
   flex-wrap: wrap;

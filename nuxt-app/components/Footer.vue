@@ -30,13 +30,13 @@
 <style lang="scss">
 .link-circle {
   position: relative;
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
 
   svg {
     position: absolute;
-    width: 1rem;
-    height: 1rem;
+    width: 1.65rem;
+    height: 1.65rem;
     transform: translateY(-50%) translateX(-50%);
     top: 50%;
     left: 50%;

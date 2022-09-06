@@ -1,7 +1,8 @@
 @import './variables';
 
-.container-xxl {
-  width: 100%;
+.container-xxl,
+.n-container-xl {
+  width: 100% !important;
 }
 
 .page-item > .page-link {
@@ -11,6 +12,10 @@
 @media only screen and (min-width: $content-width) {
   .container-xxl {
     width: $content-width;
+  }
+
+  .n-container-xl {
+    width: $small-content-width !important;
   }
 }
 
