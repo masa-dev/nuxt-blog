@@ -60,6 +60,19 @@
 .rounded-2 {
   border-radius: 10px;
 }
+
+@media only screen and (max-width: 500px) {
+  .tag-list-wapper {
+    .tag-item-wrapper {
+      flex-direction: column;
+      width: 140px;
+      > div {
+        margin-top: 0.5rem;
+        margin-left: 0 !important;
+      }
+    }
+  }
+}
 </style>
 
 <script lang="ts">

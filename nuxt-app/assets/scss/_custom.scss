@@ -9,13 +9,15 @@
   border: 0;
 }
 
-@media only screen and (min-width: $content-width) {
-  .container-xxl {
-    width: $content-width;
-  }
-
+@media only screen and (min-width: $small-content-width) {
   .n-container-xl {
     width: $small-content-width !important;
+  }
+}
+
+@media only screen and (min-width: $content-width) {
+  .container-xxl {
+    width: $content-width !important;
   }
 }
 

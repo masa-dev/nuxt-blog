@@ -28,15 +28,17 @@
 </template>
 
 <style lang="scss">
+$icon-size: 2.5rem;
+
 .link-circle {
   position: relative;
-  width: 3rem;
-  height: 3rem;
+  width: $icon-size;
+  height: $icon-size;
 
   svg {
     position: absolute;
-    width: 1.65rem;
-    height: 1.65rem;
+    width: calc($icon-size * (3 / 5));
+    height: calc($icon-size * (3 / 5));
     transform: translateY(-50%) translateX(-50%);
     top: 50%;
     left: 50%;
