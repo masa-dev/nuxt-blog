@@ -1,5 +1,5 @@
 <template>
-  <div class="post-list-wrapper">
+  <div class="n-container-xl mx-auto">
     <h2 class="mb-5 mt-4">Post一覧</h2>
     <PostListComponent :postList="posts" />
     <b-pagination-nav

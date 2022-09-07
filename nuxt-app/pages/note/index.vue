@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="n-container-xl mx-auto">
     <h2 class="mb-5 mt-4">ノート一覧</h2>
     <div v-for="note in notes" :key="note._id">
       <nuxt-link :to="`/note/${note._id}`">{{ note.title }}</nuxt-link>

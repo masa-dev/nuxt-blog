@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="n-container-xl mx-auto">
     <div>
-      <h2>投稿一覧</h2>
+      <h2 class="mb-5 mt-4">投稿一覧</h2>
       <PostListComponent :postList="posts" />
     </div>
     <div>
