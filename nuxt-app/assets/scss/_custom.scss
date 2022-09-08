@@ -1,6 +1,6 @@
 @import './variables';
 
-.container-xxl,
+.n-container-xxl,
 .n-container-xl {
   width: 100% !important;
 }
@@ -16,7 +16,7 @@
 }
 
 @media only screen and (min-width: $content-width) {
-  .container-xxl {
+  .n-container-xxl {
     width: $content-width !important;
   }
 }

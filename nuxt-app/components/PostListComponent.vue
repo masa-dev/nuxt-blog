@@ -3,9 +3,14 @@
     <div v-for="post in postList" :key="post._id" class="post-item mb-4">
       <nuxt-link :to="`/post/${post._id}`" class="d-flex post-item-link">
         <div class="post-image-wrapper">
-          <img :src="post.image.src" :alt="post.image.alt"/>
+          <img :src="post.image.src" :alt="post.image.alt" />
         </div>
-        <h2 class="m-0 pl-3">{{ post.title }}</h2>
+        <div class="pl-3 d-flex flex-column justify-content-between">
+          <h2 class="m-0">{{ post.title }}</h2>
+          <p class="small m-0 text-secondary">
+            {{ dayjs(post._sys.createdAt).format('YYYY年MM月DD日 HH:mm') }}
+          </p>
+        </div>
       </nuxt-link>
     </div>
   </div>
@@ -14,6 +19,7 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
 import { Post } from '../types/newtApi'
+import dayjs from 'dayjs'
 
 @Component({
   name: 'PostListComponent',
@@ -21,6 +27,8 @@ import { Post } from '../types/newtApi'
 export default class ItemList extends Vue {
   @Prop({ type: Array })
   postList!: Post[]
+
+  dayjs = dayjs
 
   mounted() {}
 }
@@ -53,6 +61,26 @@ export default class ItemList extends Vue {
     font-weight: bold;
     color: #000;
     line-height: 1.5;
+  }
+}
+
+@media only screen and (max-width: 750px) {
+  .post-image-wrapper {
+    width: 90px;
+    height: 90px;
+
+    img {
+      width: 90px;
+      height: 90px;
+    }
+  }
+  .post-item {
+    width: 100%;
+
+    h2 {
+      font-size: 1.05rem;
+      line-height: 1.3;
+    }
   }
 }
 </style>

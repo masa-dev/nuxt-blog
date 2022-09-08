@@ -1,15 +1,21 @@
 <template>
   <header class="navbar navbar-dark bg-dark justify-content-center p-container-0">
-    <b-navbar toggleable="md" type="dark" variant="dark" class="container-xxl">
-      <b-navbar-brand href="/">My Blog</b-navbar-brand>
+    <b-navbar toggleable="md" type="dark" variant="dark" class="n-container-xxl">
+      <nuxt-link to="/" class="navbar-brand">My Blog</nuxt-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
-          <b-nav-item href="/post/">Post</b-nav-item>
-          <b-nav-item href="/note/">Note</b-nav-item>
-          <b-nav-item href="/tag">Tag</b-nav-item>
+          <li class="nav-item">
+            <nuxt-link to="/post/" class="nav-link">Post</nuxt-link>
+          </li>
+          <li class="nav-item">
+            <nuxt-link to="/note/" class="nav-link">Note</nuxt-link>
+          </li>
+          <li class="nav-item">
+            <nuxt-link to="/tag/" class="nav-link">Tag</nuxt-link>
+          </li>
         </b-navbar-nav>
 
         <!-- Right aligned nav items -->

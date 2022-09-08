@@ -1,6 +1,6 @@
 <template>
   <div class="n-container-xl mx-auto">
-    <h2 class="mb-5 mt-4">Post一覧</h2>
+    <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
     <PostListComponent :postList="posts" />
     <b-pagination-nav
       :value="page"

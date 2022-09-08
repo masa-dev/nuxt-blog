@@ -2,6 +2,7 @@
   <div>
     <img :src="tag.image.src" />
     <h1>{{ tag.name }}</h1>
+    <PostListComponent :postList="posts" />
   </div>
 </template>
 
@@ -9,7 +10,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
-import { Tag, TagResponse } from '../../../types/newtApi'
+import { PostResponse, Tag, TagResponse } from '../../../types/newtApi'
 
 @Component({
   name: 'TagContent',
@@ -32,9 +33,21 @@ export default class TagContent extends Vue {
           Authorization: `Bearer ${config.apiKey}`,
         },
       })
+      const tag = (tagRes.data as TagResponse).items[0]
+
+      const postRes = await axios.get(
+        `${config.apiUrl}/post/?tags=${tag._id}&depth=2`,
+        {
+          headers: {
+            Authorization: `Bearer ${config.apiKey}`,
+          },
+        }
+      )
+      const posts = (postRes.data as PostResponse).items
 
       return {
-        tag: (tagRes.data as TagResponse).items[0],
+        tag: tag,
+        posts: posts,
       }
     } catch (e) {
       const axiosError = e as AxiosError
