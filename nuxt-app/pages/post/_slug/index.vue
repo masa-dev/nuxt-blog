@@ -40,8 +40,8 @@ export default class PostContent extends Vue {
     return {
       title: `${this.post.title} - Post`,
       meta: [
-        { name: 'og:title', content: this.post.title },
-        { name: 'og:image', content: this.post.image.src },
+        { property: 'og:title', content: this.post.title },
+        { property: 'og:image', content: this.post.image.src },
       ],
     }
   }
