@@ -37,7 +37,13 @@ export default class PostContent extends Vue {
   private post!: Post
 
   public head() {
-    return { title: `${this.post.title} - Post` }
+    return {
+      title: `${this.post.title} - Post`,
+      meta: [
+        { name: 'og:title', content: this.post.title },
+        { name: 'og:image', content: this.post.image.src },
+      ],
+    }
   }
 
   async asyncData({ params, $config, redirect }: any) {
