@@ -16,8 +16,10 @@
         <a
           class="btn btn-primary btn-floating m-1 rounded-circle link-circle border-0"
           style="background-color: #333333"
-          href="#!"
+          href="https://github.com/masa-dev"
           role="button"
+          target="_blank"
+          rel="noopener noreferrer"
           ><b-icon icon="github"></b-icon
         ></a>
       </section>

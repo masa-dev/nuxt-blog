@@ -3,6 +3,7 @@
     <img :src="tag.image.src" />
     <h1>{{ tag.name }}</h1>
     <PostListComponent :postList="posts" />
+    <NoteListComponent :noteList="notes" />
   </div>
 </template>
 
@@ -10,7 +11,8 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
-import { PostResponse, Tag, TagResponse } from '../../../types/newtApi'
+import { ApiResponse, Tag, Post, Note } from '../../../types/newtApi'
+import { paramToString } from '../../../util/searchParam'
 
 @Component({
   name: 'TagContent',
@@ -24,30 +26,45 @@ export default class TagContent extends Vue {
 
   async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
+    const query = paramToString({ depth: 2 })
 
-    const config = $config as Config
+    const config: Config = $config
 
     try {
-      const tagRes = await axios.get(`${config.apiUrl}/tag/?slug=${slug}`, {
-        headers: {
-          Authorization: `Bearer ${config.apiKey}`,
-        },
-      })
-      const tag = (tagRes.data as TagResponse).items[0]
-
-      const postRes = await axios.get(
-        `${config.apiUrl}/post/?tags=${tag._id}&depth=2`,
+      const tagRes = await axios.get<ApiResponse<Tag>>(
+        `${config.apiUrl}/tag/?slug=${slug}`,
         {
           headers: {
             Authorization: `Bearer ${config.apiKey}`,
           },
         }
       )
-      const posts = (postRes.data as PostResponse).items
+      const tag = tagRes.data.items[0]
+
+      const postRes = await axios.get<ApiResponse<Post>>(
+        `${config.apiUrl}/post/?tags=${tag._id}&${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${config.apiKey}`,
+          },
+        }
+      )
+      const posts = postRes.data.items
+
+      const noteRes = await axios.get<ApiResponse<Note>>(
+        `${config.apiUrl}/note/?tags=${tag._id}&${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${config.apiKey}`,
+          },
+        }
+      )
+      const notes = noteRes.data.items
 
       return {
         tag: tag,
         posts: posts,
+        notes: notes,
       }
     } catch (e) {
       const axiosError = e as AxiosError

@@ -1,11 +1,11 @@
 <template>
   <div class="d-flex flex-wrap justify-content-between mb-3">
-    <div v-for="post in postList" :key="post._id" class="post-item mb-4">
-      <nuxt-link :to="`/post/${post._id}`" class="d-flex post-item-link">
+    <div v-for="post in postList" :key="post._id" class="post-item mb-5">
+      <nuxt-link :to="`/post/${post._id}`" class="d-flex post-item-link w-100">
         <div class="post-image-wrapper">
           <img :src="post.image.src" :alt="post.image.alt" />
         </div>
-        <div class="pl-3 d-flex flex-column justify-content-between">
+        <div class="pl-3 d-flex flex-column justify-content-between flex-fill">
           <h2 class="m-0">{{ post.title }}</h2>
           <p class="small m-0 text-secondary">
             {{ dayjs(post._sys.createdAt).format('YYYY年MM月DD日 HH:mm') }}

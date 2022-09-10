@@ -1,9 +1,7 @@
 <template>
   <div class="n-container-xl mx-auto">
     <h2 class="mb-5 mt-4 font-weight-bold">ノート一覧</h2>
-    <div v-for="note in notes" :key="note._id">
-      <nuxt-link :to="`/note/${note._id}`">{{ note.title }}</nuxt-link>
-    </div>
+    <NoteListComponent :noteList="notes" />
     <b-pagination-nav
       :value="page"
       :number-of-pages="noteMeta.rows"
@@ -18,7 +16,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { paramToString } from '../../util/searchParam'
-import { NoteResponse } from '../../types/newtApi'
+import { ApiResponse, Note } from '../../types/newtApi'
 import { Config } from '../../types/config'
 import axios from 'axios'
 import blogConfig from '../../blog.config'
@@ -41,16 +39,20 @@ export default class NoteHome extends Vue {
     const query = paramToString({
       limit: blogConfig.note.limit,
       offset: (page - 1) * 1,
+      depth: 2,
     })
-    const config = $config as Config
+    const config: Config = $config
 
-    const noteRes = await axios.get(`${config.apiUrl}/note?${query}`, {
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-    })
+    const noteRes = await axios.get<ApiResponse<Note>>(
+      `${config.apiUrl}/note?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
 
-    const noteList = noteRes.data as NoteResponse
+    const noteList = noteRes.data
 
     const noteMeta = {
       rows: Math.ceil(noteList.total / noteList.limit),

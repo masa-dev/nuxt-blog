@@ -1,7 +1,14 @@
 <template>
-  <header class="navbar navbar-dark bg-dark justify-content-center p-container-0">
-    <b-navbar toggleable="md" type="dark" variant="dark" class="n-container-xxl">
-      <nuxt-link to="/" class="navbar-brand">My Blog</nuxt-link>
+  <header
+    class="navbar navbar-dark bg-dark justify-content-center p-container-0"
+  >
+    <b-navbar
+      toggleable="md"
+      type="dark"
+      variant="dark"
+      class="n-container-xxl"
+    >
+      <nuxt-link to="/" class="navbar-brand">{{ title }}</nuxt-link>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -38,15 +45,16 @@
   </header>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import config from '../blog.config'
 
 @Component({
   name: 'Header',
 })
-export default class Header extends Vue {}
+export default class Header extends Vue {
+  public title = config.title
+}
 </script>

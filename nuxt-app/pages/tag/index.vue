@@ -91,7 +91,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { paramToString } from '../../util/searchParam'
-import { Tag, TagResponse } from '../../types/newtApi'
+import { Tag, ApiResponse } from '../../types/newtApi'
 import { Config } from '../../types/config'
 import axios from 'axios'
 
@@ -99,7 +99,7 @@ import axios from 'axios'
   name: 'TagHome',
 })
 export default class TagHome extends Vue {
-  private searchWord = ''
+  public searchWord = ''
 
   public head() {
     return { title: 'Tag 一覧' }
@@ -107,15 +107,18 @@ export default class TagHome extends Vue {
 
   async asyncData({ $config }: any) {
     const query = paramToString({ limit: 1000, skip: 0 })
-    const config = $config as Config
+    const config: Config = $config
 
-    const tagRes = await axios.get(`${config.apiUrl}/tag?${query}`, {
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-    })
+    const tagRes = await axios.get<ApiResponse<Tag>>(
+      `${config.apiUrl}/tag?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
 
-    const tagList = (tagRes.data as TagResponse).items
+    const tagList = tagRes.data.items
 
     return {
       tags: tagList,

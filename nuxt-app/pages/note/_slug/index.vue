@@ -25,16 +25,16 @@ export default class NoteContent extends Vue {
   async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 
-    const config = $config as Config
+    const config: Config = $config
 
     try {
-      const noteRes = await axios.get(`${config.apiUrl}/note/${slug}`, {
+      const noteRes = await axios.get<Note>(`${config.apiUrl}/note/${slug}`, {
         headers: {
           Authorization: `Bearer ${config.apiKey}`,
         },
       })
 
-      const note = noteRes.data as Note
+      const note = noteRes.data
 
       return {
         body: note.body,

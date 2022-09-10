@@ -66,7 +66,7 @@ export interface Tag extends TimeStamp {
 export interface ReferencedTag extends TimeStamp {
   name: string
   slug: string
-  image: string
+  image: Image | string
 }
 
 export interface Post extends TimeStamp {
@@ -87,22 +87,7 @@ export interface Note extends TimeStamp {
   tag: Array<ReferencedTag>
 }
 
-export interface PostResponse extends ApiParams {
+export interface ApiResponse<T> extends ApiParams {
   total: number
-  items: Array<Post>
-}
-
-export interface NoteResponse extends ApiParams {
-  total: number
-  items: Array<Note>
-}
-
-export interface TagResponse extends ApiParams {
-  total: number
-  items: Array<Tag>
-}
-
-export interface AuthorResponse extends ApiParams {
-  total: number
-  items: Array<Author>
+  items: Array<T>
 }

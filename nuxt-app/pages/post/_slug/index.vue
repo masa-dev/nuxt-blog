@@ -49,26 +49,29 @@ export default class PostContent extends Vue {
   async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 
-    const config = $config as Config
+    const config: Config = $config
 
     try {
-      const PostRes = await axios.get(`${config.apiUrl}/post/${slug}`, {
+      const PostRes = await axios.get<Post>(`${config.apiUrl}/post/${slug}`, {
         headers: {
           Authorization: `Bearer ${config.apiKey}`,
         },
       })
 
-      const post = PostRes.data as Post
+      const post = PostRes.data
       const tags: Tag[] = []
 
       for (let postTag of post.tags) {
-        const TagRes = await axios.get(`${config.apiUrl}/tag/${postTag._id}`, {
-          headers: {
-            Authorization: `Bearer ${config.apiKey}`,
-          },
-        })
+        const TagRes = await axios.get<Tag>(
+          `${config.apiUrl}/tag/${postTag._id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${config.apiKey}`,
+            },
+          }
+        )
 
-        tags.push(TagRes.data as Tag)
+        tags.push(TagRes.data)
       }
 
       return {

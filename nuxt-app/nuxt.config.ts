@@ -1,6 +1,6 @@
 import sass from 'sass'
 import axios from 'axios'
-import { NoteResponse, PostResponse, TagResponse } from './types/newtApi'
+import { Note, Post, Tag, ApiResponse } from './types/newtApi'
 import { paramToString } from './util/searchParam'
 import blogConfig from './blog.config'
 const { API_KEY, API_URL } = process.env
@@ -46,25 +46,34 @@ export default {
         [...Array(end - start + 1)].map((_, i) => start + i)
 
       try {
-        const postRes = await axios.get(`${API_URL}/post?${query}`, {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-          },
-        })
-        const noteRes = await axios.get(`${API_URL}/note?${query}`, {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-          },
-        })
-        const tagRes = await axios.get(`${API_URL}/tag?${query}`, {
-          headers: {
-            Authorization: `Bearer ${API_KEY}`,
-          },
-        })
+        const postRes = await axios.get<ApiResponse<Post>>(
+          `${API_URL}/post?${query}`,
+          {
+            headers: {
+              Authorization: `Bearer ${API_KEY}`,
+            },
+          }
+        )
+        const noteRes = await axios.get<ApiResponse<Note>>(
+          `${API_URL}/note?${query}`,
+          {
+            headers: {
+              Authorization: `Bearer ${API_KEY}`,
+            },
+          }
+        )
+        const tagRes = await axios.get<ApiResponse<Tag>>(
+          `${API_URL}/tag?${query}`,
+          {
+            headers: {
+              Authorization: `Bearer ${API_KEY}`,
+            },
+          }
+        )
 
-        const posts = (postRes.data as PostResponse).items
-        const notes = (noteRes.data as NoteResponse).items
-        const tags = (tagRes.data as TagResponse).items
+        const posts = postRes.data.items
+        const notes = noteRes.data.items
+        const tags = tagRes.data.items
 
         routeList.push(...posts.map(({ _id }) => '/post/' + _id))
         routeList.push(...notes.map(({ _id }) => '/note/' + _id))
@@ -73,17 +82,13 @@ export default {
         routeList.push(
           ...range(
             1,
-            Math.ceil(
-              (postRes.data as PostResponse).total / blogConfig.post.limit
-            )
+            Math.ceil(postRes.data.total / blogConfig.post.limit)
           ).map((p) => `/post/page/${p}`)
         )
         routeList.push(
           ...range(
             1,
-            Math.ceil(
-              (noteRes.data as NoteResponse).total / blogConfig.note.limit
-            )
+            Math.ceil(noteRes.data.total / blogConfig.note.limit)
           ).map((p) => `/note/page/${p}`)
         )
       } catch (error: any) {
@@ -118,10 +123,6 @@ export default {
         href: 'https://fonts.gstatic.com',
         crossOriginIsolated: true,
       },
-      // {
-      //   rel: 'stylesheet',
-      //   href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap',
-      // },
     ],
   },
 

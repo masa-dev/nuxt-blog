@@ -5,9 +5,8 @@
       <PostListComponent :postList="posts" />
     </div>
     <div>
-      <div v-for="note in notes" :key="note._id">
-        <p>{{ note.title }}</p>
-      </div>
+      <h2 class="mb-5 mt-4 font-weight-bold">ノート一覧</h2>
+      <NoteListComponent :noteList="notes" />
     </div>
   </div>
 </template>
@@ -15,7 +14,7 @@
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
 import { paramToString } from '../util/searchParam'
-import { NoteResponse, PostResponse } from '../types/newtApi'
+import { ApiResponse, Note, Post } from '../types/newtApi'
 import { Config } from '../types/config'
 import axios from 'axios'
 
@@ -28,23 +27,29 @@ export default class IndexPage extends Vue {
   }
 
   async asyncData({ $config }: any) {
-    const query = paramToString({ limit: 5, offset: 0 })
-    const config = $config as Config
+    const query = paramToString({ limit: 5, offset: 0, depth: 2 })
+    const config: Config = $config
 
-    const PostRes = await axios.get(`${config.apiUrl}/post?${query}`, {
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-    })
+    const PostRes = await axios.get<ApiResponse<Post>>(
+      `${config.apiUrl}/post?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
 
-    const NoteRes = await axios.get(`${config.apiUrl}/note?${query}`, {
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-    })
+    const NoteRes = await axios.get<ApiResponse<Note>>(
+      `${config.apiUrl}/note?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
 
-    const postList = PostRes.data as PostResponse
-    const noteList = NoteRes.data as NoteResponse
+    const postList = PostRes.data
+    const noteList = NoteRes.data
 
     return {
       posts: postList.items,

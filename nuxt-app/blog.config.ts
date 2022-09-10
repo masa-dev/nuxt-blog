@@ -1,6 +1,9 @@
+const title =  "My blog"
+
 const config = {
+  title: title,
   meta: {
-    titleTemplate: '%s | My Blog',
+    titleTemplate: '%s | ' + title,
   },
   post: {
     limit: 10,

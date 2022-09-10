@@ -23,7 +23,7 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import { paramToString } from '../../util/searchParam'
-import { PostResponse } from '../../types/newtApi'
+import { ApiResponse, Post } from '../../types/newtApi'
 import { Config } from '../../types/config'
 import axios from 'axios'
 import blogConfig from '../../blog.config'
@@ -47,15 +47,18 @@ export default class PostHome extends Vue {
       limit: blogConfig.post.limit,
       skip: (page - 1) * 1,
     })
-    const config = $config as Config
+    const config: Config = $config
 
-    const PostRes = await axios.get(`${config.apiUrl}/post?${query}`, {
-      headers: {
-        Authorization: `Bearer ${config.apiKey}`,
-      },
-    })
+    const PostRes = await axios.get<ApiResponse<Post>>(
+      `${config.apiUrl}/post?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
 
-    const postList = PostRes.data as PostResponse
+    const postList = PostRes.data
 
     const pageMeta = {
       rows: Math.ceil(postList.total / postList.limit),
