@@ -3,10 +3,10 @@
     <div v-for="note in noteList" :key="note._id" class="note-item mb-5">
       <nuxt-link :to="`/note/${note._id}`" class="d-flex note-item-link">
         <div
-          v-if="note.tag.length > 0 && note.tag[0].image"
+          v-if="note.tags.length > 0 && note.tags[0].image"
           class="note-icon-wrapper"
         >
-          <img :src="note.tag[0].image.src" />
+          <img :src="note.tags[0].image.src" />
         </div>
         <div v-else class="note-icon-wrapper">
           <b-icon-circle-fill class="text-black-50" />

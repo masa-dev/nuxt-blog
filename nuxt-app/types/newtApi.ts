@@ -84,7 +84,7 @@ export interface Note extends TimeStamp {
   meta: Meta
   body: string
   author: Author
-  tag: Array<ReferencedTag>
+  tags: Array<ReferencedTag>
 }
 
 export interface ApiResponse<T> extends ApiParams {
