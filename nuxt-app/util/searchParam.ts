@@ -8,14 +8,14 @@ export interface MicroCmsSearchParam {
   ids?: string // first_id,second_id,third_id
   filters?: string
   depth?: number
-  richEditorFormat?: "html" | "object"
+  richEditorFormat?: 'html' | 'object'
 }
 
 export interface MicroCmsFindParam {
   draftKey?: string
   filters?: string
   depth?: number
-  richEditorFormat?: "html" | "object"
+  richEditorFormat?: 'html' | 'object'
 }
 
 export interface NewtSearchParam {
@@ -23,7 +23,9 @@ export interface NewtSearchParam {
   skip?: number
 }
 
-function paramToString(param: MicroCmsSearchParam | MicroCmsFindParam | NewtSearchParam): string {
+function paramToString(
+  param: MicroCmsSearchParam | MicroCmsFindParam | NewtSearchParam
+): string {
   let sp = new URLSearchParams(param as URLSearchParams)
 
   return sp.toString()
