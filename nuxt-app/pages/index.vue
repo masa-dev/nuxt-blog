@@ -22,6 +22,7 @@ import { Component, Vue } from 'nuxt-property-decorator'
 import { paramToString } from '../util/searchParam'
 import { ApiResponse, Note, Post } from '../types/newtApi'
 import { Config } from '../types/config'
+import blogConfig from '../blog.config'
 import axios from 'axios'
 
 @Component({
@@ -33,11 +34,20 @@ export default class IndexPage extends Vue {
   }
 
   async asyncData({ $config }: any) {
-    const query = paramToString({ limit: 5, offset: 0, depth: 2 })
+    const postQuery = paramToString({
+      limit: blogConfig.top.postLimit,
+      offset: 0,
+      depth: 2,
+    })
+    const noteQuery = paramToString({
+      limit: blogConfig.top.noteLimit,
+      offset: 0,
+      depth: 2,
+    })
     const config: Config = $config
 
     const PostRes = await axios.get<ApiResponse<Post>>(
-      `${config.apiUrl}/post?${query}`,
+      `${config.apiUrl}/post?${postQuery}`,
       {
         headers: {
           Authorization: `Bearer ${config.apiKey}`,
@@ -46,7 +56,7 @@ export default class IndexPage extends Vue {
     )
 
     const NoteRes = await axios.get<ApiResponse<Note>>(
-      `${config.apiUrl}/note?${query}`,
+      `${config.apiUrl}/note?${noteQuery}`,
       {
         headers: {
           Authorization: `Bearer ${config.apiKey}`,
