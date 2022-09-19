@@ -1,5 +1,5 @@
 <template>
-  <div class="n-container-xl mx-auto">
+  <div class="n-container-xl mx-auto mb-5">
     <div>
       <h2 class="mb-5 mt-4 font-weight-bold">投稿一覧</h2>
       <PostListComponent :postList="posts" />

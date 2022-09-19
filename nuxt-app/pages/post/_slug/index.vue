@@ -1,8 +1,12 @@
 <template>
   <div class="n-container-xl mx-auto mb-5">
     <h1 class="mt-4 mb-3 mb-sm-5">{{ post.title }}</h1>
-    <div class="mb-4">
-      <img :src="post.image.src" :alt="post.image.alt" class="w-100" />
+    <div class="mb-4 post-thumb-wrapper">
+      <img
+        :src="post.image.src"
+        :alt="post.image.alt"
+        class="d-block mx-auto"
+      />
     </div>
     <div class="post-tag-list">
       <TagIconSmall
@@ -20,6 +24,10 @@
 .post-tag-list {
   display: flex;
   flex-wrap: wrap;
+}
+
+.post-thumb-wrapper {
+  max-height: 480px;
 }
 </style>
 
