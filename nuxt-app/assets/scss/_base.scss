@@ -1,3 +1,93 @@
 body {
   line-height: 1.85;
 }
+
+.post-content {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+  }
+
+  h1 {
+    position: relative;
+    font-size: 1.9rem;
+    padding: 0.5rem 0 0.5rem 1rem;
+    margin: 1rem 0 2.5rem;
+    border-bottom: 2px solid rgb(149, 158, 179);
+
+    &::before {
+      position: absolute;
+      content: '';
+      bottom: -2px;
+      left: 0px;
+      width: 60%;
+      height: 2px;
+      background-color: #1192e7;
+    }
+  }
+
+  h2 {
+    position: relative;
+    font-size: 1.6rem;
+    padding: 0.5rem 0 0.5rem 0.5rem;
+    margin: 1rem 0 2rem;
+    border-bottom: 1px solid rgb(149, 158, 179);
+
+    &::before {
+      position: absolute;
+      content: '';
+      bottom: -1px;
+      left: 0px;
+      width: 30%;
+      height: 1px;
+      background-color: #1192e7;
+    }
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    padding: 0.3rem 0 0.3rem 0.5rem;
+    margin: 1rem 0 1.7rem;
+    border-left: 3px solid #1192e7;
+  }
+
+  h4 {
+    font-size: 1.2rem;
+    padding: 0.3rem 0 0.3rem 0.5rem;
+    margin: 1rem 0 1.7rem;
+    border-left: 2px solid rgb(149, 158, 179);
+  }
+
+  h5 {
+    font-size: 1.1rem;
+  }
+
+  h6 {
+    font-size: 1rem;
+  }
+
+  p {
+    margin: 1rem 0 1.5rem;
+  }
+
+  :not(pre) code {
+    vertical-align: middle;
+    color: rgb(233, 69, 118);
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    background-color: rgb(236, 235, 235);
+    margin: 0 0.2rem;
+  }
+
+  pre {
+    border-radius: 10px;
+    margin: 1rem 0 1.5rem;
+    code {
+      font-size: 0.95rem !important;
+    }
+  }
+}

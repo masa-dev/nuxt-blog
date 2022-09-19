@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>{{ note.title }}</h1>
-    <div v-html="body"></div>
+  <div class="note-details n-container-xl mx-auto mb-5">
+    <h1 class="mt-4 mb-3 mb-sm-5">{{ note.title }}</h1>
+    <div class="post-content" v-html="body"></div>
   </div>
 </template>
 
@@ -51,3 +51,8 @@ export default class NoteContent extends Vue {
   }
 }
 </script>
+
+<style lang="scss">
+.note-details {
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <h1>{{ post.title }}</h1>
-    <div>
+  <div class="n-container-xl mx-auto mb-5">
+    <h1 class="mt-4 mb-3 mb-sm-5">{{ post.title }}</h1>
+    <div class="mb-4">
       <img :src="post.image.src" :alt="post.image.alt" class="w-100" />
     </div>
     <div class="post-tag-list">
@@ -12,7 +12,7 @@
         class="mr-2 mb-2"
       />
     </div>
-    <div v-html="post.body"></div>
+    <div class="post-content" v-html="post.body"></div>
   </div>
 </template>
 

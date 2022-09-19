@@ -3,15 +3,12 @@ pre[class='language-javascript'],
 pre[class='language-ts'],
 pre[class='language-typescript'] {
   background-color: #1e1e1e;
-  padding: 0;
 
   code[class='language-js'],
   code[class='language-javascript'],
   code[class='language-ts'],
   code[class='language-typescript'] {
     display: block;
-    overflow-x: auto;
-    padding: 20px;
     color: #8cdefc;
 
     .token {
