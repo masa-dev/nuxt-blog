@@ -3,6 +3,7 @@
     <h2 class="mb-5 mt-4 font-weight-bold">ノート一覧</h2>
     <NoteListComponent :noteList="notes" />
     <b-pagination-nav
+      v-if="noteMeta.rows > 1"
       :value="page"
       :number-of-pages="noteMeta.rows"
       :link-gen="linkGen"

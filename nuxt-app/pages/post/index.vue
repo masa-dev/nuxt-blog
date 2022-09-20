@@ -3,6 +3,7 @@
     <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
     <PostListComponent :postList="posts" />
     <b-pagination-nav
+      v-if="pageMeta.rows > 1"
       :value="page"
       :number-of-pages="pageMeta.rows"
       :link-gen="linkGen"
@@ -32,6 +33,8 @@ import blogConfig from '../../blog.config'
   name: 'PostHome',
 })
 export default class PostHome extends Vue {
+  public maxPost = blogConfig.post.limit
+
   public head() {
     return { title: 'Post 一覧' }
   }

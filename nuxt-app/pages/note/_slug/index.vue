@@ -32,9 +32,18 @@ import { codeHighlight } from '../../../util/codeHighlight'
 })
 export default class NoteContent extends Vue {
   public note!: Note
+  public tags!: Tag[] | null
 
   public head() {
-    return { title: `${this.note.title} - Note` }
+    const tagImage = this.tags ? this.tags[0].image.src : null
+
+    return {
+      title: `${this.note.title} - Note`,
+      meta: [
+        { property: 'og:title', content: this.note.title },
+        { property: 'og:image', content: tagImage ? tagImage : '' },
+      ],
+    }
   }
 
   async asyncData({ params, $config, redirect }: any) {
