@@ -115,12 +115,6 @@ export default {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-      { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-      {
-        rel: 'preconnect',
-        href: 'https://fonts.gstatic.com',
-        crossOriginIsolated: true,
-      },
     ],
   },
 
@@ -154,7 +148,7 @@ export default {
   ],
 
   bootstrapVue: {
-    icons: true,
+    icons: false,
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

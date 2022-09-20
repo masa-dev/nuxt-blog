@@ -9,8 +9,9 @@
           style="background-color: #55acee"
           href="#!"
           role="button"
-          ><b-icon icon="twitter"></b-icon
-        ></a>
+        >
+          <img src="/img/twitter.svg" alt="twitter" />
+        </a>
 
         <!-- Github -->
         <a
@@ -20,8 +21,9 @@
           role="button"
           target="_blank"
           rel="noopener noreferrer"
-          ><b-icon icon="github"></b-icon
-        ></a>
+        >
+          <img src="/img/github.svg" alt="github" />
+        </a>
       </section>
       © 2022 Copyright
     </div>
@@ -37,7 +39,7 @@ $icon-size: 2.5rem;
   width: $icon-size;
   height: $icon-size;
 
-  svg {
+  img {
     position: absolute;
     width: calc($icon-size * (3 / 5));
     height: calc($icon-size * (3 / 5));
