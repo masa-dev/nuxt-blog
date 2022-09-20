@@ -24,7 +24,7 @@ jobs:
           cache: "npm"
           cache-dependency-path: ./nuxt-app/package-lock.json
       - name: Package install
-        run: cd ./nuxt-app && npm install
+        run: cd ./nuxt-app && npm ci
       - name: Create .env file
         run: |
           cd ./nuxt-app && touch .env
