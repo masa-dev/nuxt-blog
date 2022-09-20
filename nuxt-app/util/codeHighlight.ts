@@ -8,23 +8,28 @@ import 'prismjs/components/prism-markdown'
 
 export function codeHighlight() {
   Prism.hooks.add('wrap', (env) => {
-    if (env.type !== 'keyword') {
-      return
+    if (env.type == 'punctuation') {
+      const stringPunctuation = ['"', "'"]
+
+      if (stringPunctuation.some((sp) => sp == env.content)) {
+        env.classes.push('string-punctuation')
+      }
     }
+    if (env.type == 'keyword') {
+      const specialKeyword = [
+        'try',
+        'catch',
+        'return',
+        'as',
+        'export',
+        'default',
+        'import',
+        'from',
+      ]
 
-    const specialKeyword = [
-      'try',
-      'catch',
-      'return',
-      'as',
-      'export',
-      'default',
-      'import',
-      'from',
-    ]
-
-    if (specialKeyword.some((sk) => sk == env.content)) {
-      env.classes.push('special-keyword')
+      if (specialKeyword.some((sk) => sk == env.content)) {
+        env.classes.push('special-keyword')
+      }
     }
   })
   Prism.highlightAll()

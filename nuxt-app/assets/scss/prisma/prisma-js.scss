@@ -1,58 +1,65 @@
-pre[class='language-js'],
-pre[class='language-javascript'],
-pre[class='language-ts'],
-pre[class='language-typescript'] {
-  background-color: #1e1e1e;
+@import './prisma-variables.scss';
 
-  code[class='language-js'],
-  code[class='language-javascript'],
-  code[class='language-ts'],
-  code[class='language-typescript'] {
-    display: block;
+pre.language-js > code.language-js,
+pre.language-ts > code.language-ts,
+pre.language-javascript > code.language-javascript,
+pre.language-typescript > code.language-typescript,
+pre.language-html > code.language-html span.language-js,
+pre.language-html > code.language-html span.language-ts,
+pre.language-html > code.language-html span.language-javascript,
+pre.language-html > code.language-html span.language-typescript {
+  display: block;
+  color: $var;
+
+  .token {
+    color: #fff;
+  }
+
+  .builtin {
+    color: $class;
+  }
+
+  .class-name {
+    color: $class;
+  }
+
+  .interpolation {
+    color: #9fe3fc;
+  }
+
+  .operator {
+    color: #fff;
+  }
+
+  .punctuation {
+    color: #dbdbce;
+  }
+
+  .keyword {
+    color: $keyword;
+  }
+
+  .special-keyword {
+    color: $specialKeyword;
+  }
+
+  .comment {
+    color: $comment;
+  }
+
+  .function {
+    color: $function;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .literal-property {
     color: #8cdefc;
+  }
 
-    .token {
-      color: #fff;
-    }
-
-    .interpolation {
-      color: #8cdefc;
-    }
-
-    .operator {
-      color: #d4d3cb;
-    }
-
-    .punctuation {
-      color: #dbdbce;
-    }
-
-    .keyword {
-      color: #53b6e7;
-    }
-
-    .special-keyword {
-      color: #ca88be;
-    }
-
-    .comment {
-      color: #65a557;
-    }
-
-    .function {
-      color: #f8c555;
-    }
-
-    .string {
-      color: #e48d65;
-    }
-
-    .literal-property {
-      color: #8cdefc;
-    }
-
-    .number {
-      color: #6acfc2;
-    }
+  .number {
+    color: $number;
   }
 }

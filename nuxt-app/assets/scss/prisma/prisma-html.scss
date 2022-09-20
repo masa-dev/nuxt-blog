@@ -1,0 +1,19 @@
+@import './prisma-variables.scss';
+
+pre.language-html > code.language-html {
+  .tag {
+    color: $keyword;
+  }
+
+  .attr-name {
+    color: $var;
+  }
+
+  .attr-value {
+    color: $string;
+  }
+
+  .string-punctuation {
+    color: $string;
+  }
+}

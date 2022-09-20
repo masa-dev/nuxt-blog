@@ -28,6 +28,10 @@
 
 .post-thumb-wrapper {
   max-height: 480px;
+
+  img {
+    max-width: 100%;
+  }
 }
 </style>
 

@@ -124,6 +124,7 @@ export default {
     { src: '~/assets/scss/font.scss' },
     { src: '~/assets/scss/prisma/prisma-base.scss' },
     { src: '~/assets/scss/prisma/prisma-js.scss' },
+    { src: '~/assets/scss/prisma/prisma-html.scss' },
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
