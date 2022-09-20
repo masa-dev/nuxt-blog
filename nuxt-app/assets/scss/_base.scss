@@ -34,7 +34,7 @@ body {
     position: relative;
     font-size: 1.6rem;
     padding: 0.5rem 0 0.5rem 0.5rem;
-    margin: 1rem 0 2rem;
+    margin: 1.7rem 0 2rem;
     border-bottom: 1px solid rgb(149, 158, 179);
 
     &::before {
@@ -51,14 +51,14 @@ body {
   h3 {
     font-size: 1.4rem;
     padding: 0.3rem 0 0.3rem 0.5rem;
-    margin: 1rem 0 1.7rem;
+    margin: 1.5rem 0 1.7rem;
     border-left: 3px solid #1192e7;
   }
 
   h4 {
     font-size: 1.2rem;
     padding: 0.3rem 0 0.3rem 0.5rem;
-    margin: 1rem 0 1.7rem;
+    margin: 1.5rem 0 1.7rem;
     border-left: 2px solid rgb(149, 158, 179);
   }
 
@@ -91,9 +91,36 @@ body {
 
   pre {
     border-radius: 10px;
-    margin: 1rem 0 1.5rem;
+    margin: 1rem 0 1.5rem !important;
     code {
       font-size: 0.95rem !important;
+    }
+  }
+
+  blockquote {
+    background-color: #e8ecee;
+    padding: 1rem;
+    border-left: 5px solid #1192e7;
+    border-radius: 5px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  table {
+    overflow-x: auto;
+    border-collapse: collapse;
+    margin-bottom: 1.2rem;
+
+    th {
+      background-color: #e8ecee;
+    }
+
+    th,
+    td {
+      padding: 0.3rem 1rem;
+      border: 1px solid #b2b5b6;
     }
   }
 }

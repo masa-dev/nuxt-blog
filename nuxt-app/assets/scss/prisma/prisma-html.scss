@@ -16,4 +16,8 @@ pre.language-html > code.language-html {
   .string-punctuation {
     color: $string;
   }
+
+  .comment {
+    color: $comment;
+  }
 }
