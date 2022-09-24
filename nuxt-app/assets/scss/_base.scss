@@ -123,4 +123,23 @@ body {
       border: 1px solid #b2b5b6;
     }
   }
+
+  /* Prism.js */
+  .code-toolbar > .toolbar {
+    padding: 0.6rem 0.85rem;
+
+    .toolbar-item > button {
+      color: #e8ecee;
+      padding: 0.2rem 0.5rem;
+      background-color: inherit;
+      box-shadow: none;
+
+      $w-icon: 1.45rem;
+      img[src$='.svg'] {
+        color: #cccccc;
+        width: $w-icon;
+        height: $w-icon;
+      }
+    }
+  }
 }

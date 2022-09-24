@@ -55,6 +55,7 @@ function initCopyToClipboardPrism() {
     function (env: any) {
       var linkCopy = document.createElement('button')
       linkCopy.textContent = 'コピー'
+      linkCopy.innerHTML = '<img src="/img/clipboard.svg" />'
 
       if (!ClipboardJS) {
         callbacks.push(registerClipboard)
@@ -71,7 +72,9 @@ function initCopyToClipboardPrism() {
         })
 
         clip.on('success', function () {
-          linkCopy.textContent = 'コピー完了!'
+          //linkCopy.textContent = 'コピー完了!'
+          linkCopy.classList.add('prism-copy-success')
+          linkCopy.innerHTML = '<img src="/img/clipboard-check.svg" />'
           resetText()
         })
         clip.on('error', function () {
@@ -82,7 +85,9 @@ function initCopyToClipboardPrism() {
 
       function resetText() {
         setTimeout(function () {
-          linkCopy.textContent = 'コピー'
+          //linkCopy.textContent = 'コピー'
+          linkCopy.classList.remove('prism-copy-success')
+          linkCopy.innerHTML = '<img src="/img/clipboard.svg" />'
         }, 5000)
       }
     }
