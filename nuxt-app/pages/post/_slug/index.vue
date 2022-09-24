@@ -1,12 +1,14 @@
 <template>
   <div class="n-container-xl mx-auto mb-5">
-    <h1 class="mt-4 mb-3 mb-sm-5">{{ post.title }}</h1>
+    <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ post.title }}</h1>
     <div class="mb-4 post-thumb-wrapper">
       <img
+        v-if="post.image"
         :src="post.image.src"
         :alt="post.image.alt"
         class="d-block mx-auto"
       />
+      <img v-else src="/img/dummy.png" alt="dummy image" />
     </div>
     <div class="post-tag-list">
       <TagIconSmall
@@ -28,8 +30,10 @@
 
 .post-thumb-wrapper {
   max-height: 480px;
+  text-align: center;
 
   img {
+    max-height: inherit;
     max-width: 100%;
   }
 }
@@ -53,7 +57,10 @@ export default class PostContent extends Vue {
       title: `${this.post.title} - Post`,
       meta: [
         { property: 'og:title', content: this.post.title },
-        { property: 'og:image', content: this.post.image.src },
+        {
+          property: 'og:image',
+          content: this.post.image ? this.post.image.src : '/img/dummy image',
+        },
       ],
     }
   }
