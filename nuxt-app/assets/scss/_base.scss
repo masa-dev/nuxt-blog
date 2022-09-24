@@ -80,7 +80,7 @@ body {
     }
   }
 
-  :not(pre) code {
+  :not(pre) > code {
     vertical-align: middle;
     color: rgb(233, 69, 118);
     padding: 0.1rem 0.4rem;
