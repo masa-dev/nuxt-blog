@@ -3,9 +3,9 @@
     <h2 class="mb-5 mt-4 font-weight-bold">タグ一覧</h2>
     <div class="tag-search mb-5 mx-auto">
       <input
+        v-model="searchWord"
         type="search"
         class="form-control rounded-pill px-4"
-        v-model="searchWord"
         placeholder="JavaScript"
       />
     </div>
@@ -30,6 +30,45 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { Vue, Component } from 'nuxt-property-decorator'
+import axios from 'axios'
+import { paramToString } from '../../util/searchParam'
+import { Tag, ApiResponse } from '../../types/newtApi'
+import { Config } from '../../types/config'
+
+@Component({
+  name: 'TagHome',
+})
+export default class TagHome extends Vue {
+  public searchWord = ''
+
+  public head() {
+    return { title: 'Tag 一覧' }
+  }
+
+  public async asyncData({ $config }: any) {
+    const query = paramToString({ limit: 1000, skip: 0 })
+    const config: Config = $config
+
+    const tagRes = await axios.get<ApiResponse<Tag>>(
+      `${config.apiUrl}/tag?${query}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
+
+    const tagList = tagRes.data.items
+
+    return {
+      tags: tagList,
+    }
+  }
+}
+</script>
 
 <style lang="scss">
 .tag-list-wapper {
@@ -87,42 +126,3 @@
   }
 }
 </style>
-
-<script lang="ts">
-import { Vue, Component } from 'nuxt-property-decorator'
-import { paramToString } from '../../util/searchParam'
-import { Tag, ApiResponse } from '../../types/newtApi'
-import { Config } from '../../types/config'
-import axios from 'axios'
-
-@Component({
-  name: 'TagHome',
-})
-export default class TagHome extends Vue {
-  public searchWord = ''
-
-  public head() {
-    return { title: 'Tag 一覧' }
-  }
-
-  async asyncData({ $config }: any) {
-    const query = paramToString({ limit: 1000, skip: 0 })
-    const config: Config = $config
-
-    const tagRes = await axios.get<ApiResponse<Tag>>(
-      `${config.apiUrl}/tag?${query}`,
-      {
-        headers: {
-          Authorization: `Bearer ${config.apiKey}`,
-        },
-      }
-    )
-
-    const tagList = tagRes.data.items
-
-    return {
-      tags: tagList,
-    }
-  }
-}
-</script>

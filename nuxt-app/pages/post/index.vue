@@ -14,19 +14,12 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.post-list-wrapper {
-  width: 900px;
-  margin: 0 auto;
-}
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import axios from 'axios'
 import { paramToString } from '../../util/searchParam'
 import { ApiResponse, Post } from '../../types/newtApi'
 import { Config } from '../../types/config'
-import axios from 'axios'
 import blogConfig from '../../blog.config'
 
 @Component({
@@ -43,7 +36,7 @@ export default class PostHome extends Vue {
     return `/post/page/${pageNum}`
   }
 
-  async asyncData({ $config, params }: any) {
+  public async asyncData({ $config, params }: any) {
     const page: number = params.p || 1
 
     const query = paramToString({
@@ -70,10 +63,17 @@ export default class PostHome extends Vue {
     }
 
     return {
-      page: page,
+      page,
       posts: postList.items,
-      pageMeta: pageMeta,
+      pageMeta,
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.post-list-wrapper {
+  width: 900px;
+  margin: 0 auto;
+}
+</style>

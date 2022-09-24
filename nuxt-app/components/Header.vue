@@ -45,8 +45,6 @@
   </header>
 </template>
 
-<style lang="scss" scoped></style>
-
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
 import config from '../blog.config'
@@ -58,3 +56,5 @@ export default class Header extends Vue {
   public title = config.title
 }
 </script>
+
+<style lang="scss" scoped></style>

@@ -1,7 +1,7 @@
 const title = 'My blog'
 
 const config = {
-  title: title,
+  title,
   meta: {
     titleTemplate: '%s | ' + title,
   },

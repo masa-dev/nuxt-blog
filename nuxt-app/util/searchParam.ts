@@ -26,7 +26,7 @@ export interface NewtSearchParam {
 function paramToString(
   param: MicroCmsSearchParam | MicroCmsFindParam | NewtSearchParam
 ): string {
-  let sp = new URLSearchParams(param as URLSearchParams)
+  const sp = new URLSearchParams(param as URLSearchParams)
 
   return sp.toString()
 }

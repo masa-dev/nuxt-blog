@@ -31,6 +31,15 @@
   </footer>
 </template>
 
+<script lang="ts">
+import { Vue, Component } from 'vue-property-decorator'
+
+@Component({
+  name: 'Footer',
+})
+export default class Footer extends Vue {}
+</script>
+
 <style lang="scss">
 $icon-size: 2.5rem;
 
@@ -49,12 +58,3 @@ $icon-size: 2.5rem;
   }
 }
 </style>
-
-<script lang="ts">
-import { Vue, Component } from 'vue-property-decorator'
-
-@Component({
-  name: 'Footer',
-})
-export default class Footer extends Vue {}
-</script>

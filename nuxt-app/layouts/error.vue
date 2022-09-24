@@ -24,9 +24,5 @@ export default class Error extends Vue {
   public head() {
     return { title: `${this.error.statusCode} - ${this.error.message}` }
   }
-
-  private mounted() {
-    console.log(this.error)
-  }
 }
 </script>

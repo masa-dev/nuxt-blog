@@ -22,27 +22,10 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.post-tag-list {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.post-thumb-wrapper {
-  max-height: 480px;
-  text-align: center;
-
-  img {
-    max-height: inherit;
-    max-width: 100%;
-  }
-}
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
+import { Config } from '../../../types/config'
 import { Post, Tag } from '../../../types/newtApi'
 import { codeHighlight } from '../../../util/codeHighlight'
 
@@ -65,7 +48,7 @@ export default class PostContent extends Vue {
     }
   }
 
-  async asyncData({ params, $config, redirect }: any) {
+  public async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 
     const config: Config = $config
@@ -80,7 +63,7 @@ export default class PostContent extends Vue {
       const post = PostRes.data
       const tags: Tag[] = []
 
-      for (let postTag of post.tags) {
+      for (const postTag of post.tags) {
         const TagRes = await axios.get<Tag>(
           `${config.apiUrl}/tag/${postTag._id}`,
           {
@@ -94,18 +77,34 @@ export default class PostContent extends Vue {
       }
 
       return {
-        post: post,
-        tags: tags,
+        post,
+        tags,
       }
     } catch (e) {
       const axiosError = e as AxiosError
-      console.log(axiosError)
       redirect(axiosError.response!.status, '/post')
     }
   }
 
-  mounted() {
+  private mounted() {
     codeHighlight()
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.post-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.post-thumb-wrapper {
+  max-height: 480px;
+  text-align: center;
+
+  img {
+    max-height: inherit;
+    max-width: 100%;
+  }
+}
+</style>

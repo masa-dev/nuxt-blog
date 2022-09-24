@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { Post } from '../types/newtApi'
 import dayjs from 'dayjs'
+import { Post } from '../types/newtApi'
 
 @Component({
   name: 'PostListComponent',
@@ -30,8 +30,6 @@ export default class ItemList extends Vue {
   postList!: Post[]
 
   dayjs = dayjs
-
-  mounted() {}
 }
 </script>
 

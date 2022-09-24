@@ -13,17 +13,10 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
-.note-tag-list {
-  display: flex;
-  flex-wrap: wrap;
-}
-</style>
-
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
+import { Config } from '../../../types/config'
 import { Note, Tag } from '../../../types/newtApi'
 import { codeHighlight } from '../../../util/codeHighlight'
 
@@ -35,18 +28,18 @@ export default class NoteContent extends Vue {
   public tags!: Tag[] | null
 
   public head() {
-    const tagImage = this.tags ? this.tags[0].image.src : null
+    const tagImage = this.tags ? this.tags[0].image.src : ''
 
     return {
       title: `${this.note.title} - Note`,
       meta: [
         { property: 'og:title', content: this.note.title },
-        { property: 'og:image', content: tagImage ? tagImage : '' },
+        { property: 'og:image', content: tagImage },
       ],
     }
   }
 
-  async asyncData({ params, $config, redirect }: any) {
+  public async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
 
     const config: Config = $config
@@ -61,7 +54,7 @@ export default class NoteContent extends Vue {
       const note = noteRes.data
       const tags: Tag[] = []
 
-      for (let noteTag of note.tags) {
+      for (const noteTag of note.tags) {
         const TagRes = await axios.get<Tag>(
           `${config.apiUrl}/tag/${noteTag._id}`,
           {
@@ -76,8 +69,8 @@ export default class NoteContent extends Vue {
 
       return {
         body: note.body,
-        note: note,
-        tags: tags,
+        note,
+        tags,
       }
     } catch (e) {
       const axiosError = e as AxiosError
@@ -90,3 +83,10 @@ export default class NoteContent extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.note-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+</style>

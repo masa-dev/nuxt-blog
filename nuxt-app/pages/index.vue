@@ -19,11 +19,11 @@
 
 <script lang="ts">
 import { Component, Vue } from 'nuxt-property-decorator'
+import axios from 'axios'
 import { paramToString } from '../util/searchParam'
 import { ApiResponse, Note, Post } from '../types/newtApi'
 import { Config } from '../types/config'
 import blogConfig from '../blog.config'
-import axios from 'axios'
 
 @Component({
   name: 'IndexPage',

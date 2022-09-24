@@ -9,6 +9,19 @@
   </nuxt-link>
 </template>
 
+<script lang="ts">
+import { Vue, Component, Prop } from 'nuxt-property-decorator'
+import { Tag } from '../types/api'
+
+@Component({
+  name: 'TagIconSmall',
+})
+export default class TagIconSmall extends Vue {
+  @Prop({ type: Object })
+  tag?: Tag
+}
+</script>
+
 <style lang="scss" scoped>
 .tag-icon-link {
   display: inline-flex;
@@ -40,16 +53,3 @@
   font-size: 0.85rem;
 }
 </style>
-
-<script lang="ts">
-import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import { Tag } from '../types/api'
-
-@Component({
-  name: 'TagIconSmall',
-})
-export default class TagIconSmall extends Vue {
-  @Prop({ type: Object })
-  tag?: Tag
-}
-</script>

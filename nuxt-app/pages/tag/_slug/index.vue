@@ -9,8 +9,8 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
-import { Config } from '../../../types/config'
 import axios, { AxiosError } from 'axios'
+import { Config } from '../../../types/config'
 import { ApiResponse, Tag, Post, Note } from '../../../types/newtApi'
 import { paramToString } from '../../../util/searchParam'
 
@@ -24,7 +24,7 @@ export default class TagContent extends Vue {
     return { title: `${this.tag.name} - Tag` }
   }
 
-  async asyncData({ params, $config, redirect }: any) {
+  public async asyncData({ params, $config, redirect }: any) {
     const slug: string = params.slug
     const query = paramToString({ depth: 2 })
 
@@ -62,9 +62,9 @@ export default class TagContent extends Vue {
       const notes = noteRes.data.items
 
       return {
-        tag: tag,
-        posts: posts,
-        notes: notes,
+        tag,
+        posts,
+        notes,
       }
     } catch (e) {
       const axiosError = e as AxiosError

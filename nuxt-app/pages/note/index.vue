@@ -16,10 +16,10 @@
 
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
+import axios from 'axios'
 import { paramToString } from '../../util/searchParam'
 import { ApiResponse, Note } from '../../types/newtApi'
 import { Config } from '../../types/config'
-import axios from 'axios'
 import blogConfig from '../../blog.config'
 
 @Component({
@@ -34,7 +34,7 @@ export default class NoteHome extends Vue {
     return { title: 'Note 一覧' }
   }
 
-  async asyncData({ $config, params }: any) {
+  public async asyncData({ $config, params }: any) {
     const page: number = params.p || 1
 
     const query = paramToString({
@@ -62,9 +62,9 @@ export default class NoteHome extends Vue {
     }
 
     return {
-      page: page,
+      page,
       notes: noteList.items,
-      noteMeta: noteMeta,
+      noteMeta,
     }
   }
 }
