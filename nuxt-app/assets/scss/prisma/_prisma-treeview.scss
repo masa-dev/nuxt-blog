@@ -1,0 +1,18 @@
+pre.language-treeview > code.language-treeview {
+  .token.treeview-part {
+    .entry-name {
+      &:before {
+        vertical-align: middle;
+      }
+
+      &.ext-vue:before,
+      &.ext-ts:before {
+        content: '\ea07';
+      }
+
+      &.ext-ico:before {
+        content: '\ea03';
+      }
+    }
+  }
+}

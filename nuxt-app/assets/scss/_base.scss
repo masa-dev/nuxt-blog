@@ -142,4 +142,10 @@ body {
       }
     }
   }
+
+  div.code-toolbar > .toolbar {
+    &:has(.toolbar-item > .prism-copy-success) {
+      opacity: 1 !important;
+    }
+  }
 }
