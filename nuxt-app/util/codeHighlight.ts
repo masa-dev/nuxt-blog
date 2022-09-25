@@ -75,7 +75,8 @@ function initCopyToClipboardPrism() {
         resetText()
       })
       clip.on('error', function () {
-        linkCopy.textContent = 'Ctrl+Cでコピー'
+        linkCopy.classList.add('prism-copy-failure')
+        linkCopy.innerHTML = '<img src="/img/clipboard-x.svg" />'
         resetText()
       })
     }
