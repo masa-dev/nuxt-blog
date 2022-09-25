@@ -13,6 +13,72 @@ pre.language-treeview > code.language-treeview {
       &.ext-ico:before {
         content: '\ea03';
       }
+
+      &.dir:before {
+        color: #d4c85a;
+      }
+
+      &.ext-bmp:before,
+      &.ext-eps:before,
+      &.ext-gif:before,
+      &.ext-jpe:before,
+      &.ext-jpeg:before,
+      &.ext-jpg:before,
+      &.ext-png:before,
+      &.ext-svg:before,
+      &.ext-tiff:before,
+      &.ext-ico:before {
+        color: #a366bb;
+      }
+
+      &.ext-xls:before,
+      &.ext-xlsx:before {
+        color: #02b345;
+      }
+
+      &.ext-pdf:before {
+        color: #b85151;
+      }
+
+      &.ext-doc:before,
+      &.ext-docm:before,
+      &.ext-docx:before {
+        color: #1b79d1;
+      }
+
+      &.ext-pps:before,
+      &.ext-ppt:before,
+      &.ext-pptx:before {
+        color: #c27440;
+      }
+
+      &.ext-asp:before,
+      &.ext-aspx:before,
+      &.ext-c:before,
+      &.ext-cc:before,
+      &.ext-cpp:before,
+      &.ext-cs:before,
+      &.ext-css:before,
+      &.ext-h:before,
+      &.ext-hh:before,
+      &.ext-jav:before,
+      &.ext-java:before,
+      &.ext-js:before,
+      &.ext-php:before,
+      &.ext-rb:before,
+      &.ext-xml:before,
+      &.ext-ts:before {
+        color: #5a99d4;
+      }
+
+      &.ext-htm:before,
+      &.ext-html:before {
+        color: #c25a40;
+      }
+
+      &.ext-vue:before {
+        color: #4db17a;
+      }
     }
   }
 }
