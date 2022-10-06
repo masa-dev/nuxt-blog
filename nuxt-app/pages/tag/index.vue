@@ -19,10 +19,10 @@
         class="mb-3 mx-2 tag-link"
       >
         <div
-          class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-2 shadow-sm"
+          class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-2 shadow-sm h-100"
         >
           <img :src="tag.image.src" />
-          <div class="ml-3 text-dark lh-base">
+          <div class="ml-3 text-dark lh-base text-center">
             {{ tag.name }}
           </div>
         </div>
@@ -35,7 +35,7 @@
 import { Vue, Component } from 'nuxt-property-decorator'
 import axios from 'axios'
 import { paramToString } from '../../util/searchParam'
-import { Tag, ApiResponse } from '../../types/newtApi'
+import { Tag, ApiResponse, Post, Note } from '../../types/newtApi'
 import { Config } from '../../types/config'
 
 @Component({
@@ -61,7 +61,39 @@ export default class TagHome extends Vue {
       }
     )
 
-    const tagList = tagRes.data.items
+    const postQuery = paramToString({ limit: 1000, select: 'tags' })
+    const postRes = await axios.get<ApiResponse<Post>>(
+      `${config.apiUrl}/post?${postQuery}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
+    const noteQuery = paramToString({ limit: 1000, select: 'tags' })
+    const noteRes = await axios.get<ApiResponse<Note>>(
+      `${config.apiUrl}/note?${noteQuery}`,
+      {
+        headers: {
+          Authorization: `Bearer ${config.apiKey}`,
+        },
+      }
+    )
+
+    const postOrNoteTagList = [...postRes.data.items, ...noteRes.data.items]
+    const tagList = tagRes.data.items.sort((a, b) => {
+      const countA = postOrNoteTagList.filter((p) =>
+        p.tags.some((t) => t._id == a._id)
+      ).length
+      const countB = postOrNoteTagList.filter((p) =>
+        p.tags.some((t) => t._id == b._id)
+      ).length
+      if (countA < countB) {
+        return 1
+      } else {
+        return -1
+      }
+    })
 
     return {
       tags: tagList,

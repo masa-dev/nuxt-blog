@@ -21,6 +21,7 @@ export interface MicroCmsFindParam {
 export interface NewtSearchParam {
   limit?: number
   skip?: number
+  select?: string
 }
 
 function paramToString(
