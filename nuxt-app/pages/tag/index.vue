@@ -22,7 +22,7 @@
           class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-2 shadow-sm"
         >
           <img :src="tag.image.src" />
-          <div class="ml-3 text-dark">
+          <div class="ml-3 text-dark lh-base">
             {{ tag.name }}
           </div>
         </div>
