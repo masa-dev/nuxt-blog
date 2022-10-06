@@ -31,6 +31,19 @@ pre.language-treeview > code.language-treeview {
         color: #a366bb;
       }
 
+      &.entry-name.ext-avi:before,
+      &.entry-name.ext-flv:before,
+      &.entry-name.ext-mkv:before,
+      &.entry-name.ext-mov:before,
+      &.entry-name.ext-mp4:before,
+      &.entry-name.ext-mpeg:before,
+      &.entry-name.ext-mpg:before,
+      &.entry-name.ext-ogv:before,
+      &.entry-name.ext-webm:before
+      {
+        color: #d89067;
+      }
+
       &.ext-xls:before,
       &.ext-xlsx:before {
         color: #02b345;

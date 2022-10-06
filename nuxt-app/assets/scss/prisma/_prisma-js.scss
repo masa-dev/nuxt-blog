@@ -1,13 +1,17 @@
 @import './prisma-variables.scss';
 
 pre.language-js > code.language-js,
+pre.language-jsx > code.language-jsx,
 pre.language-ts > code.language-ts,
+pre.language-tsx > code.language-tsx,
 pre.language-javascript > code.language-javascript,
 pre.language-typescript > code.language-typescript,
-pre.language-html > code.language-html span.language-js,
-pre.language-html > code.language-html span.language-ts,
-pre.language-html > code.language-html span.language-javascript,
-pre.language-html > code.language-html span.language-typescript {
+pre.language-html
+  > code.language-html
+  :is(span.language-js, span.language-ts, span.language-javascript, span.language-typescript),
+pre.language-markup
+  > code.language-markup
+  :is(span.language-js, span.language-ts, span.language-javascript, span.language-typescript) {
   color: $var;
 
   .token {

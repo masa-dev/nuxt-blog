@@ -1,5 +1,7 @@
 import { highlightAll, hooks, plugins } from 'prismjs'
 import 'prismjs/components/prism-typescript'
+import 'prismjs/components/prism-jsx'
+import 'prismjs/components/prism-tsx'
 import 'prismjs/components/prism-csharp'
 import 'prismjs/components/prism-bash'
 import 'prismjs/components/prism-python'
@@ -12,10 +14,20 @@ import 'prismjs/plugins/treeview/prism-treeview.min.js'
 import 'prismjs/plugins/treeview/prism-treeview.min.css'
 
 import clipboardjs from 'clipboard'
+import { isNullOrWhitespace } from './utilFunction'
 
 export function codeHighlight() {
   initCopyToClipboardPrism()
   hooks.add('wrap', (env) => {
+    if (env.type === 'tag') {
+      if (env.content.match('<span class="token punctuation">&lt;</span>')) {
+        const tagName = env.content.replaceAll(/<.+?>.+<\/span>/g, '')
+        if (isNullOrWhitespace(tagName) == false) {
+          if(tagName.match('-') || tagName.match(/[A-Z]/))
+          env.classes.push('component-tag')
+        }
+      }
+    }
     if (env.type === 'punctuation') {
       const stringPunctuation = ['"', "'"]
 

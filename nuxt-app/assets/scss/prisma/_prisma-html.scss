@@ -1,6 +1,7 @@
 @import './prisma-variables.scss';
 
-pre.language-html > code.language-html {
+pre.language-html > code.language-html,
+pre.language-markup > code.language-markup {
   .tag {
     color: $keyword;
   }
@@ -19,5 +20,9 @@ pre.language-html > code.language-html {
 
   .comment {
     color: $comment;
+  }
+
+  .component-tag {
+    color: $class;
   }
 }
