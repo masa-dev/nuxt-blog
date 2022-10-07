@@ -72,6 +72,7 @@ export interface ReferencedTag extends TimeStamp {
 export interface Post extends TimeStamp {
   title: string
   slug: string
+  description: string
   body: string
   image: Image
   author: Author
@@ -81,6 +82,7 @@ export interface Post extends TimeStamp {
 export interface Note extends TimeStamp {
   title: string
   slug: string
+  description: string
   meta: Meta
   body: string
   author: Author

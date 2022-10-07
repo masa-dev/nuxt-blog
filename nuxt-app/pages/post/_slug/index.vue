@@ -44,6 +44,10 @@ export default class PostContent extends Vue {
           property: 'og:image',
           content: this.post.image ? this.post.image.src : '/img/dummy image',
         },
+        {
+          property: 'description',
+          content: this.post.description ? this.post.description : ''
+        }
       ],
     }
   }

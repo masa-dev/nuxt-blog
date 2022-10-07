@@ -1,4 +1,4 @@
-const title = 'My blog'
+const title = 'Masa Tech'
 
 const config = {
   title,
