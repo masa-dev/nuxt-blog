@@ -103,13 +103,7 @@ export default {
         throw new Error('"API_KEY" or "API_URL" is invalid')
       }
 
-      const routeList: string[] = [
-        '/',
-        '/post',
-        '/note',
-        '/tag',
-        '/about',
-      ]
+      const routeList: string[] = ['/', '/post', '/note', '/tag', '/about']
 
       const query = paramToString({ limit: 1000 })
       const range = (start: number, end: number): number[] =>

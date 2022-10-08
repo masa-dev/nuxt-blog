@@ -22,9 +22,9 @@ export function codeHighlight() {
     if (env.type === 'tag') {
       if (env.content.match('<span class="token punctuation">&lt;</span>')) {
         const tagName = env.content.replaceAll(/<.+?>.+<\/span>/g, '')
-        if (isNullOrWhitespace(tagName) == false) {
-          if(tagName.match('-') || tagName.match(/[A-Z]/))
-          env.classes.push('component-tag')
+        if (isNullOrWhitespace(tagName) === false) {
+          if (tagName.match('-') || tagName.match(/[A-Z]/))
+            env.classes.push('component-tag')
         }
       }
     }

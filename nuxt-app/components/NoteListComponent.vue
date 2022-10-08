@@ -9,7 +9,7 @@
           <img :src="note.tags[0].image.src" />
         </div>
         <div v-else class="note-icon-wrapper">
-          <img src="/img/circle-fill.svg" alt="no image">
+          <img src="/img/circle-fill.svg" alt="no image" />
         </div>
         <div class="pl-3 d-flex flex-column justify-content-between flex-fill">
           <h2 class="m-0">{{ note.title }}</h2>

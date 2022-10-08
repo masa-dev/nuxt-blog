@@ -2,14 +2,14 @@
   <div class="n-container-xl mx-auto mb-5">
     <div>
       <h2 class="mb-5 mt-4 font-weight-bold">投稿一覧</h2>
-      <PostListComponent :postList="posts" />
+      <PostListComponent :post-list="posts" />
       <div>
         <nuxt-link to="/post">投稿一覧を見る</nuxt-link>
       </div>
     </div>
     <div>
       <h2 class="mb-5 mt-4 font-weight-bold">ノート一覧</h2>
-      <NoteListComponent :noteList="notes" />
+      <NoteListComponent :note-list="notes" />
       <div>
         <nuxt-link to="/note">ノート一覧を見る</nuxt-link>
       </div>

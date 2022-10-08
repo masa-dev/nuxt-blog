@@ -12,6 +12,10 @@
       />
       <img v-else src="/img/dummy.png" alt="dummy image" />
     </div>
+    <CreateAndUpdateTime
+      :created-at="post._sys.createdAt"
+      :updated-at="post._sys.updatedAt"
+    />
     <div class="post-tag-list">
       <TagIconSmall
         v-for="tag in tags"
@@ -48,8 +52,8 @@ export default class PostContent extends Vue {
         },
         {
           property: 'description',
-          content: this.post.description ? this.post.description : ''
-        }
+          content: this.post.description ? this.post.description : '',
+        },
       ],
     }
   }

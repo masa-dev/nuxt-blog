@@ -1,9 +1,13 @@
 <template>
   <div>
-    <img :src="tag.image.src" :width="tag.image.width" :height="tag.image.height" />
+    <img
+      :src="tag.image.src"
+      :width="tag.image.width"
+      :height="tag.image.height"
+    />
     <h1>{{ tag.name }}</h1>
-    <PostListComponent :postList="posts" />
-    <NoteListComponent :noteList="notes" />
+    <PostListComponent :post-list="posts" />
+    <NoteListComponent :note-list="notes" />
   </div>
 </template>
 

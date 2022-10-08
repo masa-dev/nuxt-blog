@@ -1,6 +1,10 @@
 <template>
   <div class="note-details n-container-xl mx-auto mb-5">
     <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ note.title }}</h1>
+    <CreateAndUpdateTime
+      :created-at="note._sys.createdAt"
+      :updated-at="note._sys.updatedAt"
+    />
     <div class="note-tag-list">
       <TagIconSmall
         v-for="tag in tags"
