@@ -1,1 +1,0 @@
-window.__NUXT__=(function(a,b){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1660666415",layout:"default",error:a,serverRendered:true,routePath:b,config:{apiUrl:"https:\u002F\u002Fmasa-nuxt-blog.microcms.io\u002Fapi\u002Fv1",apiKey:void 0,_app:{basePath:b,assetsPath:"\u002F_nuxt\u002F",cdnURL:a}}}}(null,"\u002F"));
