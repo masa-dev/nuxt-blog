@@ -1,6 +1,10 @@
 <template>
   <div class="note-details n-container-xl mx-auto mb-5">
     <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ note.title }}</h1>
+    <CreateAndUpdateTime
+      :createdAt="note._sys.createdAt"
+      :updatedAt="note._sys.updatedAt"
+    />
     <div class="note-tag-list">
       <TagIconSmall
         v-for="tag in tags"
@@ -16,6 +20,9 @@
 <script lang="ts">
 import { Vue, Component } from 'nuxt-property-decorator'
 import axios, { AxiosError } from 'axios'
+import dayjs from 'dayjs'
+import ja from 'dayjs/locale/ja'
+dayjs.locale(ja)
 import { Config } from '../../../types/config'
 import { Note, Tag } from '../../../types/newtApi'
 import { codeHighlight } from '../../../util/codeHighlight'
@@ -26,6 +33,7 @@ import { codeHighlight } from '../../../util/codeHighlight'
 export default class NoteContent extends Vue {
   public note!: Note
   public tags!: Tag[] | null
+  public dayjs = dayjs
 
   public head() {
     const tagImage = this.tags ? this.tags[0].image.src : ''
