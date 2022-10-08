@@ -93,6 +93,77 @@ export default {
     },
   },
 
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: 'https://masa-dev.net',
+    exclude: ['/', '/post', '/note', '/tag', '/404', '/about'],
+
+    async routes() {
+      if (!API_KEY || !API_URL) {
+        throw new Error('"API_KEY" or "API_URL" is invalid')
+      }
+
+      const routeList: string[] = [
+        '/',
+        '/post',
+        '/note',
+        '/tag',
+        '/404',
+        '/about',
+      ]
+
+      const query = paramToString({ limit: 1000 })
+      const range = (start: number, end: number): number[] =>
+        [...Array(end - start + 1)].map((_, i) => start + i)
+
+      const postRes = await axios.get<ApiResponse<Post>>(
+        `${API_URL}/post?${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        }
+      )
+      const noteRes = await axios.get<ApiResponse<Note>>(
+        `${API_URL}/note?${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        }
+      )
+      const tagRes = await axios.get<ApiResponse<Tag>>(
+        `${API_URL}/tag?${query}`,
+        {
+          headers: {
+            Authorization: `Bearer ${API_KEY}`,
+          },
+        }
+      )
+
+      const posts = postRes.data.items
+      const notes = noteRes.data.items
+      const tags = tagRes.data.items
+
+      routeList.push(...posts.map(({ _id }) => '/post/' + _id))
+      routeList.push(...notes.map(({ _id }) => '/note/' + _id))
+      routeList.push(...tags.map(({ slug }) => '/tag/' + slug))
+
+      routeList.push(
+        ...range(1, Math.ceil(postRes.data.total / blogConfig.post.limit)).map(
+          (p) => `/post/page/${p}`
+        )
+      )
+      routeList.push(
+        ...range(1, Math.ceil(noteRes.data.total / blogConfig.note.limit)).map(
+          (p) => `/note/page/${p}`
+        )
+      )
+
+      return routeList
+    },
+  },
+
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
@@ -142,6 +213,7 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    '@nuxtjs/sitemap',
     'nuxt-lazy-load',
     [
       '@nuxtjs/google-gtag',
