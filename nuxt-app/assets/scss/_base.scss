@@ -1,4 +1,4 @@
-@import "./func.scss";
+@import './func.scss';
 body {
   line-height: 1.85;
 }
@@ -8,13 +8,15 @@ header {
   .navbar-dark .navbar-nav .nav-link {
     font-size: 1.05rem;
     color: rgb(203, 205, 207);
-    width: fit-content;
-    &.active-nav-link {
-      position: relative;
-      color: $navColor;
 
-      &::after {
-        @include headerNavAfter($navColor);
+    &.active-nav-link {
+      span.nav-link-bar {
+        position: relative;
+        color: $navColor;
+
+        &::after {
+          @include headerNavAfter($navColor);
+        }
       }
     }
   }
