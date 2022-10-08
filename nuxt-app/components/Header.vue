@@ -15,13 +15,13 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <li class="nav-item">
-            <nuxt-link to="/post/" active-class="active-nav-link" class="mx-1 nav-link">Post</nuxt-link>
+            <nuxt-link to="/post/" active-class="active-nav-link" class="px-2 mx-1 nav-link">Post</nuxt-link>
           </li>
           <li class="nav-item">
-            <nuxt-link to="/note/" active-class="active-nav-link" class="mx-1 nav-link">Note</nuxt-link>
+            <nuxt-link to="/note/" active-class="active-nav-link" class="px-2 mx-1 nav-link">Note</nuxt-link>
           </li>
           <li class="nav-item">
-            <nuxt-link to="/tag/" active-class="active-nav-link" class="mx-1 nav-link">Tag</nuxt-link>
+            <nuxt-link to="/tag/" active-class="active-nav-link" class="px-2 mx-1 nav-link">Tag</nuxt-link>
           </li>
         </b-navbar-nav>
 
