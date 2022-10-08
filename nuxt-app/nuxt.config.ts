@@ -143,6 +143,13 @@ export default {
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     'nuxt-lazy-load',
+    [
+      '@nuxtjs/google-gtag',
+      {
+        id: 'G-VQ4Z33CTQD',
+        debug: false,
+      },
+    ],
   ],
 
   bootstrapVue: {
