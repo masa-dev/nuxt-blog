@@ -6,6 +6,8 @@
         v-if="post.image"
         :src="post.image.src"
         :alt="post.image.alt"
+        :width="post.image.width"
+        :height="post.image.height"
         class="d-block mx-auto"
       />
       <img v-else src="/img/dummy.png" alt="dummy image" />

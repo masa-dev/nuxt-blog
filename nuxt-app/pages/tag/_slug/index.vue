@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img :src="tag.image.src" />
+    <img :src="tag.image.src" :width="tag.image.width" :height="tag.image.height" />
     <h1>{{ tag.name }}</h1>
     <PostListComponent :postList="posts" />
     <NoteListComponent :noteList="notes" />

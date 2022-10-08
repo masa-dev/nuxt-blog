@@ -108,7 +108,6 @@ export default {
         '/post',
         '/note',
         '/tag',
-        '/404',
         '/about',
       ]
 
