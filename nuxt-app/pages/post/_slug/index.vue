@@ -13,8 +13,8 @@
       <img v-else src="/img/dummy.png" alt="dummy image" />
     </div>
     <CreateAndUpdateTime
-      :createdAt="post._sys.createdAt"
-      :updatedAt="post._sys.updatedAt"
+      :created-at="post._sys.createdAt"
+      :updated-at="post._sys.updatedAt"
     />
     <div class="post-tag-list">
       <TagIconSmall

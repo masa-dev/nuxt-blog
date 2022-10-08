@@ -15,6 +15,35 @@
   </div>
 </template>
 
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import dayjs, { locale } from 'dayjs'
+import ja from 'dayjs/locale/ja'
+import { isNullOrWhitespace } from '../util/utilFunction'
+locale(ja)
+
+@Component({
+  name: 'CreateOrUpdateTime',
+})
+export default class CreateOrUpdateTime extends Vue {
+  @Prop({ default: '', type: String })
+  private updatedAt!: string
+
+  @Prop({ default: '', type: String })
+  private createdAt!: string
+
+  public isNullOrWhiteSpace = isNullOrWhitespace
+
+  get getCreatedAtLocaled() {
+    return dayjs(this.createdAt).format('YYYY年M月D日 HH:mm')
+  }
+
+  get getUpdatedAtLocaled() {
+    return dayjs(this.updatedAt).format('YYYY年M月D日 HH:mm')
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .post-date {
   line-height: 1.5;
@@ -44,31 +73,3 @@
   }
 }
 </style>
-
-<script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import dayjs from 'dayjs'
-import ja from 'dayjs/locale/ja'
-import { isNullOrWhitespace } from '../util/utilFunction'
-dayjs.locale(ja)
-
-@Component({
-  name: 'CreateOrUpdateTime',
-})
-export default class CreateOrUpdateTime extends Vue {
-  @Prop({ default: '', type: String })
-  private updatedAt!: string
-
-  @Prop({ default: '', type: String })
-  private createdAt!: string
-
-  public isNullOrWhiteSpace = isNullOrWhitespace
-
-  get getCreatedAtLocaled() {
-    return dayjs(this.createdAt).format('YYYY年M月D日 HH:mm')
-  }
-  get getUpdatedAtLocaled() {
-    return dayjs(this.updatedAt).format('YYYY年M月D日 HH:mm')
-  }
-}
-</script>
