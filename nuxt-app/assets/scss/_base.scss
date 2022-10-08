@@ -6,6 +6,7 @@ body {
 header {
   $navColor: rgb(198, 240, 240);
   .navbar-dark .navbar-nav .nav-link {
+    font-size: 1.05rem;
     color: rgb(203, 205, 207);
     &.active-nav-link {
       position: relative;
