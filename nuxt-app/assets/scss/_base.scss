@@ -1,5 +1,21 @@
+@import "./func.scss";
 body {
   line-height: 1.85;
+}
+
+header {
+  $navColor: rgb(198, 240, 240);
+  .navbar-dark .navbar-nav .nav-link {
+    color: rgb(203, 205, 207);
+    &.active-nav-link {
+      position: relative;
+      color: $navColor;
+
+      &::after {
+        @include headerNavAfter($navColor);
+      }
+    }
+  }
 }
 
 .post-content {

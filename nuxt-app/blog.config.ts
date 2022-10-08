@@ -1,4 +1,4 @@
-const title = 'Masa Tech'
+const title = 'MasaDev'
 
 const config = {
   title,
