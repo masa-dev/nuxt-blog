@@ -16,6 +16,10 @@ const config = {
     limit: 20,
   },
   tag: {},
+  snsLink: {
+    twitter: "https://twitter.com/masa_devpro",
+    github: "https://github.com/masa-dev"
+  },
 }
 
 export default config

@@ -7,8 +7,10 @@
         <a
           class="btn btn-primary btn-floating m-1 rounded-circle link-circle border-0"
           style="background-color: #55acee"
-          href="#!"
+          :href="snsLink.twitter"
           role="button"
+          target="_blank"
+          rel="noopener noreferrer"
         >
           <img src="/img/twitter.svg" alt="twitter" />
         </a>
@@ -17,7 +19,7 @@
         <a
           class="btn btn-primary btn-floating m-1 rounded-circle link-circle border-0"
           style="background-color: #333333"
-          href="https://github.com/masa-dev"
+          :href="snsLink.github"
           role="button"
           target="_blank"
           rel="noopener noreferrer"
@@ -25,7 +27,7 @@
           <img src="/img/github.svg" alt="github" />
         </a>
       </section>
-      © 2022 Copyright
+      © {{ new Date().getFullYear() }} Copyright
     </div>
     <!-- Copyright -->
   </footer>
@@ -33,11 +35,14 @@
 
 <script lang="ts">
 import { Vue, Component } from 'vue-property-decorator'
+import config from '../blog.config'
 
 @Component({
   name: 'Footer',
 })
-export default class Footer extends Vue {}
+export default class Footer extends Vue {
+  public snsLink = config.snsLink
+}
 </script>
 
 <style lang="scss">
