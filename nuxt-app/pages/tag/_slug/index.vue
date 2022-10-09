@@ -1,11 +1,14 @@
 <template>
-  <div>
-    <img
-      :src="tag.image.src"
-      :width="tag.image.width"
-      :height="tag.image.height"
-    />
-    <h1>{{ tag.name }}</h1>
+  <div class="n-container-xl mx-auto mb-5">
+    <div class="tag-title d-flex align-items-center my-3 my-sm-5">
+      <img
+        :src="tag.image.src"
+        :width="100"
+        :height="100"
+        class="mr-4"
+      />
+      <h1 class="font-weight-bolder">{{ tag.name }}</h1>
+    </div>
     <PostListComponent :post-list="posts" />
     <NoteListComponent :note-list="notes" />
   </div>
@@ -77,3 +80,11 @@ export default class TagContent extends Vue {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.tag-title {
+  h1 {
+    font-size: 2.25rem;
+  }
+}
+</style>

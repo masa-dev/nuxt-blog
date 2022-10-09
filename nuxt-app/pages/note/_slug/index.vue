@@ -1,19 +1,26 @@
 <template>
-  <div class="note-details n-container-xl mx-auto mb-5">
-    <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ note.title }}</h1>
-    <CreateAndUpdateTime
+  <div class="d-flex justify-content-between">
+    <div class="n-container-xl mb-5 px-lg-4">
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ note.title }}</h1>
+      <CreateAndUpdateTime
+        :created-at="note._sys.createdAt"
+        :updated-at="note._sys.updatedAt"
+      />
+      <div class="note-tag-list">
+        <TagIconSmall
+          v-for="tag in tags"
+          :key="tag._id"
+          :tag="tag"
+          class="mr-2 mb-2"
+        />
+      </div>
+      <div class="post-content" v-html="body"></div>
+    </div>
+    <ContentSideBar
+      :title="note.title"
       :created-at="note._sys.createdAt"
       :updated-at="note._sys.updatedAt"
     />
-    <div class="note-tag-list">
-      <TagIconSmall
-        v-for="tag in tags"
-        :key="tag._id"
-        :tag="tag"
-        class="mr-2 mb-2"
-      />
-    </div>
-    <div class="post-content" v-html="body"></div>
   </div>
 </template>
 

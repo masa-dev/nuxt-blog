@@ -1,30 +1,37 @@
 <template>
-  <div class="n-container-xl mx-auto mb-5">
-    <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ post.title }}</h1>
-    <div class="mb-4 post-thumb-wrapper">
-      <img
-        v-if="post.image"
-        :src="post.image.src"
-        :alt="post.image.alt"
-        :width="post.image.width"
-        :height="post.image.height"
-        class="d-block mx-auto"
+  <div class="d-flex justify-content-between">
+    <div class="n-container-xl mb-5 px-lg-4">
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ post.title }}</h1>
+      <div class="mb-4 post-thumb-wrapper">
+        <img
+          v-if="post.image"
+          :src="post.image.src"
+          :alt="post.image.alt"
+          :width="post.image.width"
+          :height="post.image.height"
+          class="d-block mx-auto"
+        />
+        <img v-else src="/img/dummy.png" alt="dummy image" />
+      </div>
+      <CreateAndUpdateTime
+        :created-at="post._sys.createdAt"
+        :updated-at="post._sys.updatedAt"
       />
-      <img v-else src="/img/dummy.png" alt="dummy image" />
+      <div class="post-tag-list">
+        <TagIconSmall
+          v-for="tag in tags"
+          :key="tag._id"
+          :tag="tag"
+          class="mr-2 mb-2"
+        />
+      </div>
+      <div class="post-content" v-html="post.body"></div>
     </div>
-    <CreateAndUpdateTime
+    <ContentSideBar
+      :title="post.title"
       :created-at="post._sys.createdAt"
       :updated-at="post._sys.updatedAt"
     />
-    <div class="post-tag-list">
-      <TagIconSmall
-        v-for="tag in tags"
-        :key="tag._id"
-        :tag="tag"
-        class="mr-2 mb-2"
-      />
-    </div>
-    <div class="post-content" v-html="post.body"></div>
   </div>
 </template>
 
