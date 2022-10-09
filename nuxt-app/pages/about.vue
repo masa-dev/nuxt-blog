@@ -1,5 +1,7 @@
 <template>
-  <div>about</div>
+  <div>
+    <div>about</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -12,5 +14,7 @@ export default class About extends Vue {
   public head() {
     return { title: 'About' }
   }
+
+  mounted() {}
 }
 </script>

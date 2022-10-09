@@ -45,6 +45,8 @@ export default class CreateOrUpdateTime extends Vue {
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/scss/variables';
+
 .post-date {
   line-height: 1.5;
   .post-date-time {
@@ -70,6 +72,12 @@ export default class CreateOrUpdateTime extends Vue {
     &::before {
       content: url(/img/rotate-right-solid.svg);
     }
+  }
+}
+
+@media only screen and (min-width: $hide-sidebar) {
+  .post-date {
+    display: none;
   }
 }
 </style>

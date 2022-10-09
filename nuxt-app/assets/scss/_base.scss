@@ -1,6 +1,12 @@
+@import './variables';
 @import './func.scss';
+
 body {
   line-height: 1.85;
+}
+
+[id] {
+  scroll-margin-top: 1rem;
 }
 
 header {
@@ -172,5 +178,17 @@ header {
     &:has(.toolbar-item > .prism-copy-success) {
       opacity: 1 !important;
     }
+  }
+}
+
+@media only screen and (max-width: 1250px) {
+  main .d-flex .n-container-xl {
+    width: calc(100% - 300px) !important;
+  }
+}
+
+@media only screen and (max-width: $hide-sidebar) {
+  main .d-flex .n-container-xl {
+    width: 100% !important;
   }
 }

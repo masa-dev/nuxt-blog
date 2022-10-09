@@ -131,7 +131,7 @@ export default class TagHome extends Vue {
   text-decoration: none;
 
   .tag-item-wrapper {
-    width: 200px;
+    width: 195px;
 
     img {
       height: 50px;
