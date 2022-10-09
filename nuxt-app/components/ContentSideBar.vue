@@ -152,7 +152,6 @@ export default class ContentSideBar extends Vue {
           return
         }
       }
-      console.log(entries)
     }, observerOptions)
 
     boxes.forEach((box, index) => {
@@ -161,7 +160,7 @@ export default class ContentSideBar extends Vue {
       box.id = `content-h-${index + 1}`
 
       this.titles.push({
-        title: box.textContent,
+        title: box.textContent!,
         isActive: false,
         anchorLink: `#content-h-${index + 1}`,
       })
