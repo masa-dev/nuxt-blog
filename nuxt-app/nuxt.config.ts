@@ -95,6 +95,7 @@ export default {
   },
 
   sitemap: {
+    trailingSlash: false,
     path: '/sitemap.xml',
     hostname: 'https://masa-dev.net',
     exclude: ['/', '/post', '/note', '/tag', '/404', '/about'],

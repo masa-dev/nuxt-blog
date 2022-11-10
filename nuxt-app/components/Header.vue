@@ -16,7 +16,7 @@
         <b-navbar-nav>
           <li class="nav-item">
             <nuxt-link
-              to="/post/"
+              to="/post"
               active-class="active-nav-link"
               class="px-2 mx-1 nav-link"
               ><span class="nav-link-bar">Post</span></nuxt-link
@@ -24,7 +24,7 @@
           </li>
           <li class="nav-item">
             <nuxt-link
-              to="/note/"
+              to="/note"
               active-class="active-nav-link"
               class="px-2 mx-1 nav-link"
               ><span class="nav-link-bar">Note</span></nuxt-link
@@ -32,7 +32,7 @@
           </li>
           <li class="nav-item">
             <nuxt-link
-              to="/tag/"
+              to="/tag"
               active-class="active-nav-link"
               class="px-2 mx-1 nav-link"
               ><span class="nav-link-bar">Tag</span></nuxt-link
