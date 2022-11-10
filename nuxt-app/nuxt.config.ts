@@ -16,6 +16,7 @@ export default {
   },
 
   router: {
+    trailingSlash: false,
     extendRoutes(routes: any, resolve: any) {
       routes.push(
         {
