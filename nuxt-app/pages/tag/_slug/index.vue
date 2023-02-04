@@ -1,12 +1,7 @@
 <template>
   <div class="n-container-xl mx-auto mb-5">
     <div class="tag-title d-flex align-items-center my-3 my-sm-5">
-      <img
-        :src="tag.image.src"
-        :width="100"
-        :height="100"
-        class="mr-4"
-      />
+      <img :src="tag.image.src" :width="100" :height="100" class="mr-4" />
       <h1 class="font-weight-bolder">{{ tag.name }}</h1>
     </div>
     <PostListComponent :post-list="posts" />
@@ -28,7 +23,15 @@ export default class TagContent extends Vue {
   private tag!: Tag
 
   public head() {
-    return { title: `${this.tag.name} - Tag` }
+    return {
+      title: `${this.tag.name} - Tag`,
+      link: [
+        {
+          rel: 'canonical',
+          href: `https://masa-dev.net/tag/${this.tag.slug}`,
+        },
+      ],
+    }
   }
 
   public async asyncData({ params, $config, redirect }: any) {

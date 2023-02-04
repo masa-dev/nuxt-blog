@@ -30,7 +30,15 @@ import blogConfig from '../blog.config'
 })
 export default class IndexPage extends Vue {
   public head() {
-    return { title: 'ホーム' }
+    return {
+      title: 'ホーム',
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://masa-dev.net',
+        },
+      ],
+    }
   }
 
   async asyncData({ $config }: any) {

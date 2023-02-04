@@ -29,7 +29,15 @@ export default class PostHome extends Vue {
   public maxPost = blogConfig.post.limit
 
   public head() {
-    return { title: 'Post 一覧' }
+    return {
+      title: 'Post 一覧',
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://masa-dev.net/post',
+        },
+      ],
+    }
   }
 
   private linkGen(pageNum: number) {

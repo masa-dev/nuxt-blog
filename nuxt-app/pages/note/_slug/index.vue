@@ -47,6 +47,12 @@ export default class NoteContent extends Vue {
         { property: 'og:title', content: this.note.title },
         { property: 'og:image', content: tagImage },
       ],
+      link: [
+        {
+          rel: 'canonical',
+          href: `https://masa-dev.net/note/${this.note._id}`,
+        },
+      ],
     }
   }
 

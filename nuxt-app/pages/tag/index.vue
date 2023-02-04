@@ -45,7 +45,15 @@ export default class TagHome extends Vue {
   public searchWord = ''
 
   public head() {
-    return { title: 'Tag 一覧' }
+    return {
+      title: 'Tag 一覧',
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://masa-dev.net/tag',
+        },
+      ],
+    }
   }
 
   public async asyncData({ $config }: any) {

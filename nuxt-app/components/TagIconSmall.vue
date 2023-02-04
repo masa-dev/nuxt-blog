@@ -11,7 +11,7 @@
 
 <script lang="ts">
 import { Vue, Component, Prop } from 'nuxt-property-decorator'
-import { Tag } from '../types/api'
+import { Tag } from '../types/newtApi'
 
 @Component({
   name: 'TagIconSmall',

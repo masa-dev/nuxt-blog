@@ -2,13 +2,13 @@
   <div class="post-date mb-3 text-right">
     <div
       v-if="!isNullOrWhiteSpace(createdAt)"
-      class="post-date-time time-create d-inline mr-2 mr-sm-4"
+      class="post-date-time time-create mb-1"
     >
       <time>{{ getCreatedAtLocaled }}</time>
     </div>
     <div
       v-if="!isNullOrWhiteSpace(updatedAt)"
-      class="post-date-time time-update d-inline"
+      class="post-date-time time-update"
     >
       <time>{{ getUpdatedAtLocaled }}</time>
     </div>

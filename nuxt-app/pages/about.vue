@@ -12,7 +12,15 @@ import { Vue, Component } from 'nuxt-property-decorator'
 })
 export default class About extends Vue {
   public head() {
-    return { title: 'About' }
+    return {
+      title: 'About',
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://masa-dev.net/about',
+        },
+      ],
+    }
   }
 
   mounted() {}
