@@ -50,6 +50,85 @@
   </aside>
 </template>
 
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import dayjs, { locale } from 'dayjs'
+import ja from 'dayjs/locale/ja'
+import { isNullOrWhitespace } from '../util/utilFunction'
+locale(ja)
+
+interface TocTitle {
+  title: string
+  isActive: boolean
+  anchorLink: string
+}
+
+@Component({
+  name: 'ContentSideBar',
+})
+export default class ContentSideBar extends Vue {
+  @Prop({ default: '', type: String })
+  private updatedAt!: string
+
+  @Prop({ default: '', type: String })
+  private createdAt!: string
+
+  @Prop({ default: '', type: String })
+  public title!: string
+
+  public titles: TocTitle[] = []
+  public isNullOrWhitespace = isNullOrWhitespace
+
+  public mounted() {
+    const boxes = document.querySelectorAll(
+      '.post-content h1,.post-content h2,.post-content h3'
+    )
+    const observerOptions = {
+      root: null,
+      rootMargin: '0% 0px -60% 0px',
+      thredshold: 0,
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting === true) {
+          this.titles.forEach((t) => {
+            if (t.anchorLink === '#' + entry.target.id) {
+              t.isActive = true
+            } else {
+              t.isActive = false
+            }
+          })
+          return
+        }
+      }
+    }, observerOptions)
+
+    boxes.forEach((box, index) => {
+      observer.observe(box)
+
+      box.id = `content-h-${index + 1}`
+
+      this.titles.push({
+        title: box.textContent!,
+        isActive: false,
+        anchorLink: `#content-h-${index + 1}`,
+      })
+    })
+  }
+
+  get getCreatedAtLocaled() {
+    return dayjs(this.createdAt).format('YYYY年MM月DD日')
+  }
+
+  get getUpdatedAtLocaled() {
+    return dayjs(this.updatedAt).format('YYYY年MM月DD日')
+  }
+
+  public activeToc() {}
+}
+</script>
+
 <style lang="scss" scoped>
 @import '../assets/scss/variables';
 
@@ -100,81 +179,3 @@ aside {
   }
 }
 </style>
-
-<script lang="ts">
-import { Vue, Component, Prop } from 'vue-property-decorator'
-import { isNullOrWhitespace } from '../util/utilFunction'
-import dayjs, { locale } from 'dayjs'
-import ja from 'dayjs/locale/ja'
-locale(ja)
-
-interface TocTitle {
-  title: string
-  isActive: boolean
-  anchorLink: string
-}
-
-@Component({
-  name: 'ContentSideBar',
-})
-export default class ContentSideBar extends Vue {
-  @Prop({ default: '', type: String })
-  private updatedAt!: string
-
-  @Prop({ default: '', type: String })
-  private createdAt!: string
-
-  @Prop({ default: '', type: String })
-  public title!: string
-  public titles: TocTitle[] = []
-  public isNullOrWhitespace = isNullOrWhitespace
-
-  public mounted() {
-    const boxes = document.querySelectorAll(
-      '.post-content h1,.post-content h2,.post-content h3'
-    )
-    const observerOptions = {
-      root: null,
-      rootMargin: '0% 0px -60% 0px',
-      thredshold: 0,
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting == true) {
-          this.titles.forEach((t) => {
-            if (t.anchorLink === '#' + entry.target.id) {
-              t.isActive = true
-            } else {
-              t.isActive = false
-            }
-          })
-          return
-        }
-      }
-    }, observerOptions)
-
-    boxes.forEach((box, index) => {
-      observer.observe(box)
-
-      box.id = `content-h-${index + 1}`
-
-      this.titles.push({
-        title: box.textContent!,
-        isActive: false,
-        anchorLink: `#content-h-${index + 1}`,
-      })
-    })
-  }
-
-  get getCreatedAtLocaled() {
-    return dayjs(this.createdAt).format('YYYY年MM月DD日')
-  }
-
-  get getUpdatedAtLocaled() {
-    return dayjs(this.updatedAt).format('YYYY年MM月DD日')
-  }
-
-  public activeToc() {}
-}
-</script>
