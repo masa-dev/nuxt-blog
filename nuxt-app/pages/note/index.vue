@@ -31,7 +31,15 @@ export default class NoteHome extends Vue {
   }
 
   public head() {
-    return { title: 'Note 一覧' }
+    return {
+      title: 'Note 一覧',
+      link: [
+        {
+          rel: 'canonical',
+          href: 'https://masa-dev.net/note',
+        },
+      ],
+    }
   }
 
   public async asyncData({ $config, params }: any) {

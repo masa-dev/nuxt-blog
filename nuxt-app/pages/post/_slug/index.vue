@@ -62,6 +62,12 @@ export default class PostContent extends Vue {
           content: this.post.description ? this.post.description : '',
         },
       ],
+      link: [
+        {
+          rel: 'canonical',
+          href: `https://masa-dev.net/post/${this.post._id}`,
+        },
+      ],
     }
   }
 
