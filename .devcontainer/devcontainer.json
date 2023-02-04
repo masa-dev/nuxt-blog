@@ -37,6 +37,7 @@
 		"ms-azuretools.vscode-docker",
 		"esbenp.prettier-vscode",
 		"octref.vetur",
-		"editorconfig.editorconfig"
+		"editorconfig.editorconfig",
+		"mhutchie.git-graph"
 	]
 }
