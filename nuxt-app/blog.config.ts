@@ -17,8 +17,8 @@ const config = {
   },
   tag: {},
   snsLink: {
-    twitter: "https://twitter.com/masa_devpro",
-    github: "https://github.com/masa-dev"
+    twitter: 'https://twitter.com/masa_devpro',
+    github: 'https://github.com/masa-dev',
   },
 }
 
