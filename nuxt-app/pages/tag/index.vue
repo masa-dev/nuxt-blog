@@ -89,19 +89,27 @@ export default class TagHome extends Vue {
     )
 
     const postOrNoteTagList = [...postRes.data.items, ...noteRes.data.items]
-    const tagList = tagRes.data.items.sort((a, b) => {
-      const countA = postOrNoteTagList.filter((p) =>
-        p.tags.some((t) => t._id === a._id)
-      ).length
-      const countB = postOrNoteTagList.filter((p) =>
-        p.tags.some((t) => t._id === b._id)
-      ).length
-      if (countA < countB) {
-        return 1
-      } else {
-        return -1
-      }
-    })
+    const tagList = tagRes.data.items
+      .filter((tag) => {
+        const tagCount = postOrNoteTagList.filter((p) =>
+          p.tags.some((pt) => pt._id === tag._id)
+        ).length
+
+        return tagCount >= 1
+      })
+      .sort((a, b) => {
+        const countA = postOrNoteTagList.filter((p) =>
+          p.tags.some((pt) => pt._id === a._id)
+        ).length
+        const countB = postOrNoteTagList.filter((p) =>
+          p.tags.some((pt) => pt._id === b._id)
+        ).length
+        if (countA < countB) {
+          return 1
+        } else {
+          return -1
+        }
+      })
 
     return {
       tags: tagList,

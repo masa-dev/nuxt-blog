@@ -158,6 +158,10 @@ aside {
           padding: 5px 10px;
           color: black;
           border-radius: 10px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+
           &.active {
             font-weight: bolder;
             color: rgb(34, 137, 206);
