@@ -43,8 +43,6 @@ import { Config } from '../../types/config'
 })
 export default class TagHome extends Vue {
   public searchWord = ''
-  public tags: Tag[] = []
-  public tagRes: any
 
   public head() {
     return {
@@ -56,10 +54,6 @@ export default class TagHome extends Vue {
         },
       ],
     }
-  }
-
-  mounted() {
-    console.log({ tags: this.tags, tagRes: this.tagRes })
   }
 
   public async asyncData({ $config }: any) {
@@ -119,7 +113,6 @@ export default class TagHome extends Vue {
 
     return {
       tags: tagList,
-      tagRes: tagRes.data,
     }
   }
 }
