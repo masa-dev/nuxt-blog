@@ -21,7 +21,10 @@
         <div
           class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-2 shadow-sm h-100"
         >
-          <img :src="tag.image.src" />
+          <img
+            :src="tag.image.src"
+            :alt="tag.image.altText ? tag.image.altText : 'Tag logo'"
+          />
           <div class="ml-3 text-dark lh-base text-center">
             {{ tag.name }}
           </div>

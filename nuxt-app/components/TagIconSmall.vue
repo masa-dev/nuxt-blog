@@ -4,7 +4,11 @@
     :to="`/tag/${tag.slug}`"
     class="tag-icon-link border rounded-pill"
   >
-    <img :src="tag.image.src" class="icon-image d-block" alt="" />
+    <img
+      :src="tag.image.src"
+      class="icon-image d-block"
+      :alt="tag.image.altText ? tag.image.altText : 'Tag image'"
+    />
     <div class="icon-image-name">{{ tag.name }}</div>
   </nuxt-link>
 </template>

@@ -6,7 +6,14 @@
           v-if="note.tags.length > 0 && note.tags[0].image"
           class="note-icon-wrapper"
         >
-          <img :src="note.tags[0].image.src" />
+          <img
+            :src="note.tags[0].image.src"
+            :alt="
+              note.tags[0].image.altText
+                ? note.tags[0].image.altText
+                : 'Note Image'
+            "
+          />
         </div>
         <div v-else class="note-icon-wrapper">
           <img src="/img/circle-fill.svg" alt="no image" />

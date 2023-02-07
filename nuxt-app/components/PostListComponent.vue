@@ -3,7 +3,11 @@
     <div v-for="post in postList" :key="post._id" class="post-item mb-5">
       <nuxt-link :to="`/post/${post._id}`" class="d-flex post-item-link w-100">
         <div class="post-image-wrapper">
-          <img v-if="post.image" :src="post.image.src" :alt="post.image.alt" />
+          <img
+            v-if="post.image"
+            :src="post.image.src"
+            :alt="post.image.altText ? post.image.altText : 'Post Image'"
+          />
           <img v-else src="/img/dummy.png" alt="dummy image" />
         </div>
         <div class="pl-3 d-flex flex-column justify-content-between flex-fill">
