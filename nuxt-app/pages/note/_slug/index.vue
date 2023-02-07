@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-between">
     <div class="n-container-xl mb-5 px-lg-4">
-      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ note.title }}</h1>
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold h2-lg">{{ note.title }}</h1>
       <CreateAndUpdateTime
         :created-at="note._sys.createdAt"
         :updated-at="note._sys.updatedAt"

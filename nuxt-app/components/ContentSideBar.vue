@@ -38,7 +38,7 @@
           <li v-for="title in titles" :key="title.title">
             <a
               :href="title.anchorLink"
-              :class="{ active: title.isActive }"
+              :class="{ active: title.isActive, 'sidebar-h3': title.isH3 }"
               class="d-block"
             >
               {{ title.title }}
@@ -60,6 +60,7 @@ locale(ja)
 interface TocTitle {
   title: string
   isActive: boolean
+  isH3: boolean
   anchorLink: string
 }
 
@@ -113,8 +114,11 @@ export default class ContentSideBar extends Vue {
         title: box.textContent!,
         isActive: false,
         anchorLink: `#content-h-${index + 1}`,
+        isH3: box.tagName === 'H3',
       })
     })
+
+    console.log(boxes)
   }
 
   get getCreatedAtLocaled() {
@@ -133,12 +137,20 @@ export default class ContentSideBar extends Vue {
 @import '../assets/scss/variables';
 
 aside {
+  $side-card-bg-color: rgb(241, 241, 241);
   width: 270px;
 
-  $side-card-bg-color: rgb(241, 241, 241);
   .sidebar-post-info {
     background: $side-card-bg-color;
     border-radius: 15px;
+
+    ul > li {
+      font-size: 0.9rem;
+
+      img {
+        margin-bottom: 2px;
+      }
+    }
   }
 
   .sticky-top {
@@ -155,7 +167,7 @@ aside {
 
       li {
         a {
-          padding: 5px 10px;
+          padding: 3px 10px 3px;
           color: black;
           border-radius: 10px;
           overflow: hidden;
@@ -170,6 +182,16 @@ aside {
 
           &:hover {
             text-decoration: none;
+          }
+
+          &.sidebar-h3 {
+            padding-left: 15px;
+            font-size: 0.95rem;
+
+            &::before {
+              content: "-";
+              margin-right: 0.5rem;
+            }
           }
         }
       }

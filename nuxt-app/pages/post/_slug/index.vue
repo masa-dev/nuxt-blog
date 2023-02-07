@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex justify-content-between">
     <div class="n-container-xl mb-5 px-lg-4">
-      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold">{{ post.title }}</h1>
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold h2-lg">{{ post.title }}</h1>
       <div class="mb-4 post-thumb-wrapper">
         <img
           v-if="post.image"
