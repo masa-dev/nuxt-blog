@@ -117,8 +117,6 @@ export default class ContentSideBar extends Vue {
         isH3: box.tagName === 'H3',
       })
     })
-
-    console.log(boxes)
   }
 
   get getCreatedAtLocaled() {
@@ -189,7 +187,7 @@ aside {
             font-size: 0.95rem;
 
             &::before {
-              content: "-";
+              content: '-';
               margin-right: 0.5rem;
             }
           }
