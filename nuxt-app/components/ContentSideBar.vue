@@ -29,7 +29,7 @@
                 class="mr-2"
               />更新日
             </div>
-            <time>{{ getUpdatedAtLocaled }}</time>
+            <time :datetime="getUpdatedAtIsoLocaled">{{ getUpdatedAtLocaled }}</time>
           </li>
         </ul>
       </div>
@@ -117,8 +117,6 @@ export default class ContentSideBar extends Vue {
         isH3: box.tagName === 'H3',
       })
     })
-
-    console.log(boxes)
   }
 
   get getCreatedAtLocaled() {
@@ -127,6 +125,10 @@ export default class ContentSideBar extends Vue {
 
   get getUpdatedAtLocaled() {
     return dayjs(this.updatedAt).format('YYYY年MM月DD日')
+  }
+
+  get getUpdatedAtIsoLocaled() {
+    return dayjs(this.updatedAt).toISOString()
   }
 
   public activeToc() {}
@@ -189,7 +191,7 @@ aside {
             font-size: 0.95rem;
 
             &::before {
-              content: "-";
+              content: '-';
               margin-right: 0.5rem;
             }
           }

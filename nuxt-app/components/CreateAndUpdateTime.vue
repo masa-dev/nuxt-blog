@@ -10,7 +10,7 @@
       v-if="!isNullOrWhiteSpace(updatedAt)"
       class="post-date-time time-update"
     >
-      <time>{{ getUpdatedAtLocaled }}</time>
+      <time :datetime="getUpdatedAtIsoLocaled">{{ getUpdatedAtLocaled }}</time>
     </div>
   </div>
 </template>
@@ -40,6 +40,10 @@ export default class CreateOrUpdateTime extends Vue {
 
   get getUpdatedAtLocaled() {
     return dayjs(this.updatedAt).format('YYYY年M月D日 HH:mm')
+  }
+
+  get getUpdatedAtIsoLocaled() {
+    return dayjs(this.updatedAt).toISOString()
   }
 }
 </script>

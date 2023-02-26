@@ -21,4 +21,10 @@ export default class Layout extends Vue {}
 .wf-mplus1p {
   font-family: 'Noto Sans JP';
 }
+@font-face {
+  src: url('/font/NotoSansJP-Regular.otf') format('opentype');
+  font-family: 'Noto Sans JP';
+  font-style: normal;
+  font-display: swap;
+}
 </style>
