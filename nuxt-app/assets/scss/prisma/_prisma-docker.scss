@@ -5,6 +5,14 @@ pre.language-dockerfile > code.language-dockerfile {
     color: $var;
   }
 
+  .variable {
+    color: $keyword;
+  }
+
+  .operator {
+    color: $keyword;
+  }
+
   .keyword {
     color: $specialKeyword;
   }

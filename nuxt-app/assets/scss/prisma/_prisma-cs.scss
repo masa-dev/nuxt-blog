@@ -6,13 +6,18 @@ pre.language-cs > code.language-cs {
     color: $var;
   }
 
-  .class,
+  .generic,
+  .class-name,
   .namespace {
     color: $class;
   }
 
   .keyword {
     color: $keyword;
+  }
+
+  .special-keyword {
+    color: $specialKeyword;
   }
 
   .operator {

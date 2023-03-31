@@ -48,6 +48,7 @@ export function codeHighlight() {
         'default',
         'import',
         'from',
+        'throw'
       ]
 
       if (specialKeyword.includes(env.content)) {
