@@ -29,7 +29,9 @@
                 class="mr-2"
               />更新日
             </div>
-            <time :datetime="getUpdatedAtIsoLocaled">{{ getUpdatedAtLocaled }}</time>
+            <time :datetime="getUpdatedAtIsoLocaled">{{
+              getUpdatedAtLocaled
+            }}</time>
           </li>
         </ul>
       </div>
