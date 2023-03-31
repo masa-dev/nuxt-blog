@@ -48,10 +48,20 @@ export function codeHighlight() {
         'default',
         'import',
         'from',
+        'throw'
       ]
 
       if (specialKeyword.includes(env.content)) {
         env.classes.push('special-keyword')
+      }
+    }
+
+    // language-log
+    if (env.language === 'log') {
+      if (env.type === 'property') {
+        if (env.content.toLowerCase().includes('error')) {
+          env.classes.push('property-error')
+        }
       }
     }
   })

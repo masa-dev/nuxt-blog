@@ -1,0 +1,36 @@
+@import './prisma-variables.scss';
+
+pre.language-bash > code.language-bash,
+pre.language-sh > code.language-sh {
+  .builtin {
+    color: $keyword;
+  }
+
+  .operator {
+    color: $text;
+  }
+
+  .assign-left {
+    color: $class;
+  }
+
+  .parameter {
+    color: $var;
+  }
+
+  .function {
+    color: $keyword;
+  }
+
+  .number {
+    color: $number;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .comment {
+    color: $comment;
+  }
+}

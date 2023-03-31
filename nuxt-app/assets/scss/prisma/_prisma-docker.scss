@@ -1,0 +1,31 @@
+@import './prisma-variables.scss';
+
+pre.language-dockerfile > code.language-dockerfile {
+  .instruction {
+    color: $var;
+  }
+
+  .variable {
+    color: $keyword;
+  }
+
+  .operator {
+    color: $keyword;
+  }
+
+  .keyword {
+    color: $specialKeyword;
+  }
+
+  .property {
+    color: $class;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .comment {
+    color: $comment;
+  }
+}

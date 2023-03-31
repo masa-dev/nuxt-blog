@@ -1,0 +1,37 @@
+@import './prisma-variables.scss';
+
+pre.language-log > code.language-log {
+  .property {
+    color: $class;
+  }
+
+  .error,
+  .property-error {
+    color: $error;
+  }
+
+  .domain,
+  .constant {
+    color: $function;
+  }
+
+  .boolean {
+    color: $keyword;
+  }
+
+  .operator {
+    color: $text;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .comment {
+    color: $comment;
+  }
+
+  .number {
+    color: $number;
+  }
+}

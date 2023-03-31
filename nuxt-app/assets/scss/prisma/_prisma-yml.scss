@@ -1,0 +1,28 @@
+@import './prisma-variables.scss';
+
+pre.language-yml > code.language-yml,
+pre.language-yaml > code.language-yaml {
+  .boolean {
+    color: $keyword;
+  }
+
+  .keyword {
+    color: $specialKeyword;
+  }
+
+  .atrule {
+    color: $specialKeyword;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .comment {
+    color: $comment;
+  }
+
+  .number {
+    color: $number;
+  }
+}
