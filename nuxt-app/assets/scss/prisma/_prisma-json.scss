@@ -1,0 +1,27 @@
+@import './prisma-variables.scss';
+
+pre.language-json > code.language-json {
+  .property {
+    color: $var;
+  }
+
+  .operator {
+    color: $text;
+  }
+
+  .boolean {
+    color: $keyword;
+  }
+
+  .number {
+    color: $number;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .comment {
+    color: $comment;
+  }
+}

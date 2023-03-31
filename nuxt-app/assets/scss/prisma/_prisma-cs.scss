@@ -1,0 +1,41 @@
+@import './prisma-variables.scss';
+
+pre.language-cs > code.language-cs {
+  color: $var;
+  .property {
+    color: $var;
+  }
+
+  .class,
+  .namespace {
+    color: $class;
+  }
+
+  .keyword {
+    color: $keyword;
+  }
+
+  .operator {
+    color: $text;
+  }
+
+  .function {
+    color: $function;
+  }
+
+  .boolean {
+    color: $keyword;
+  }
+
+  .number {
+    color: $number;
+  }
+
+  .string {
+    color: $string;
+  }
+
+  .comment {
+    color: $comment;
+  }
+}

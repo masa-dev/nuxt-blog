@@ -54,6 +54,15 @@ export function codeHighlight() {
         env.classes.push('special-keyword')
       }
     }
+
+    // language-log
+    if (env.language === 'log') {
+      if (env.type === 'property') {
+        if (env.content.toLowerCase().includes('error')) {
+          env.classes.push('property-error')
+        }
+      }
+    }
   })
   highlightAll()
 }
