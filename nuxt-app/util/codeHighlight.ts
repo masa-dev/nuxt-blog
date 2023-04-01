@@ -13,6 +13,7 @@ import 'prismjs/components/prism-json'
 import 'prismjs/components/prism-docker'
 
 import 'prismjs/plugins/toolbar/prism-toolbar'
+import 'prismjs/plugins/show-language/prism-show-language'
 import 'prismjs/plugins/treeview/prism-treeview.min.js'
 import 'prismjs/plugins/treeview/prism-treeview.min.css'
 
@@ -21,6 +22,7 @@ import { isNullOrWhitespace } from './utilFunction'
 
 export function codeHighlight() {
   initCopyToClipboardPrism()
+  console.log(plugins)
   hooks.add('wrap', (env) => {
     if (env.type === 'tag') {
       if (env.content.match('<span class="token punctuation">&lt;</span>')) {
@@ -48,7 +50,7 @@ export function codeHighlight() {
         'default',
         'import',
         'from',
-        'throw'
+        'throw',
       ]
 
       if (specialKeyword.includes(env.content)) {

@@ -41,6 +41,7 @@ import axios, { AxiosError } from 'axios'
 import { Config } from '../../../types/config'
 import { Post, Tag } from '../../../types/newtApi'
 import { codeHighlight } from '../../../util/codeHighlight'
+import { replaceHTMLCode } from '../../../util/replaceHTMLCode'
 
 @Component({
   name: 'PostContent',
@@ -84,6 +85,7 @@ export default class PostContent extends Vue {
       })
 
       const post = PostRes.data
+      post.body = replaceHTMLCode(post.body)
       const tags: Tag[] = []
 
       for (const postTag of post.tags) {

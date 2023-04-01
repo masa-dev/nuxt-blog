@@ -157,15 +157,17 @@ header {
 
   /* Prism.js */
   .code-toolbar > .toolbar {
-    padding: 0.6rem 0.85rem;
+    padding: 0.15rem 0.85rem 0.25rem;
+    width: 100%;
+    background: #313133;
+    border-radius: 0.5em 0.5em 0 0;
 
     .toolbar-item > button {
       color: #e8ecee;
-      padding: 0.2rem 0.5rem;
       background-color: inherit;
       box-shadow: none;
 
-      $w-icon: 1.45rem;
+      $w-icon: 1.15rem;
       img[src$='.svg'] {
         color: #cccccc;
         width: $w-icon;
