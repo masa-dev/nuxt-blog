@@ -124,8 +124,7 @@ header {
   }
 
   code {
-    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', Noto Sans JP,
-      monospace;
+    font-family: $codeFontFamily;
   }
 
   blockquote {
