@@ -209,6 +209,13 @@ export default {
         debug: false,
       },
     ],
+    [
+      '@nuxtjs/google-adsense',
+      {
+        id: 'ca-pub-8320868048874229',
+        pageLevelAds: false,
+      },
+    ],
   ],
 
   bootstrapVue: {
