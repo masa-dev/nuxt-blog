@@ -1,3 +1,5 @@
+@import '../variables';
+
 /* PrismJS 1.29.0
 https://prismjs.com/download.html#themes=prism-tomorrow&languages=markup+css+clike+javascript+aspnet+bash+basic+batch+c+csharp+cpp+csv+dart+diff+docker+editorconfig+ignore+java+javadoclike+json+kotlin+log+markdown+markup-templating+nginx+php+phpdoc+plant-uml+python+cshtml+jsx+ruby+rust+sass+scss+scala+sql+typescript+typoscript+vim+xml-doc+yaml+zig&plugins=toolbar+copy-to-clipboard+diff-highlight */
 code[class*='language-'],
@@ -113,6 +115,8 @@ div.code-toolbar > .toolbar > .toolbar-item {
   display: inline-block;
 
   &:has(span) {
+    font-family: $codeFontFamily;
+
     span {
       color: #ddd;
     }
@@ -121,6 +125,7 @@ div.code-toolbar > .toolbar > .toolbar-item {
     }
 
     &:nth-child(1) {
+      overflow: auto;
       order: 2;
     }
     &:nth-child(2) {
@@ -132,8 +137,10 @@ div.code-toolbar > .toolbar > .toolbar-item > a {
   cursor: pointer;
 }
 div.code-toolbar > .toolbar > .toolbar-item:has(button) {
+  padding-left: 0.5rem;
   margin-left: auto;
   order: 3;
+  white-space: nowrap;
 
   &::before {
     display: inline-block;
@@ -164,7 +171,7 @@ div.code-toolbar > .toolbar > .toolbar-item > a,
 div.code-toolbar > .toolbar > .toolbar-item > button,
 div.code-toolbar > .toolbar > .toolbar-item > span {
   color: #bbb;
-  font-size: 0.8em;
+  font-size: 0.85em;
   padding: 0 0.5em;
 }
 div.code-toolbar > .toolbar > .toolbar-item > a:focus,
