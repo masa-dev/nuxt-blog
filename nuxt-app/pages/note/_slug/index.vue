@@ -30,6 +30,7 @@ import axios, { AxiosError } from 'axios'
 import { Config } from '../../../types/config'
 import { Note, Tag } from '../../../types/newtApi'
 import { codeHighlight } from '../../../util/codeHighlight'
+import { replaceHTMLCode } from '../../../util/replaceHTMLCode'
 
 @Component({
   name: 'NoteContent',
@@ -69,6 +70,7 @@ export default class NoteContent extends Vue {
       })
 
       const note = noteRes.data
+      note.body = replaceHTMLCode(note.body)
       const tags: Tag[] = []
 
       for (const noteTag of note.tags) {
