@@ -199,7 +199,7 @@ export default {
     // https://go.nuxtjs.dev/bootstrap
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
-    '@nuxtjs/axios',
+    // '@nuxtjs/axios',
     '@nuxtjs/sitemap',
     'nuxt-lazy-load',
     [
@@ -237,6 +237,32 @@ export default {
         //   fiber: Fiber
         // }
       },
+    },
+    extend(config: any) {
+      // htmlparser2のローダーを追加
+      config.module.rules.push({
+        test: /\/node_modules\/htmlparser2\/lib\/esm\/index\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        },
+      })
+      // cheerioのローダーを追加
+      config.module.rules.push({
+        test: /\/node_modules\/cheerio\/node_modules\/parse5\/dist\/index\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        },
+      })
+      // parse5-htmlparser2-tree-adapterのローダーを追加
+      config.module.rules.push({
+        test: /\/node_modules\/parse5-htmlparser2-tree-adapter\/node_modules\/parse5\/dist\/index\.js$/,
+        loader: 'babel-loader',
+        options: {
+          presets: ['@babel/preset-env'],
+        },
+      })
     },
   },
 }

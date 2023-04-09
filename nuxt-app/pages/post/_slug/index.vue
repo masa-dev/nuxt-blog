@@ -85,7 +85,8 @@ export default class PostContent extends Vue {
       })
 
       const post = PostRes.data
-      post.body = replaceHTMLCode(post.body)
+      post.body = await replaceHTMLCode(post.body)
+      // console.log(post.body.match(/<a href="https?:\/\/.+?">https?:\/\/.+?<\/a>/))
       const tags: Tag[] = []
 
       for (const postTag of post.tags) {
