@@ -70,7 +70,7 @@ export default class NoteContent extends Vue {
       })
 
       const note = noteRes.data
-      note.body = replaceHTMLCode(note.body)
+      note.body = await replaceHTMLCode(note.body)
       const tags: Tag[] = []
 
       for (const noteTag of note.tags) {

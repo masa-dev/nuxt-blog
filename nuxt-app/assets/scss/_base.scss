@@ -154,6 +154,66 @@ header {
     }
   }
 
+  .link-card {
+    border: 1px solid rgb(204, 204, 204);
+    border-radius: 10px;
+
+    > a {
+      $link-card-img-width: 150px;
+
+      display: block;
+      height: $link-card-img-width;
+      color: black;
+      text-decoration-line: none;
+
+      img {
+        border-radius: 10px 0 0 10px;
+        width: $link-card-img-width;
+        height: $link-card-img-width;
+        object-fit: cover;
+      }
+
+      .link-card-text {
+        width: calc(100% - $link-card-img-width);
+        position: relative;
+
+        .link-card-title {
+          word-break: break-word;
+          font-size: 1.25rem;
+          font-weight: bold;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .link-card-description {
+          color: #808080;
+          line-height: 1.5;
+          font-size: 0.9rem;
+          overflow: hidden;
+          max-height: 4rem;
+        }
+
+        .link-card-siteinfo {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          margin-left: 1rem;
+
+          img {
+            width: 15px;
+            height: 15px;
+          }
+
+          span {
+            font-size: 0.9rem;
+            margin-left: 0.5rem;
+          }
+        }
+      }
+    }
+  }
+
   /* Prism.js */
   .code-toolbar > .toolbar {
     padding: 0.15rem 0.85rem 0.25rem;
@@ -191,5 +251,31 @@ header {
 @media only screen and (max-width: $hide-sidebar) {
   main .d-flex .n-container-xl {
     width: 100% !important;
+  }
+}
+
+@media only screen and (max-width: 500px) {
+  .post-content {
+    .link-card > a {
+      $link-card-img-width: 100px;
+      height: $link-card-img-width;
+
+      img {
+        width: $link-card-img-width;
+        height: $link-card-img-width;
+      }
+
+      .link-card-text {
+        width: calc(100% - $link-card-img-width);
+
+        .link-card-title {
+          font-size: 1rem;
+        }
+        .link-card-description {
+          font-size: 0.8rem;
+          max-height: 2.5rem;
+        }
+      }
+    }
   }
 }

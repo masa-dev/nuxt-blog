@@ -65,4 +65,12 @@ pre.language-markup
   .number {
     color: $number;
   }
+
+  .regex {
+    .regex-delimiter,
+    .regex-source,
+    .language-regex {
+      color: $error;
+    }
+  }
 }

@@ -22,7 +22,7 @@ import { isNullOrWhitespace } from './utilFunction'
 
 export function codeHighlight() {
   initCopyToClipboardPrism()
-  console.log(plugins)
+
   hooks.add('wrap', (env) => {
     if (env.type === 'tag') {
       if (env.content.match('<span class="token punctuation">&lt;</span>')) {
