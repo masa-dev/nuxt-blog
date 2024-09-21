@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -27,21 +27,21 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: ./nuxt-app/package-lock.json
+          cache-dependency-path: ./astro-blog/package-lock.json
       - name: Package install
-        run: cd ./nuxt-app && npm ci
+        run: cd ./astro-blog && npm ci
       - name: Create .env file
         run: |
-          cd ./nuxt-app && touch .env
+          cd ./astro-blog && touch .env
           echo API_URL=${{ secrets.API_URL }} > .env
           echo API_KEY=${{ secrets.API_KEY }} >> .env
       - name: Build App
-        run: cd ./nuxt-app && npm run generate --if-present
+        run: cd ./astro-blog && npm run build
       # - name: Run Test
-      #   run: cd /nuxt-app && npm test --if-present
+      #   run: cd /astro-blog && npm test --if-present
       - name: App Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./nuxt-app/dist
+          publish_dir: ./astro-blog/dist
           cname: gh-pages-dev.masa-dev.net

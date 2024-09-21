@@ -15,7 +15,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -25,14 +25,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-          cache-dependency-path: ./nuxt-app/package-lock.json
+          cache-dependency-path: ./astro-blog/package-lock.json
       - name: Setting ENV
         run: |
-          cd ./nuxt-app && touch .env
+          cd ./astro-blog && touch .env
           echo API_URL=${{ secrets.API_URL }} > .env
           echo API_KEY=${{ secrets.API_KEY }} >> .env
       - name: Package install & Build App
-        run: cd ./nuxt-app && npm ci && npm run generate
+        run: cd ./astro-blog && npm ci && npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
