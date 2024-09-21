@@ -5,10 +5,9 @@ import PostSidebarToc from "./PostSidebarToc";
 type Props = {
   createdAt: string;
   updatedAt: string;
-  body: string;
 };
 
-const { createdAt, updatedAt, body } = Astro.props;
+const { createdAt, updatedAt } = Astro.props;
 
 const getCreatedAtLocaled = () => {
   return dayjs(createdAt).format("YYYY年M月D日 HH:mm");

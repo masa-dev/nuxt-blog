@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
   const postList = await fetchPosts(params);
 
-  const pages = postList.items.map((post, i) => ({
+  const pages = postList.items.map((post) => ({
     params: { pageId: post._id },
   }));
 
@@ -61,18 +61,13 @@ body = await highlightCode(body ?? "", "dark-plus");
         updatedAt={post._sys.updatedAt}
       />
       <div class="post-tag-list">
-        {
-          tags.map((tag) => (
-            <PostTagIcon tag={tag} class="me-2 mb-2" />
-          ))
-        }
+        {tags.map((tag) => <PostTagIcon tag={tag} class="me-2 mb-2" />)}
       </div>
       <div class="post-content" set:html={body} />
     </div>
     <PostSidebar
       createdAt={post._sys.createdAt}
       updatedAt={post._sys.updatedAt}
-      body={post.body}
     />
   </div>
 </PostLayout>
