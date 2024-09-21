@@ -1,9 +1,10 @@
 ---
 import { SITE_TITLE } from "../../consts";
-import type { ApiParams } from "../../types/newtApi";
-import { fetchPost, fetchPosts } from "../../lib/newtClient";
+import type { ApiParams, Tag } from "../../types/newtApi";
+import { fetchPost, fetchPosts, fetchTag } from "../../lib/newtClient";
 import { highlightCode } from "../../util/highlightCode";
 import PostLayout from "../../layouts/PostLayout.astro";
+import PostTagIcon from "../../components/PostTagIcon.astro";
 
 export async function getStaticPaths() {
   const params: ApiParams = { limit: 100, skip: 0 };
@@ -20,6 +21,11 @@ export async function getStaticPaths() {
 const { pageId } = Astro.params;
 
 const post = await fetchPost(pageId);
+const tags: Tag[] = [];
+for (const postTag of post.tags) {
+  const tag = await fetchTag(postTag._id);
+  tags.push(tag);
+}
 
 const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
 ---
@@ -51,14 +57,13 @@ const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
         :created-at="post._sys.createdAt"
         :updated-at="post._sys.updatedAt"
       /> -->
-      <!-- <div class="post-tag-list">
-        <TagIconSmall
-          v-for="tag in tags"
-          :key="tag._id"
-          :tag="tag"
-          class="mr-2 mb-2"
-        />
-      </div> -->
+      <div class="post-tag-list">
+        {
+          tags.map((tag) => (
+            <PostTagIcon v-for="tag in tags" tag={tag} class="me-2 mb-2" />
+          ))
+        }
+      </div>
       <div class="post-content" set:html={highlightedBody} />
     </div>
     <!-- <ContentSideBar
