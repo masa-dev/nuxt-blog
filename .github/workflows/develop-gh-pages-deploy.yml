@@ -3,11 +3,6 @@ name: Node.js CI
 on:
   push:
     branches: [develop]
-  pull_request:
-    branches:
-      - develop
-    types:
-      - closed
   # repository_dispatch:
   #   types: [update_post]
 
