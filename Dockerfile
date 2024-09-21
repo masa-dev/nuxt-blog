@@ -1,8 +1,8 @@
-FROM node:16.16-bullseye
+FROM node:22.8.0-bullseye
 
-ENV PORT=8080
-EXPOSE 8080
+# ENV PORT=8080
+# EXPOSE 8080
 
-USER node
-
-CMD ["npm", "start"]
+ENV HOST=0.0.0.0
+ENV PORT=4321
+EXPOSE 4321

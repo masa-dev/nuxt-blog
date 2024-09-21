@@ -8,8 +8,9 @@ services:
       dockerfile: "Dockerfile"
     ports:
       - 50081:8000
+      - 4321:4321
     volumes:
-      - ./nuxt-app/:/app
+      - ./astro-blog/:/app
     working_dir: /app
     environment:
       TZ: "Asia/Tokyo" 
@@ -18,9 +19,9 @@ services:
     container_name: "nuxt-web"
     image: nginx:1.23.1
     ports:
-      - 50082:8080
+      - 50082:80
     volumes:
-      - ./nuxt-app/dist/:/usr/share/nginx/html
+      - ./astro-blog/dist/:/usr/share/nginx/html
       - ./nginx/:/etc/nginx/conf.d/
     working_dir: /usr/share/nginx/html
     environment:

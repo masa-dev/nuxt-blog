@@ -1,0 +1,48 @@
+---
+type Props = {
+  page: number;
+  numberOfPages: number;
+  linkGen: (pageNum: number) => string;
+};
+
+const { page, numberOfPages, linkGen } = Astro.props;
+
+const generatePaginatePage = () => {
+  const minPage = Math.max(page - 3, 1);
+  const maxPage = Math.min(page + 3, numberOfPages);
+  const displayPageLength = maxPage - minPage + 1;
+
+  const pages = Array.from(
+    { length: displayPageLength },
+    (_, i) => i + minPage
+  );
+
+  return pages;
+};
+
+const pages = generatePaginatePage();
+---
+
+<nav>
+  <ul class="pagination justify-content-center">
+    <li class="page-item">
+      <a class="page-link" href={linkGen(1)} aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {
+      pages.map((p) => (
+        <li class={`page-item ${page == p ? "active" : ""}`}>
+          <a class="page-link" href={page == p ? null : linkGen(p)}>
+            {p}
+          </a>
+        </li>
+      ))
+    }
+    <li class="page-item">
+      <a class="page-link" href={linkGen(numberOfPages)} aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>

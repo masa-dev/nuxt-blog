@@ -1,0 +1,51 @@
+---
+import type { Tag } from "../types/newtApi";
+
+type Props = {
+  tag: Tag;
+  class: string;
+};
+
+const { tag, class: className } = Astro.props;
+---
+
+<a href={`/tag/${tag.slug}`} class={`tag-icon-link border rounded-pill ${className}`}>
+  <img
+    src={tag.image.src}
+    class="icon-image d-block"
+    alt={tag.image.altText ? tag.image.altText : "Tag image"}
+  />
+  <div class="icon-image-name">{tag.name}</div>
+</a>
+
+<style lang="scss" scoped>
+  .tag-icon-link {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: {
+      top: 2px;
+      bottom: 2px;
+      left: 0.6rem;
+      right: 0.6rem;
+    }
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #343a400c;
+    }
+  }
+
+  .icon-image {
+    width: 1.5rem;
+    height: 1.5rem;
+    object-fit: contain;
+    padding: 0.2rem 0;
+    margin-right: 0.4rem;
+  }
+
+  .icon-image-name {
+    font-size: 0.85rem;
+  }
+</style>
