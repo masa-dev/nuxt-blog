@@ -3,4 +3,5 @@
 
 export const SITE_TITLE = 'MasaDev Blog';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
-export const POST_LIMIT = 2
+export const POST_LIMIT = 2;
+export const NOTE_LIMIT = 2;

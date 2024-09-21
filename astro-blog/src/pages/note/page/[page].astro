@@ -1,15 +1,15 @@
 ---
 import { SITE_TITLE, SITE_DESCRIPTION, POST_LIMIT } from "../../../consts";
 import type { ApiParams } from "../../../types/newtApi";
-import { fetchPosts } from "../../../lib/newtClient";
-import PostList from "../../../components/PostList.astro";
+import { fetchNotes } from "../../../lib/newtClient";
 import PostLayout from "../../../layouts/PostLayout.astro";
 import Pagination from "../../../components/Pagination.astro";
+import NoteList from "../../../components/NoteList.astro";
 
 export async function getStaticPaths() {
   const params: ApiParams = { limit: 1, skip: 1 };
 
-  const postList = await fetchPosts(params);
+  const postList = await fetchNotes(params);
 
   const pageCount = Math.ceil(postList.total / POST_LIMIT);
   const pages = [...Array(pageCount)].map((_, i) => ({
@@ -27,22 +27,22 @@ const getPosts = async () => {
     skip: (page - 1) * POST_LIMIT,
   };
 
-  const postList = await fetchPosts(params);
+  const noteList = await fetchNotes(params);
 
   const pageMeta = {
-    rows: Math.ceil(postList.total / postList.limit),
-    perPage: postList.limit,
+    rows: Math.ceil(noteList.total / noteList.limit),
+    perPage: noteList.limit,
     currentPage: page,
   };
 
   return {
-    posts: postList.items,
+    posts: noteList.items,
     pageMeta,
   };
 };
 
 const linkGen = (pageNum: number) => {
-  return `/post/page/${pageNum}`;
+  return `/note/page/${pageNum}`;
 };
 
 const { posts, pageMeta } = await getPosts();
@@ -55,7 +55,7 @@ const { posts, pageMeta } = await getPosts();
 >
   <div class="n-container-xl mx-auto mb-5">
     <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
-    <PostList postList={posts} />
+    <NoteList noteList={posts} />
     <Pagination
       page={pageMeta.currentPage}
       linkGen={linkGen}
