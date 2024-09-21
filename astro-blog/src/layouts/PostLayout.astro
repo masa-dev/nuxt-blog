@@ -8,12 +8,11 @@ import FormattedDate from "../components/FormattedDate.astro";
 type Props = {
   title: string;
   description: string;
-  pubDate: Date;
   updatedDate?: Date | undefined;
   heroImage?: string | undefined;
 };
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, updatedDate, heroImage } = Astro.props;
 ---
 
 <html lang="ja">

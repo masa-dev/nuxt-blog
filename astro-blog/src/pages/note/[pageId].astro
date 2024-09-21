@@ -37,7 +37,6 @@ body = await highlightCode(body ?? "", "dark-plus");
 <PostLayout
   title={`${note.title} | ${SITE_TITLE}`}
   description={note.description}
-  pubDate={new Date(note._sys.createdAt)}
 >
   <div class="d-flex justify-content-center">
     <div class="n-container-xl mb-5 px-lg-4">
