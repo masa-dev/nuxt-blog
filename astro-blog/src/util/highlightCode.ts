@@ -1,14 +1,14 @@
-import { createHighlighter } from "shiki";
+import { createHighlighter, type BundledTheme } from "shiki";
 
 const HtmlCodeLangRegex = /class="language-(?<lang>[^:]+?)(:(?<filename>.+?))?"/;
 
-const createShikiHighlighter = async (body: string) => {
+const createShikiHighlighter = async (body: string, theme: BundledTheme | "none") => {
     var langs = [...body.matchAll(new RegExp(HtmlCodeLangRegex, "g"))]
         .map((lgs) => lgs.groups?.lang ?? "")
         .filter(Boolean);
     langs = Array.from(new Set(langs));
 
-    return await createHighlighter({ langs, themes: ["dark-plus"] });
+    return await createHighlighter({ langs, themes: [theme] });
 }
 
 const createFileNameElement = (fileName: string | null | undefined) => {
@@ -16,8 +16,8 @@ const createFileNameElement = (fileName: string | null | undefined) => {
     return `<div class="post-code-info"><span>${fileName}</span></div>`;
 }
 
-export const highlightCode = async (body: string) => {
-    const highlighter = await createShikiHighlighter(body);
+export const highlightCode = async (body: string, theme: BundledTheme | "none") => {
+    const highlighter = await createShikiHighlighter(body, theme);
     return body.replace(
         /<pre><code(.+?)>([\s\S]+?)<\/code><\/pre>/g,
         (_, language: string, code: string) => {
@@ -29,7 +29,7 @@ export const highlightCode = async (body: string) => {
                     .replace(/&lt;/g, "<")
                     .replace(/&gt;/g, ">")
                     .replace(/&amp;/g, "&"),
-                { lang: langMatch?.groups?.lang ?? "", theme: "dark-plus" }
+                { lang: langMatch?.groups?.lang ?? "", theme }
             );
 
             const fileNameEl = createFileNameElement(langMatch?.groups?.filename);

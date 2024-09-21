@@ -21,7 +21,7 @@ const { pageId } = Astro.params;
 
 const post = await fetchPost(pageId);
 
-const highlightedBody = await highlightCode(post.body ?? "");
+const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
 ---
 
 <PostLayout
