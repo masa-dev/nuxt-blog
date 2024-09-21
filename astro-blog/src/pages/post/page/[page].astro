@@ -1,0 +1,67 @@
+---
+import BaseHead from "../../../components/BaseHead.astro";
+import Header from "../../../components/Header.astro";
+import Footer from "../../../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION, POST_LIMIT } from "../../../consts";
+import type { ApiParams, ApiResponse, Post } from "../../../types/newtApi";
+import { createHighlighter, codeToHtml } from "shiki";
+import { fetchPosts } from "../../../lib/newtClient";
+import PostList from "../../../components/PostList.astro";
+import PostLayout from "../../../layouts/PostLayout.astro";
+import Pagination from "../../../components/Pagination.astro";
+
+export async function getStaticPaths() {
+  const params: ApiParams = { limit: 1, skip: 1 };
+
+  const postList = await fetchPosts(params);
+
+  const pageCount = Math.ceil(postList.total / POST_LIMIT);
+  const pages = [...Array(pageCount)].map((_, i) => ({
+    params: { page: i + 1 },
+  }));
+
+  return pages;
+}
+
+const { page } = Astro.params;
+
+const getPosts = async () => {
+  const params: ApiParams = {
+    limit: POST_LIMIT,
+    skip: (page - 1) * POST_LIMIT,
+  };
+
+  const postList = await fetchPosts(params);
+
+  const pageMeta = {
+    rows: Math.ceil(postList.total / postList.limit),
+    perPage: postList.limit,
+    currentPage: page,
+  };
+
+  return {
+    posts: postList.items,
+    pageMeta,
+  };
+};
+
+const linkGen = (pageNum: number) => {
+  return `/post/page/${pageNum}`;
+};
+
+const { posts, pageMeta } = await getPosts();
+---
+
+<PostLayout
+  title={SITE_TITLE}
+  description={SITE_DESCRIPTION}
+  pubDate={new Date()}
+>
+  <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
+  <PostList postList={posts} />
+  <Pagination
+    page={pageMeta.currentPage}
+    linkGen={linkGen}
+    numberOfPages={pageMeta.rows}
+  />
+</PostLayout>

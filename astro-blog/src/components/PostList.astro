@@ -1,0 +1,86 @@
+---
+import type { Post } from "../types/newtApi";
+import dayjs from "dayjs";
+
+type Props = {
+  postList: Post[];
+};
+
+const { postList } = Astro.props;
+---
+
+<div class="d-flex flex-wrap justify-content-between mb-3">
+  {
+    postList.map((post) => (
+      <div class="post-item mb-5">
+        <a href={`/post/${post._id}`} class="d-flex post-item-link w-100">
+          <div class="post-image-wrapper">
+            {post.image ? (
+              <img
+                src={post.image.src}
+                alt={post.image.altText ? post.image.altText : "Post Image"}
+              />
+            ) : (
+              <img v-else src="/img/dummy.png" alt="dummy image" />
+            )}
+          </div>
+          <div class="ps-3 d-flex flex-column justify-content-between flex-fill">
+            <h2 class="m-0">{post.title}</h2>
+            <p class="small m-0 text-secondary">
+              {dayjs(post._sys.createdAt).format("YYYY年MM月DD日 HH:mm")}
+            </p>
+          </div>
+        </a>
+      </div>
+    ))
+  }
+</div>
+
+<style lang="scss" scoped>
+  .post-image-wrapper {
+    width: 110px;
+    height: 110px;
+
+    img {
+      width: 110px;
+      height: 110px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  }
+
+  .post-item-link {
+    text-decoration: none !important;
+  }
+
+  .post-item {
+    width: 47%;
+
+    h2 {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #000;
+      line-height: 1.5;
+    }
+  }
+
+  @media only screen and (max-width: 750px) {
+    .post-image-wrapper {
+      width: 90px;
+      height: 90px;
+
+      img {
+        width: 90px;
+        height: 90px;
+      }
+    }
+    .post-item {
+      width: 100%;
+
+      h2 {
+        font-size: 1.05rem;
+        line-height: 1.3;
+      }
+    }
+  }
+</style>

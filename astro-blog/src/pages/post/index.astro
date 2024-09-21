@@ -1,0 +1,48 @@
+---
+import { SITE_TITLE, SITE_DESCRIPTION, POST_LIMIT } from "../../consts";
+import type { ApiParams } from "../../types/newtApi";
+import PostList from "../../components/PostList.astro";
+import PostLayout from "../../layouts/PostLayout.astro";
+import { fetchPosts } from "../../lib/newtClient";
+import Pagination from "../../components/Pagination.astro";
+
+const getPosts = async () => {
+  const params: ApiParams = {
+    limit: POST_LIMIT,
+    skip: 0,
+  };
+
+  const postList = await fetchPosts(params);
+
+  const pageMeta = {
+    rows: Math.ceil(postList.total / postList.limit),
+    perPage: postList.limit,
+    currentPage: 1,
+  };
+
+  return {
+    posts: postList.items,
+    pageMeta,
+  };
+};
+
+const { posts, pageMeta } = await getPosts();
+
+const linkGen = (pageNum: number) => {
+  return `/post/page/${pageNum}`;
+};
+---
+
+<PostLayout
+  title={SITE_TITLE}
+  description={SITE_DESCRIPTION}
+  pubDate={new Date()}
+>
+  <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
+  <PostList postList={posts} />
+  <Pagination
+    page={pageMeta.currentPage}
+    linkGen={linkGen}
+    numberOfPages={pageMeta.rows}
+  />
+</PostLayout>
