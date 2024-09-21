@@ -19,11 +19,9 @@ export default function PostSidebarToc() {
   };
 
   useEffect(() => {
-    const boxes = [
-      ...document.querySelectorAll(
-        ".post-content h1,.post-content h2,.post-content h3"
-      ),
-    ] as HTMLHeadingElement[];
+    const boxes = document.querySelectorAll<HTMLHeadingElement>(
+      ".post-content h1,.post-content h2,.post-content h3"
+    );
 
     if (titles.length === 0) {
       boxes.forEach((box, index) => {
@@ -43,11 +41,9 @@ export default function PostSidebarToc() {
 
   useEffect(() => {
     if (execOnceFlag) return;
-    const boxes = [
-      ...document.querySelectorAll(
-        ".post-content h1,.post-content h2,.post-content h3"
-      ),
-    ] as HTMLHeadingElement[];
+    const boxes = document.querySelectorAll<HTMLHeadingElement>(
+      ".post-content h1,.post-content h2,.post-content h3"
+    );
 
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
