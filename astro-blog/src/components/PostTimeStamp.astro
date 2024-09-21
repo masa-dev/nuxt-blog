@@ -1,0 +1,78 @@
+---
+import dayjs from "dayjs";
+
+type Props = {
+  createdAt: string;
+  updatedAt: string;
+};
+
+const { createdAt, updatedAt } = Astro.props;
+
+const getCreatedAtLocaled = () => {
+  return dayjs(createdAt).format("YYYY年M月D日 HH:mm");
+};
+
+const getUpdatedAtLocaled = () => {
+  return dayjs(updatedAt).format("YYYY年M月D日 HH:mm");
+};
+
+const getUpdatedAtIsoLocaled = () => {
+  return dayjs(updatedAt).toISOString();
+};
+---
+
+<div class="post-date mb-3 text-end">
+  {
+    createdAt && (
+      <div class="post-date-time time-create mb-1">
+        <time>{getCreatedAtLocaled()}</time>
+      </div>
+    )
+  }
+
+  {
+    updatedAt && (
+      <div class="post-date-time time-update">
+        <time datetime={getUpdatedAtIsoLocaled()}>{getUpdatedAtLocaled()}</time>
+      </div>
+    )
+  }
+</div>
+
+<style lang="scss" scoped>
+  @import "../styles/variables";
+
+  .post-date {
+    line-height: 1.5;
+    .post-date-time {
+      font-size: 0.9rem;
+      color: gray;
+      white-space: nowrap;
+
+      &::before {
+        display: inline-block;
+        height: 0.8rem;
+        width: 0.8rem;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .time-create {
+      &::before {
+        content: url(/img/pen-solid.svg);
+      }
+    }
+
+    .time-update {
+      &::before {
+        content: url(/img/rotate-right-solid.svg);
+      }
+    }
+  }
+
+  @media only screen and (min-width: $hide-sidebar) {
+    .post-date {
+      display: none;
+    }
+  }
+</style>

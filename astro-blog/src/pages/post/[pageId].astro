@@ -5,6 +5,7 @@ import { fetchPost, fetchPosts, fetchTag } from "../../lib/newtClient";
 import { highlightCode } from "../../util/highlightCode";
 import PostLayout from "../../layouts/PostLayout.astro";
 import PostTagIcon from "../../components/PostTagIcon.astro";
+import PostTimeStamp from "../../components/PostTimeStamp.astro";
 
 export async function getStaticPaths() {
   const params: ApiParams = { limit: 100, skip: 0 };
@@ -53,10 +54,10 @@ const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
           )
         }
       </div>
-      <!-- <CreateAndUpdateTime
-        :created-at="post._sys.createdAt"
-        :updated-at="post._sys.updatedAt"
-      /> -->
+      <PostTimeStamp
+        createdAt={post._sys.createdAt}
+        updatedAt={post._sys.updatedAt}
+      />
       <div class="post-tag-list">
         {
           tags.map((tag) => (
