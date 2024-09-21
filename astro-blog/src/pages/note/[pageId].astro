@@ -1,7 +1,7 @@
 ---
 import { SITE_TITLE } from "../../consts";
 import type { ApiParams, Tag } from "../../types/newtApi";
-import { fetchNote, fetchNotes, fetchPost, fetchPosts, fetchTag } from "../../lib/newtClient";
+import { fetchNote, fetchNotes, fetchTag } from "../../lib/newtClient";
 import { highlightCode } from "../../util/highlightCode";
 import PostLayout from "../../layouts/PostLayout.astro";
 import PostTagIcon from "../../components/PostTagIcon.astro";
@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 
   const noteList = await fetchNotes(params);
 
-  const pages = noteList.items.map((post, i) => ({
+  const pages = noteList.items.map((post) => ({
     params: { pageId: post._id },
   }));
 
@@ -57,7 +57,6 @@ body = await highlightCode(body ?? "", "dark-plus");
     <PostSidebar
       createdAt={note._sys.createdAt}
       updatedAt={note._sys.updatedAt}
-      body={note.body}
     />
   </div>
 </PostLayout>
