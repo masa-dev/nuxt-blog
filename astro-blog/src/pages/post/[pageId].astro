@@ -6,6 +6,8 @@ import { highlightCode } from "../../util/highlightCode";
 import PostLayout from "../../layouts/PostLayout.astro";
 import PostTagIcon from "../../components/PostTagIcon.astro";
 import PostTimeStamp from "../../components/PostTimeStamp.astro";
+import PostSidebar from "../../components/PostSidebar.astro";
+import setHeadingId from "../../util/setHeadingId";
 
 export async function getStaticPaths() {
   const params: ApiParams = { limit: 100, skip: 0 };
@@ -28,7 +30,8 @@ for (const postTag of post.tags) {
   tags.push(tag);
 }
 
-const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
+let body = setHeadingId(post.body);
+body = await highlightCode(body ?? "", "dark-plus");
 ---
 
 <PostLayout
@@ -65,13 +68,13 @@ const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
           ))
         }
       </div>
-      <div class="post-content" set:html={highlightedBody} />
+      <div class="post-content" set:html={body} />
     </div>
-    <!-- <ContentSideBar
-      :title="post.title"
-      :created-at="post._sys.createdAt"
-      :updated-at="post._sys.updatedAt"
-    /> -->
+    <PostSidebar
+      createdAt={post._sys.createdAt}
+      updatedAt={post._sys.updatedAt}
+      body={post.body}
+    />
   </div>
 </PostLayout>
 
@@ -91,7 +94,3 @@ const highlightedBody = await highlightCode(post.body ?? "", "dark-plus");
     }
   }
 </style>
-
-<script>
-  console.log("a");
-</script>

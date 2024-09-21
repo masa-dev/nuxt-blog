@@ -38,11 +38,13 @@ const linkGen = (pageNum: number) => {
   description={SITE_DESCRIPTION}
   pubDate={new Date()}
 >
-  <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
-  <PostList postList={posts} />
-  <Pagination
-    page={pageMeta.currentPage}
-    linkGen={linkGen}
-    numberOfPages={pageMeta.rows}
-  />
+  <div class="n-container-xl mx-auto mb-5">
+    <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
+    <PostList postList={posts} />
+    <Pagination
+      page={pageMeta.currentPage}
+      linkGen={linkGen}
+      numberOfPages={pageMeta.rows}
+    />
+  </div>
 </PostLayout>

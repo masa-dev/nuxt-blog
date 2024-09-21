@@ -1,6 +1,8 @@
 @import './variables';
 @import './func.scss';
 
+$side-card-bg-color: rgb(241, 241, 241);
+
 body {
   line-height: 1.85;
 }
@@ -239,6 +241,48 @@ header {
   div.code-toolbar > .toolbar {
     &:has(.toolbar-item > .prism-copy-success) {
       opacity: 1 !important;
+    }
+  }
+}
+
+aside .toc {
+  background: $side-card-bg-color;
+  border-radius: 15px;
+
+  ul {
+    padding-left: 0;
+    list-style: none;
+
+    li {
+      a {
+        padding: 3px 10px 3px;
+        color: black;
+        border-radius: 10px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-decoration: none;
+
+        &.active {
+          font-weight: bolder;
+          color: rgb(34, 137, 206);
+          background: rgb(207, 227, 243);
+        }
+
+        &:hover {
+          text-decoration: none;
+        }
+
+        &.sidebar-h3 {
+          padding-left: 15px;
+          font-size: 0.95rem;
+
+          &::before {
+            content: "-";
+            margin-right: 0.5rem;
+          }
+        }
+      }
     }
   }
 }
