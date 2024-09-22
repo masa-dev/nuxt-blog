@@ -9,7 +9,10 @@ type Props = {
 const { tag, class: className } = Astro.props;
 ---
 
-<a href={`/tag/${tag.slug}`} class={`tag-icon-link border rounded-pill ${className}`}>
+<a
+  href={`/tag/${tag.slug}`}
+  class={`tag-icon-link border rounded-pill ${className}`}
+>
   <img
     src={tag.image.src}
     class="icon-image d-block"

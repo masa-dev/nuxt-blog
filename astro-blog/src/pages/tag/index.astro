@@ -9,7 +9,7 @@ const noteRes = await fetchNotes({ limit: 1000, skip: 0 });
 const tags = tagRes.items.filter(
   (tag) =>
     postRes.items.some((post) => post.tags.some((t) => t._id === tag._id)) ||
-    noteRes.items.some((note) => note.tags.some((t) => t._id === tag._id))
+    noteRes.items.some((note) => note.tags.some((t) => t._id === tag._id)),
 );
 ---
 

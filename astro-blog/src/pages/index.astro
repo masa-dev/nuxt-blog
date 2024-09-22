@@ -13,26 +13,26 @@ const noteRes = await fetchNotes({ limit: 4, skip: 0 });
   <div class="n-container-xl mx-auto mb-5">
     <h2 class="mb-5 mt-4 font-weight-bold">投稿一覧</h2>
     <PostList postList={postRes.items} />
-	<div class="text-end">
-		<a href="/post" class="btn mb-4">投稿一覧を見る</a>
-	</div>
+    <div class="text-end">
+      <a href="/post" class="btn mb-4">投稿一覧を見る</a>
+    </div>
 
     <h2 class="mb-5 mt-4 font-weight-bold">ノート一覧</h2>
     <NoteList noteList={noteRes.items} />
-	<div class="text-end">
-		<a href="/note" class="btn">ノート一覧を見る</a>
-	</div>
+    <div class="text-end">
+      <a href="/note" class="btn">ノート一覧を見る</a>
+    </div>
   </div>
 </PostLayout>
 
 <style lang="scss" scoped>
   a.btn {
-	color: #5851ec;
-	background-color: #ecf2fc;
-	transition: 0.3s;
+    color: #5851ec;
+    background-color: #ecf2fc;
+    transition: 0.3s;
 
-	&:hover {
-		background-color: #dbe6f8;
-	}
+    &:hover {
+      background-color: #dbe6f8;
+    }
   }
 </style>
