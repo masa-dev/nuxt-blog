@@ -3,7 +3,7 @@
 &lt;p&gt;&lt;a href=&quot;https://github.com/nvim-lua/kickstart.nvim&quot;&gt;https://github.com/nvim-lua/kickstart.nvim&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;続くかわからないけど、今回はオプション周りをまとめる&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;キーの設定を半角スペースにする&lt;br&gt;
-デフォルトはバックスラッシュ（\）&lt;/p&gt;
+デフォルトはバックスラッシュ（&lt;code&gt;\&lt;/code&gt;）&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Set &amp;lt;space&amp;gt; as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -68,7 +68,7 @@ vim.opt.signcolumn = &apos;yes&apos;
 vim.opt.updatetime = 250
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;キーマッピングシーケンスの待ち時間を減らす&lt;br&gt;
-例）&lt;code&gt; &amp;lt;Leader&amp;gt;w&lt;/code&gt;のマッピングの場合、&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;入力後の待ち時間を設定する&lt;br&gt;
+例）&lt;code&gt;&amp;lt;Leader&amp;gt;w&lt;/code&gt;のマッピングの場合、&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;入力後の待ち時間を設定する&lt;br&gt;
 which-keyのポップアップ表示を早めるために0.3秒に設定&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
@@ -547,7 +547,7 @@ console.warn node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6465
 &lt;p&gt;&lt;a href=&quot;https://github.com/nvim-lua/kickstart.nvim&quot;&gt;https://github.com/nvim-lua/kickstart.nvim&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;続くかわからないけど、今回はオプション周りをまとめる&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;キーの設定を半角スペースにする&lt;br&gt;
-デフォルトはバックスラッシュ（\）&lt;/p&gt;
+デフォルトはバックスラッシュ（&lt;code&gt;\&lt;/code&gt;）&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Set &amp;lt;space&amp;gt; as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -612,7 +612,7 @@ vim.opt.signcolumn = &apos;yes&apos;
 vim.opt.updatetime = 250
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;キーマッピングシーケンスの待ち時間を減らす&lt;br&gt;
-例）&lt;code&gt; &amp;lt;Leader&amp;gt;w&lt;/code&gt;のマッピングの場合、&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;入力後の待ち時間を設定する&lt;br&gt;
+例）&lt;code&gt;&amp;lt;Leader&amp;gt;w&lt;/code&gt;のマッピングの場合、&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;入力後の待ち時間を設定する&lt;br&gt;
 which-keyのポップアップ表示を早めるために0.3秒に設定&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Decrease mapped sequence wait time
 -- Displays which-key popup sooner
