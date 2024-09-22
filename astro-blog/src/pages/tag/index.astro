@@ -1,0 +1,104 @@
+---
+import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
+import PostLayout from "../../layouts/PostLayout.astro";
+import { fetchNotes, fetchPosts, fetchTags } from "../../lib/newtClient";
+
+const tagRes = await fetchTags({ limit: 100, skip: 0 });
+const postRes = await fetchPosts({ limit: 1000, skip: 0 });
+const noteRes = await fetchNotes({ limit: 1000, skip: 0 });
+const tags = tagRes.items.filter(
+  (tag) =>
+    postRes.items.some((post) => post.tags.some((t) => t._id === tag._id)) ||
+    noteRes.items.some((note) => note.tags.some((t) => t._id === tag._id)),
+);
+---
+
+<PostLayout title={`タグ一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+  <div class="tag-list-wapper n-container-xl mx-auto mb-5">
+    <h2 class="mb-5 mt-4 font-weight-bold">タグ一覧</h2>
+
+    <div class="tag-search mb-5 mx-auto">
+      <input
+        id="search-tag-input"
+        type="search"
+        class="form-control rounded-pill px-4"
+        placeholder="JavaScript"
+      />
+    </div>
+    <div class="d-flex flex-wrap justify-content-center">
+      {
+        tags &&
+          tags.map((tag) => (
+            <a href={`/tag/${tag.slug}`} class="mb-3 mx-2 tag-link rounded-3">
+              <div class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-3 shadow-sm h-100">
+                <img
+                  src={tag.image.src}
+                  alt={tag.image.altText ? tag.image.altText : "Tag logo"}
+                />
+                <div class="ms-3 text-dark lh-base text-start">{tag.name}</div>
+              </div>
+            </a>
+          ))
+      }
+    </div>
+  </div>
+</PostLayout>
+
+<script>
+  const searchTagInputEl = document.getElementById("search-tag-input");
+  searchTagInputEl?.addEventListener("input", (event) => {
+    const searchTerm =
+      (event.target as HTMLInputElement | null)?.value.toLowerCase() ?? "";
+    const tagElList = [...document.querySelectorAll("a.tag-link")];
+
+    for (const tagEl of tagElList) {
+      tagEl.textContent?.toLowerCase().match(searchTerm)
+        ? tagEl.classList.remove("d-none")
+        : tagEl.classList.add("d-none");
+    }
+  });
+</script>
+
+<style lang="scss" scoped>
+  .tag-search {
+    max-width: 500px;
+  }
+
+  .tag-list-wapper {
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+    a.tag-link {
+      transition: 0.3s;
+      text-decoration: none;
+
+      &:hover {
+        border-color: #f0f0f0 !important;
+        background-color: #f0f0f0;
+      }
+    }
+
+    .tag-item-wrapper {
+      width: 195px;
+
+      img {
+        height: 50px;
+        width: 50px;
+        object-fit: contain;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 500px) {
+    .tag-list-wapper {
+      .tag-item-wrapper {
+        flex-direction: column;
+        width: 140px;
+        > div {
+          margin-top: 0.5rem;
+          margin-left: 0 !important;
+        }
+      }
+    }
+  }
+</style>

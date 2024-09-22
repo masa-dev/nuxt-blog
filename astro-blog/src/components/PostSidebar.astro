@@ -1,0 +1,101 @@
+---
+import dayjs from "dayjs";
+import PostSidebarToc from "./PostSidebarToc";
+
+type Props = {
+  createdAt: string;
+  updatedAt: string;
+};
+
+const { createdAt, updatedAt } = Astro.props;
+
+const getCreatedAtLocaled = () => {
+  return dayjs(createdAt).format("YYYY年M月D日 HH:mm");
+};
+
+const getUpdatedAtLocaled = () => {
+  return dayjs(updatedAt).format("YYYY年M月D日 HH:mm");
+};
+
+const getUpdatedAtIsoLocaled = () => {
+  return dayjs(updatedAt).toISOString();
+};
+---
+
+<aside class="mt-5">
+  <div class="sticky-top">
+    <div class="sidebar-post-info p-3 shadow mb-4">
+      <ul class="p-0 m-0">
+        {
+          createdAt && (
+            <li class="d-flex flex-row justify-content-between">
+              <div>
+                <img
+                  src="/img/pen-solid.svg"
+                  width="15px"
+                  height="15px"
+                  class="me-2"
+                  alt="publish date icon"
+                />
+                公開日
+              </div>
+              <time>{getCreatedAtLocaled()}</time>
+            </li>
+          )
+        }
+        {
+          createdAt && (
+            <li class="d-flex flex-row justify-content-between">
+              <div>
+                <img
+                  src="/img/rotate-right-solid.svg"
+                  width="15px"
+                  height="15px"
+                  class="me-2"
+                  alt="update date icon"
+                />
+                更新日
+              </div>
+              <time datetime={getUpdatedAtIsoLocaled()}>
+                {getUpdatedAtLocaled()}
+              </time>
+            </li>
+          )
+        }
+      </ul>
+    </div>
+    <PostSidebarToc client:load />
+  </div>
+</aside>
+
+<style lang="scss">
+  @import "../styles/variables";
+
+  aside {
+    $side-card-bg-color: rgb(241, 241, 241);
+    width: 270px;
+
+    .sidebar-post-info {
+      background: $side-card-bg-color;
+      border-radius: 15px;
+
+      ul > li {
+        font-size: 0.9rem;
+
+        img {
+          margin-bottom: 2px;
+        }
+      }
+    }
+
+    .sticky-top {
+      top: 1.5rem;
+    }
+  }
+
+  @media only screen and (max-width: $hide-sidebar) {
+    aside {
+      display: none;
+    }
+  }
+</style>

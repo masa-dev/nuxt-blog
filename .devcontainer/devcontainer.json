@@ -38,6 +38,7 @@
 		"esbenp.prettier-vscode",
 		"octref.vetur",
 		"editorconfig.editorconfig",
-		"mhutchie.git-graph"
+		"mhutchie.git-graph",
+		"astro-build.astro-vscode"
 	]
 }

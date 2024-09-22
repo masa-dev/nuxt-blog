@@ -1,0 +1,75 @@
+---
+import { SITE_TITLE } from "../../consts";
+import type { ApiParams, Tag } from "../../types/newtApi";
+import { fetchNote, fetchNotes, fetchTag } from "../../lib/newtClient";
+import { highlightCode } from "../../util/highlightCode";
+import PostLayout from "../../layouts/PostLayout.astro";
+import PostTagIcon from "../../components/PostTagIcon.astro";
+import PostTimeStamp from "../../components/PostTimeStamp.astro";
+import PostSidebar from "../../components/PostSidebar.astro";
+import setHeadingId from "../../util/setHeadingId";
+
+export async function getStaticPaths() {
+  const params: ApiParams = { limit: 100, skip: 0 };
+
+  const noteList = await fetchNotes(params);
+
+  const pages = noteList.items.map((post) => ({
+    params: { pageId: post._id },
+  }));
+
+  return pages;
+}
+
+const { pageId } = Astro.params;
+
+const note = await fetchNote(pageId);
+const tags: Tag[] = [];
+for (const postTag of note.tags) {
+  const tag = await fetchTag(postTag._id);
+  tags.push(tag);
+}
+
+let body = setHeadingId(note.body);
+body = await highlightCode(body ?? "", "dark-plus");
+---
+
+<PostLayout
+  title={`${note.title} | ${SITE_TITLE}`}
+  description={note.description}
+>
+  <div class="d-flex justify-content-center">
+    <div class="n-container-xl mb-5 px-lg-4">
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold h2-lg">{note.title}</h1>
+      <PostTimeStamp
+        createdAt={note._sys.createdAt}
+        updatedAt={note._sys.updatedAt}
+      />
+      <div class="post-tag-list">
+        {tags.map((tag) => <PostTagIcon tag={tag} class="me-2 mb-2" />)}
+      </div>
+      <div class="post-content" set:html={body} />
+    </div>
+    <PostSidebar
+      createdAt={note._sys.createdAt}
+      updatedAt={note._sys.updatedAt}
+    />
+  </div>
+</PostLayout>
+
+<style lang="scss" scoped>
+  .post-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .post-thumb-wrapper {
+    max-height: 480px;
+    text-align: center;
+
+    img {
+      max-height: inherit;
+      max-width: 100%;
+    }
+  }
+</style>

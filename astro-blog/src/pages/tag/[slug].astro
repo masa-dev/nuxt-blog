@@ -1,0 +1,48 @@
+---
+import NoteList from "../../components/NoteList.astro";
+import PostList from "../../components/PostList.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import PostLayout from "../../layouts/PostLayout.astro";
+import {
+  fetchNotes,
+  fetchPosts,
+  fetchTagBySlug,
+  fetchTags,
+} from "../../lib/newtClient";
+import type { ApiParams } from "../../types/newtApi";
+
+export async function getStaticPaths() {
+  const params: ApiParams = { limit: 100, skip: 0 };
+
+  const tagList = await fetchTags(params);
+
+  return tagList.items.map((tag) => ({
+    params: { slug: tag.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+
+const tag = await fetchTagBySlug(slug ?? "");
+const postRes = await fetchPosts({ limit: 100, skip: 0 });
+const noteRes = await fetchNotes({ limit: 100, skip: 0 });
+---
+
+<PostLayout title={`タグ一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+  <div class="n-container-xl mx-auto mb-5">
+    <div class="tag-title d-flex align-items-center my-3 my-sm-5">
+      <img src={tag.image.src} width="100" height="100" class="mr-4" />
+      <h1 class="font-weight-bolder h2-lg">{tag.name}</h1>
+    </div>
+    <PostList
+      postList={postRes.items.filter((post) =>
+        post.tags.some((t) => t.slug === slug),
+      )}
+    />
+    <NoteList
+      noteList={noteRes.items.filter((note) =>
+        note.tags.some((t) => t.slug === slug),
+      )}
+    />
+  </div>
+</PostLayout>

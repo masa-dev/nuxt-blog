@@ -1,0 +1,90 @@
+---
+import { SITE_TITLE } from "../../consts";
+import type { ApiParams, Tag } from "../../types/newtApi";
+import { fetchPost, fetchPosts, fetchTag } from "../../lib/newtClient";
+import { highlightCode } from "../../util/highlightCode";
+import PostLayout from "../../layouts/PostLayout.astro";
+import PostTagIcon from "../../components/PostTagIcon.astro";
+import PostTimeStamp from "../../components/PostTimeStamp.astro";
+import PostSidebar from "../../components/PostSidebar.astro";
+import setHeadingId from "../../util/setHeadingId";
+
+export async function getStaticPaths() {
+  const params: ApiParams = { limit: 100, skip: 0 };
+
+  const postList = await fetchPosts(params);
+
+  const pages = postList.items.map((post) => ({
+    params: { pageId: post._id },
+  }));
+
+  return pages;
+}
+
+const { pageId } = Astro.params;
+
+const post = await fetchPost(pageId);
+const tags: Tag[] = [];
+for (const postTag of post.tags) {
+  const tag = await fetchTag(postTag._id);
+  tags.push(tag);
+}
+
+let body = setHeadingId(post.body);
+body = await highlightCode(body ?? "", "dark-plus");
+---
+
+<PostLayout
+  title={`${post.title} | ${SITE_TITLE}`}
+  description={post.description}
+>
+  <div class="d-flex justify-content-center">
+    <div class="n-container-xl mb-5 px-lg-4">
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold h2-lg">{post.title}</h1>
+      <div class="mb-4 post-thumb-wrapper">
+        {
+          post.image ? (
+            <img
+              src={post.image.src}
+              alt={post.image.altText}
+              width={post.image.width}
+              height={post.image.height}
+              class="d-block mx-auto h-auto"
+            />
+          ) : (
+            <img src="/img/dummy.png" alt="dummy image" />
+          )
+        }
+      </div>
+      <PostTimeStamp
+        createdAt={post._sys.createdAt}
+        updatedAt={post._sys.updatedAt}
+      />
+      <div class="post-tag-list">
+        {tags.map((tag) => <PostTagIcon tag={tag} class="me-2 mb-2" />)}
+      </div>
+      <div class="post-content" set:html={body} />
+    </div>
+    <PostSidebar
+      createdAt={post._sys.createdAt}
+      updatedAt={post._sys.updatedAt}
+    />
+  </div>
+</PostLayout>
+
+<style lang="scss" scoped>
+  .post-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .post-thumb-wrapper {
+    max-height: 480px;
+    text-align: center;
+
+    img {
+      max-height: inherit;
+      max-width: 100%;
+    }
+  }
+</style>
