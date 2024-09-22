@@ -1,0 +1,15 @@
+root = true
+
+[*]
+end_of_line = lf
+indent_style = space
+insert_final_newline = false
+
+[*.astro]
+indent_size = 2
+
+[*.{ts,tsx}]
+indent_size = 2
+
+[*.{css,scss}]
+indent_size = 2

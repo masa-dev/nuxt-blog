@@ -20,7 +20,7 @@ export default function PostSidebarToc() {
 
   useEffect(() => {
     const boxes = document.querySelectorAll<HTMLHeadingElement>(
-      ".post-content h1,.post-content h2,.post-content h3"
+      ".post-content h1,.post-content h2,.post-content h3",
     );
 
     if (titles.length === 0) {
@@ -42,7 +42,7 @@ export default function PostSidebarToc() {
   useEffect(() => {
     if (execOnceFlag) return;
     const boxes = document.querySelectorAll<HTMLHeadingElement>(
-      ".post-content h1,.post-content h2,.post-content h3"
+      ".post-content h1,.post-content h2,.post-content h3",
     );
 
     const observer = new IntersectionObserver((entries) => {

@@ -18,7 +18,7 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Canonical URL -->
@@ -28,6 +28,7 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
+<meta name="format-detection" content="telephone=no" />
 
 <!-- Open Graph / Facebook -->
 <meta property="og:type" content="website" />
@@ -42,3 +43,17 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
+
+<!-- Google Analyticls -->
+<script
+  src="https://www.googletagmanager.com/gtag/js?id=G-VQ4Z33CTQD"
+  is:inline
+  async></script>
+<script is:inline>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-VQ4Z33CTQD");
+</script>

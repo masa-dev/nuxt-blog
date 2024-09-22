@@ -1,5 +1,5 @@
 @mixin headerNavAfter($navColor) {
-  content: '';
+  content: "";
   border-bottom: 2px solid $navColor;
   position: absolute;
   right: -0.5rem;

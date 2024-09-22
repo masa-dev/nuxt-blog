@@ -36,12 +36,12 @@ const noteRes = await fetchNotes({ limit: 100, skip: 0 });
     </div>
     <PostList
       postList={postRes.items.filter((post) =>
-        post.tags.some((t) => t.slug === slug)
+        post.tags.some((t) => t.slug === slug),
       )}
     />
     <NoteList
       noteList={noteRes.items.filter((note) =>
-        note.tags.some((t) => t.slug === slug)
+        note.tags.some((t) => t.slug === slug),
       )}
     />
   </div>
