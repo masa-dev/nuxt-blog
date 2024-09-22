@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "nuxt-app/dist",
+    "public": "astro-blog/dist",
     "trailingSlash": false,
     "ignore": [
       "firebase.json",
