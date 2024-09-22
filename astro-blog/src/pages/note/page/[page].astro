@@ -36,7 +36,7 @@ const getPosts = async () => {
   };
 
   return {
-    posts: noteList.items,
+    notes: noteList.items,
     pageMeta,
   };
 };
@@ -45,16 +45,13 @@ const linkGen = (pageNum: number) => {
   return `/note/page/${pageNum}`;
 };
 
-const { posts, pageMeta } = await getPosts();
+const { notes, pageMeta } = await getPosts();
 ---
 
-<PostLayout
-  title={SITE_TITLE}
-  description={SITE_DESCRIPTION}
->
+<PostLayout title={`Note一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
   <div class="n-container-xl mx-auto mb-5">
-    <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
-    <NoteList noteList={posts} />
+    <h2 class="mb-5 mt-4 font-weight-bold">Note一覧</h2>
+    <NoteList noteList={notes} />
     <Pagination
       page={pageMeta.currentPage}
       linkGen={linkGen}

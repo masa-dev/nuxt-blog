@@ -46,11 +46,7 @@ body = await highlightCode(body ?? "", "dark-plus");
         updatedAt={note._sys.updatedAt}
       />
       <div class="post-tag-list">
-        {
-          tags.map((tag) => (
-            <PostTagIcon tag={tag} class="me-2 mb-2" />
-          ))
-        }
+        {tags.map((tag) => <PostTagIcon tag={tag} class="me-2 mb-2" />)}
       </div>
       <div class="post-content" set:html={body} />
     </div>
