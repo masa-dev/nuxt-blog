@@ -108,6 +108,10 @@ header {
     }
   }
 
+  a {
+    word-wrap: break-word;
+  }
+
   :not(pre) > code {
     vertical-align: middle;
     color: rgb(201, 23, 70);
