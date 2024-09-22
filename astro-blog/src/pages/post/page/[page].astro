@@ -48,10 +48,7 @@ const linkGen = (pageNum: number) => {
 const { posts, pageMeta } = await getPosts();
 ---
 
-<PostLayout
-  title={SITE_TITLE}
-  description={SITE_DESCRIPTION}
->
+<PostLayout title={`Post一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
   <div class="n-container-xl mx-auto mb-5">
     <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
     <PostList postList={posts} />

@@ -50,3 +50,8 @@ export const fetchTag = async (id: string) => {
     const res = await newtClient.get<Tag>(`tag/${id}`);
     return res.data;
 }
+
+export const fetchTagBySlug = async (slug: string) => {
+    const res = await newtClient.get<ApiResponse<Tag>>(`tag/?slug=${slug}`);
+    return res.data.items[0];
+}
