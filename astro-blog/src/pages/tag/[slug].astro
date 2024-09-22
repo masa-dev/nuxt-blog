@@ -34,7 +34,15 @@ const noteRes = await fetchNotes({ limit: 100, skip: 0 });
       <img src={tag.image.src} width="100" height="100" class="mr-4" />
       <h1 class="font-weight-bolder h2-lg">{tag.name}</h1>
     </div>
-    <PostList postList={postRes.items} />
-    <NoteList noteList={noteRes.items} />
+    <PostList
+      postList={postRes.items.filter((post) =>
+        post.tags.some((t) => t.slug === slug)
+      )}
+    />
+    <NoteList
+      noteList={noteRes.items.filter((note) =>
+        note.tags.some((t) => t.slug === slug)
+      )}
+    />
   </div>
 </PostLayout>
