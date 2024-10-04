@@ -33,12 +33,17 @@
 
 	// Uncomment to connect as a non-root user if you've added one. See https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
-	"extensions": [
-		"ms-azuretools.vscode-docker",
-		"esbenp.prettier-vscode",
-		"octref.vetur",
-		"editorconfig.editorconfig",
-		"mhutchie.git-graph",
-		"astro-build.astro-vscode"
-	]
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-docker",
+				"esbenp.prettier-vscode",
+				"octref.vetur",
+				"editorconfig.editorconfig",
+				"mhutchie.git-graph",
+				"astro-build.astro-vscode"
+			]
+		}
+	}
 }
