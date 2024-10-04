@@ -2,6 +2,8 @@
 &lt;p&gt;↓nvim kickstart&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/nvim-lua/kickstart.nvim&quot;&gt;https://github.com/nvim-lua/kickstart.nvim&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;続くかわからないけど、今回はオプション周りをまとめる&lt;/p&gt;
+&lt;h2&gt;設定内容&lt;/h2&gt;
+&lt;h3&gt;&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;キーの設定&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;キーの設定を半角スペースにする&lt;br&gt;
 デフォルトはバックスラッシュ（&lt;code&gt;\&lt;/code&gt;）&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Set &amp;lt;space&amp;gt; as the leader key
@@ -10,31 +12,31 @@
 vim.g.mapleader = &apos; &apos;
 vim.g.maplocalleader = &apos; &apos;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Nerd Fontに対応しているか&lt;br&gt;
-Nerd Font対応していれば &lt;code&gt;true&lt;/code&gt; にする&lt;/p&gt;
+&lt;h3&gt;Nerd Fontに対応しているか&lt;/h3&gt;
+&lt;p&gt;Nerd Font対応していれば &lt;code&gt;true&lt;/code&gt; にする&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;行番号の有効化&lt;br&gt;
-相対的な行番号も設定できるとのこと&lt;/p&gt;
+&lt;h3&gt;行番号の有効化&lt;/h3&gt;
+&lt;p&gt;相対的な行番号も設定できるとのこと&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;マウスモードを有効化するか&lt;br&gt;
-有効化するとマウスでのカーソル位置の移動ができる様になる&lt;/p&gt;
+&lt;h3&gt;マウスモードを有効化&lt;/h3&gt;
+&lt;p&gt;有効化するとマウスでのカーソル位置の移動ができる様になる&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = &apos;a&apos;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;モードを表示するかの設定&lt;br&gt;
-すでにステータスラインに表示しているため表示しないとのこと&lt;/p&gt;
+&lt;h3&gt;モードを表示するかの設定&lt;/h3&gt;
+&lt;p&gt;すでにステータスラインに表示しているため表示しないとのこと&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Don&apos;t show the mode, since it&apos;s already in the status line
 vim.opt.showmode = false
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;クリックボードを同期する&lt;br&gt;
-起動時間が長くなるため、&lt;code&gt;UiEnter&lt;/code&gt;の後に設定&lt;/p&gt;
+&lt;h3&gt;クリックボードの同期&lt;/h3&gt;
+&lt;p&gt;OSとのクリップボード同期を有効化するが、起動時間が長くなるため&lt;code&gt;UiEnter&lt;/code&gt;の後に設定&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -43,30 +45,34 @@ vim.schedule(function()
   vim.opt.clipboard = &apos;unnamedplus&apos;
 end)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;ブレークインデントの有効化&lt;br&gt;
-有効にすると改行時にインデントされた状態になる&lt;/p&gt;
+&lt;h3&gt;ブレークインデントの有効化&lt;/h3&gt;
+&lt;p&gt;有効にすると改行時にインデントされた状態になる&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Enable break indent
 vim.opt.breakindent = true
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Undoファイルの有効化&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;u&lt;/code&gt;コマンドのでのundoを記録する&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Save undo history
 vim.opt.undofile = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;検索時に大文字小文字を区別しない&lt;br&gt;
-\Cか大文字が含まれていない限りは区別せずに検索する&lt;/p&gt;
+&lt;h3&gt;検索時の大文字・小文字の無視設定&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;\C&lt;/code&gt;か大文字が含まれていない限りは区別せずに検索する&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;サインカラムの有効化&lt;/h3&gt;
 &lt;p&gt;サインカラムをデフォルトに設定する&lt;br&gt;
 サインカラムは、行番号の左に表示される記号の行のこと&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Keep signcolumn on by default
 vim.opt.signcolumn = &apos;yes&apos;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;スワップファイルの更新時間&lt;/h3&gt;
 &lt;p&gt;この時間の間 (ミリ秒単位) 入力がなければ、スワップファイルがディスクに書き込まれる（参照：&lt;a href=&quot;https://vim-jp.org/vimdoc-ja/options.html&quot;&gt;https://vim-jp.org/vimdoc-ja/options.html&lt;/a&gt;）&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Decrease update time
 vim.opt.updatetime = 250
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;キーマッピングシーケンスの待ち時間&lt;/h3&gt;
 &lt;p&gt;キーマッピングシーケンスの待ち時間を減らす&lt;br&gt;
 例）&lt;code&gt;&amp;lt;Leader&amp;gt;w&lt;/code&gt;のマッピングの場合、&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;入力後の待ち時間を設定する&lt;br&gt;
 which-keyのポップアップ表示を早めるために0.3秒に設定&lt;/p&gt;
@@ -74,7 +80,7 @@ which-keyのポップアップ表示を早めるために0.3秒に設定&lt;/p&g
 -- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;画面分割時の分割方向&lt;/p&gt;
+&lt;h3&gt;分割画面の方向設定&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;横に分割する場合は、右に新しいウインドウを作成&lt;/li&gt;
 &lt;li&gt;縦に分割する場合は、下に新しいウインドウを作成&lt;/li&gt;
@@ -83,25 +89,28 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;リストモード？の有効化&lt;br&gt;
-有効化した場合、&lt;code&gt;listchars&lt;/code&gt;にある文字が反映される&lt;/p&gt;
+&lt;h3&gt;リストモードの有効化&lt;/h3&gt;
+&lt;p&gt;有効化した場合、&lt;code&gt;listchars&lt;/code&gt;にある文字が反映される&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help &apos;list&apos;`
 --  and `:help &apos;listchars&apos;`
 vim.opt.list = true
 vim.opt.listchars = { tab = &apos;» &apos;, trail = &apos;·&apos;, nbsp = &apos;␣&apos; }
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;コマンド結果のプレビュー&lt;/h3&gt;
 &lt;p&gt;コマンドの結果を分割画面でプレビューできる&lt;br&gt;
 置換（&lt;code&gt;:%s/&lt;/code&gt;）がわかりやすい&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Preview substitutions live, as you type!
 vim.opt.inccommand = &apos;split&apos;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;カーソル行の強調表示&lt;/h3&gt;
 &lt;p&gt;カーソルの行がどこにあるかわかる様にする&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Show which line your cursor is on
 vim.opt.cursorline = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;カーソルの上下に表示する画面行数の最小値&lt;br&gt;
-開始・終了行以外では、設定された行数より下にカーソルを移動するとスクロールする&lt;/p&gt;
+&lt;h3&gt;カーソルの上下に表示する行数の設定&lt;/h3&gt;
+&lt;p&gt;カーソルの上下に表示する画面行数の最小値を設定する&lt;/p&gt;
+&lt;p&gt;開始・終了行以外では、設定された行数より下にカーソルを移動するとスクロールする&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 &lt;/code&gt;&lt;/pre&gt;
@@ -546,6 +555,8 @@ console.warn node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6465
 &lt;p&gt;↓nvim kickstart&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/nvim-lua/kickstart.nvim&quot;&gt;https://github.com/nvim-lua/kickstart.nvim&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;続くかわからないけど、今回はオプション周りをまとめる&lt;/p&gt;
+&lt;h2&gt;設定内容&lt;/h2&gt;
+&lt;h3&gt;&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;キーの設定&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;キーの設定を半角スペースにする&lt;br&gt;
 デフォルトはバックスラッシュ（&lt;code&gt;\&lt;/code&gt;）&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Set &amp;lt;space&amp;gt; as the leader key
@@ -554,31 +565,31 @@ console.warn node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6465
 vim.g.mapleader = &apos; &apos;
 vim.g.maplocalleader = &apos; &apos;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Nerd Fontに対応しているか&lt;br&gt;
-Nerd Font対応していれば &lt;code&gt;true&lt;/code&gt; にする&lt;/p&gt;
+&lt;h3&gt;Nerd Fontに対応しているか&lt;/h3&gt;
+&lt;p&gt;Nerd Font対応していれば &lt;code&gt;true&lt;/code&gt; にする&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = false
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;行番号の有効化&lt;br&gt;
-相対的な行番号も設定できるとのこと&lt;/p&gt;
+&lt;h3&gt;行番号の有効化&lt;/h3&gt;
+&lt;p&gt;相対的な行番号も設定できるとのこと&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Make line numbers default
 vim.opt.number = true
 -- You can also add relative line numbers, to help with jumping.
 --  Experiment for yourself to see if you like it!
 -- vim.opt.relativenumber = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;マウスモードを有効化するか&lt;br&gt;
-有効化するとマウスでのカーソル位置の移動ができる様になる&lt;/p&gt;
+&lt;h3&gt;マウスモードを有効化&lt;/h3&gt;
+&lt;p&gt;有効化するとマウスでのカーソル位置の移動ができる様になる&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = &apos;a&apos;
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;モードを表示するかの設定&lt;br&gt;
-すでにステータスラインに表示しているため表示しないとのこと&lt;/p&gt;
+&lt;h3&gt;モードを表示するかの設定&lt;/h3&gt;
+&lt;p&gt;すでにステータスラインに表示しているため表示しないとのこと&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Don&apos;t show the mode, since it&apos;s already in the status line
 vim.opt.showmode = false
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;クリックボードを同期する&lt;br&gt;
-起動時間が長くなるため、&lt;code&gt;UiEnter&lt;/code&gt;の後に設定&lt;/p&gt;
+&lt;h3&gt;クリックボードの同期&lt;/h3&gt;
+&lt;p&gt;OSとのクリップボード同期を有効化するが、起動時間が長くなるため&lt;code&gt;UiEnter&lt;/code&gt;の後に設定&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -587,30 +598,34 @@ vim.schedule(function()
   vim.opt.clipboard = &apos;unnamedplus&apos;
 end)
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;ブレークインデントの有効化&lt;br&gt;
-有効にすると改行時にインデントされた状態になる&lt;/p&gt;
+&lt;h3&gt;ブレークインデントの有効化&lt;/h3&gt;
+&lt;p&gt;有効にすると改行時にインデントされた状態になる&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Enable break indent
 vim.opt.breakindent = true
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Undoファイルの有効化&lt;/h3&gt;
 &lt;p&gt;&lt;code&gt;u&lt;/code&gt;コマンドのでのundoを記録する&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Save undo history
 vim.opt.undofile = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;検索時に大文字小文字を区別しない&lt;br&gt;
-\Cか大文字が含まれていない限りは区別せずに検索する&lt;/p&gt;
+&lt;h3&gt;検索時の大文字・小文字の無視設定&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;\C&lt;/code&gt;か大文字が含まれていない限りは区別せずに検索する&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;サインカラムの有効化&lt;/h3&gt;
 &lt;p&gt;サインカラムをデフォルトに設定する&lt;br&gt;
 サインカラムは、行番号の左に表示される記号の行のこと&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Keep signcolumn on by default
 vim.opt.signcolumn = &apos;yes&apos;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;スワップファイルの更新時間&lt;/h3&gt;
 &lt;p&gt;この時間の間 (ミリ秒単位) 入力がなければ、スワップファイルがディスクに書き込まれる（参照：&lt;a href=&quot;https://vim-jp.org/vimdoc-ja/options.html&quot;&gt;https://vim-jp.org/vimdoc-ja/options.html&lt;/a&gt;）&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Decrease update time
 vim.opt.updatetime = 250
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;キーマッピングシーケンスの待ち時間&lt;/h3&gt;
 &lt;p&gt;キーマッピングシーケンスの待ち時間を減らす&lt;br&gt;
 例）&lt;code&gt;&amp;lt;Leader&amp;gt;w&lt;/code&gt;のマッピングの場合、&lt;code&gt;&amp;lt;Leader&amp;gt;&lt;/code&gt;入力後の待ち時間を設定する&lt;br&gt;
 which-keyのポップアップ表示を早めるために0.3秒に設定&lt;/p&gt;
@@ -618,7 +633,7 @@ which-keyのポップアップ表示を早めるために0.3秒に設定&lt;/p&g
 -- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;画面分割時の分割方向&lt;/p&gt;
+&lt;h3&gt;分割画面の方向設定&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;横に分割する場合は、右に新しいウインドウを作成&lt;/li&gt;
 &lt;li&gt;縦に分割する場合は、下に新しいウインドウを作成&lt;/li&gt;
@@ -627,25 +642,28 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;リストモード？の有効化&lt;br&gt;
-有効化した場合、&lt;code&gt;listchars&lt;/code&gt;にある文字が反映される&lt;/p&gt;
+&lt;h3&gt;リストモードの有効化&lt;/h3&gt;
+&lt;p&gt;有効化した場合、&lt;code&gt;listchars&lt;/code&gt;にある文字が反映される&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help &apos;list&apos;`
 --  and `:help &apos;listchars&apos;`
 vim.opt.list = true
 vim.opt.listchars = { tab = &apos;» &apos;, trail = &apos;·&apos;, nbsp = &apos;␣&apos; }
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;コマンド結果のプレビュー&lt;/h3&gt;
 &lt;p&gt;コマンドの結果を分割画面でプレビューできる&lt;br&gt;
 置換（&lt;code&gt;:%s/&lt;/code&gt;）がわかりやすい&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Preview substitutions live, as you type!
 vim.opt.inccommand = &apos;split&apos;
 &lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;カーソル行の強調表示&lt;/h3&gt;
 &lt;p&gt;カーソルの行がどこにあるかわかる様にする&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Show which line your cursor is on
 vim.opt.cursorline = true
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;カーソルの上下に表示する画面行数の最小値&lt;br&gt;
-開始・終了行以外では、設定された行数より下にカーソルを移動するとスクロールする&lt;/p&gt;
+&lt;h3&gt;カーソルの上下に表示する行数の設定&lt;/h3&gt;
+&lt;p&gt;カーソルの上下に表示する画面行数の最小値を設定する&lt;/p&gt;
+&lt;p&gt;開始・終了行以外では、設定された行数より下にカーソルを移動するとスクロールする&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 &lt;/code&gt;&lt;/pre&gt;
