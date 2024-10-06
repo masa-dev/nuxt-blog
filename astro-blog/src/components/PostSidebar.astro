@@ -1,6 +1,12 @@
 ---
 import dayjs from "dayjs";
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 import PostSidebarToc from "./PostSidebarToc";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+const asiaTzName = 'Asia/Tokyo';
 
 type Props = {
   createdAt: string;
@@ -10,15 +16,15 @@ type Props = {
 const { createdAt, updatedAt } = Astro.props;
 
 const getCreatedAtLocaled = () => {
-  return dayjs(createdAt).format("YYYY年M月D日 HH:mm");
+  return dayjs(createdAt).tz(asiaTzName).format("YYYY年M月D日 HH:mm");
 };
 
 const getUpdatedAtLocaled = () => {
-  return dayjs(updatedAt).format("YYYY年M月D日 HH:mm");
+  return dayjs(updatedAt).tz(asiaTzName).format("YYYY年M月D日 HH:mm");
 };
 
 const getUpdatedAtIsoLocaled = () => {
-  return dayjs(updatedAt).toISOString();
+  return dayjs(updatedAt).tz(asiaTzName).toISOString();
 };
 ---
 
