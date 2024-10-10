@@ -2,21 +2,21 @@
 &lt;p&gt;&lt;a href=&quot;https://masa-dev.net/post/66e23631e6213d85f24fb260&quot;&gt;NeoVim kickstartの設定説明メモ（オプション編）&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;設定内容（KeyMap）&lt;/h2&gt;
 &lt;h3&gt;検索結果のハイライト削除&lt;/h3&gt;
-&lt;p&gt;検索結果のハイライトを&lt;code&gt;ESC&lt;/code&gt;キーで解除する。&lt;/p&gt;
-&lt;p&gt;デフォルトでは&lt;code&gt;/&lt;/code&gt;で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。&lt;/p&gt;
+&lt;p&gt;検索結果のハイライトを&lt;code&gt;ESC&lt;/code&gt;キーで解除する。&lt;br&gt;
+デフォルトでは&lt;code&gt;/&lt;/code&gt;で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Clear highlights on search when pressing &amp;lt;Esc&amp;gt; in normal mode
 --  See `:help hlsearch`
 vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;Esc&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;nohlsearch&amp;lt;CR&amp;gt;&apos;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;診断ツールを表示する&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; &lt;code&gt;q&lt;/code&gt; で診断ツールを分割ウインドウとして表示する。&lt;/p&gt;
-&lt;p&gt;診断ツールはLSPのアラートなどの表示のこと。VSCodeでいう「問題」タブのこと。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; + &lt;code&gt;q&lt;/code&gt; で診断ツールを分割ウインドウとして表示する。&lt;br&gt;
+診断ツールはLSPのアラートなどの表示のこと。VSCodeでいう「問題」タブ。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Diagnostic keymaps
 vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;leader&amp;gt;q&apos;, vim.diagnostic.setloclist, { desc = &apos;Open diagnostic [Q]uickfix list&apos; })
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;ターミナルモードからノーマルモードに戻る&lt;/h3&gt;
-&lt;p&gt;ターミナルモードからノーマルモードに戻るためのショートカット。&lt;/p&gt;
-&lt;p&gt;通常のノーマルモードに戻るコマンドは&lt;code&gt;Ctrl + \&lt;/code&gt; &lt;code&gt;Ctrl + n&lt;/code&gt; になっている。&lt;/p&gt;
+&lt;p&gt;ターミナルモードからノーマルモードに戻るためのショートカット。&lt;br&gt;
+通常のノーマルモードに戻るコマンドは&lt;code&gt;Ctrl \&lt;/code&gt; &lt;code&gt;Ctrl n&lt;/code&gt; になっている。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press &amp;lt;C-\&amp;gt;&amp;lt;C-n&amp;gt;, which
 -- is not what someone will guess without a bit more experience.
@@ -26,17 +26,17 @@ vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;leader&amp;gt;q&apos;, vim.diagnosti
 vim.keymap.set(&apos;t&apos;, &apos;&amp;lt;Esc&amp;gt;&amp;lt;Esc&amp;gt;&apos;, &apos;&amp;lt;C-\\&amp;gt;&amp;lt;C-n&amp;gt;&apos;, { desc = &apos;Exit terminal mode&apos; })
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;矢印キーの無効化&lt;/h3&gt;
-&lt;p&gt;ノーマルモードでの矢印キーを無効化する。矢印キーを無効化したい場合はコメントアウトを外す。&lt;/p&gt;
-&lt;p&gt;矢印キーでの移動を絶対に許さないマン向け設定。&lt;/p&gt;
+&lt;p&gt;ノーマルモードでの矢印キーを無効化する。矢印キーを無効化したい場合はコメントアウトを外す。&lt;br&gt;
+矢印キーでの移動を絶対に許さないマン向け設定。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- TIP: Disable arrow keys in normal mode
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;left&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use h to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;right&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use l to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;up&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use k to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;down&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use j to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;left&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use h to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;right&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use l to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;up&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use k to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;down&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use j to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;分割ウインドウ移動&lt;/h3&gt;
-&lt;p&gt;分割ウインドウを&lt;code&gt;Ctrl h&lt;/code&gt;, &lt;code&gt;Ctrl l&lt;/code&gt;, &lt;code&gt;Ctrl j&lt;/code&gt;, &lt;code&gt;Ctrl k&lt;/code&gt; で移動できるようにする。&lt;/p&gt;
-&lt;p&gt;ちなみにウインドウ分割は以下の方法でできる。&lt;/p&gt;
+&lt;p&gt;分割ウインドウを&lt;code&gt;Ctrl h&lt;/code&gt;, &lt;code&gt;Ctrl l&lt;/code&gt;, &lt;code&gt;Ctrl j&lt;/code&gt;, &lt;code&gt;Ctrl k&lt;/code&gt; で移動できるようにする。&lt;br&gt;
+ちなみにウインドウ分割は以下の方法でできる。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Ctrl w&lt;/code&gt; + &lt;code&gt;v&lt;/code&gt; 垂直分割&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Ctrl w&lt;/code&gt; + &lt;code&gt;s&lt;/code&gt; 水平分割&lt;/li&gt;
@@ -53,8 +53,8 @@ vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;C-k&amp;gt;&apos;, &apos;&amp;lt;C-w
 &lt;h2&gt;設定内容（Basic Autocommands）&lt;/h2&gt;
 &lt;h3&gt;ヤンク部分のハイライト&lt;/h3&gt;
 &lt;p&gt;NeovimのAutocommandは、特定のイベントが発生したときに自動的にコマンドを実行する機能のこと。&lt;/p&gt;
-&lt;p&gt;以下の設定では&lt;code&gt;TextYankPost&lt;/code&gt;というイベントで発火し、ヤンク時にヤンクした文字範囲をハイライトする。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;TextYankPost&lt;/code&gt;はテキストをヤンクした後に実行されるイベントのこと。&lt;/p&gt;
+&lt;p&gt;以下の設定では&lt;code&gt;TextYankPost&lt;/code&gt;というイベントで発火し、ヤンク時にヤンクした文字範囲をハイライトする。&lt;br&gt;
+&lt;code&gt;TextYankPost&lt;/code&gt;はテキストをヤンクした後に実行されるイベントのこと。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -70,8 +70,9 @@ vim.api.nvim_create_autocmd(&apos;TextYankPost&apos;, {
 &lt;h2&gt;終わりに&lt;/h2&gt;
 &lt;p&gt;次回は長大なpluginなので投稿できるかな…?&lt;/p&gt;
 &lt;h2&gt;参考&lt;/h2&gt;
-&lt;blockquote&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&quot;https://neovim.io/doc/user/autocmd.html&quot;&gt;https://neovim.io/doc/user/autocmd.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 </content:encoded></item><item><title>NeoVim kickstartの設定説明メモ（オプション編）</title><link>https://masa-dev.net/post/66e23631e6213d85f24fb260/</link><guid isPermaLink="true">https://masa-dev.net/post/66e23631e6213d85f24fb260/</guid><description>最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ</description><pubDate>Thu, 12 Sep 2024 00:41:01 GMT</pubDate><content:encoded>&lt;p&gt;最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ&lt;/p&gt;
 &lt;p&gt;↓nvim kickstart&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/nvim-lua/kickstart.nvim&quot;&gt;https://github.com/nvim-lua/kickstart.nvim&lt;/a&gt;&lt;/p&gt;
@@ -189,8 +190,10 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;参考&lt;/h2&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&quot;https://vim-jp.org/vimdoc-ja/map.html&quot;&gt;https://vim-jp.org/vimdoc-ja/map.html&lt;/a&gt;&lt;br&gt;
 &lt;a href=&quot;https://vim-jp.org/vimdoc-ja/options.html&quot;&gt;https://vim-jp.org/vimdoc-ja/options.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 </content:encoded></item><item><title>.NET MVCをSupabase + Cloud Runで動かしてみる</title><link>https://masa-dev.net/post/6425b90086e7de37b82ff1a6/</link><guid isPermaLink="true">https://masa-dev.net/post/6425b90086e7de37b82ff1a6/</guid><description>少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供</description><pubDate>Fri, 31 Mar 2023 18:25:05 GMT</pubDate><content:encoded>&lt;h2&gt;はじめに&lt;/h2&gt;
 &lt;p&gt;少し前に話題になっていた Supabase を最近になって知りました。&lt;br&gt;
 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供するプラットフォームのことです。&lt;/p&gt;
@@ -629,21 +632,21 @@ console.warn node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6465
 &lt;p&gt;&lt;a href=&quot;https://masa-dev.net/post/66e23631e6213d85f24fb260&quot;&gt;NeoVim kickstartの設定説明メモ（オプション編）&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;設定内容（KeyMap）&lt;/h2&gt;
 &lt;h3&gt;検索結果のハイライト削除&lt;/h3&gt;
-&lt;p&gt;検索結果のハイライトを&lt;code&gt;ESC&lt;/code&gt;キーで解除する。&lt;/p&gt;
-&lt;p&gt;デフォルトでは&lt;code&gt;/&lt;/code&gt;で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。&lt;/p&gt;
+&lt;p&gt;検索結果のハイライトを&lt;code&gt;ESC&lt;/code&gt;キーで解除する。&lt;br&gt;
+デフォルトでは&lt;code&gt;/&lt;/code&gt;で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Clear highlights on search when pressing &amp;lt;Esc&amp;gt; in normal mode
 --  See `:help hlsearch`
 vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;Esc&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;nohlsearch&amp;lt;CR&amp;gt;&apos;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;診断ツールを表示する&lt;/h3&gt;
-&lt;p&gt;&lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; &lt;code&gt;q&lt;/code&gt; で診断ツールを分割ウインドウとして表示する。&lt;/p&gt;
-&lt;p&gt;診断ツールはLSPのアラートなどの表示のこと。VSCodeでいう「問題」タブのこと。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&amp;lt;Space&amp;gt;&lt;/code&gt; + &lt;code&gt;q&lt;/code&gt; で診断ツールを分割ウインドウとして表示する。&lt;br&gt;
+診断ツールはLSPのアラートなどの表示のこと。VSCodeでいう「問題」タブ。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Diagnostic keymaps
 vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;leader&amp;gt;q&apos;, vim.diagnostic.setloclist, { desc = &apos;Open diagnostic [Q]uickfix list&apos; })
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;ターミナルモードからノーマルモードに戻る&lt;/h3&gt;
-&lt;p&gt;ターミナルモードからノーマルモードに戻るためのショートカット。&lt;/p&gt;
-&lt;p&gt;通常のノーマルモードに戻るコマンドは&lt;code&gt;Ctrl + \&lt;/code&gt; &lt;code&gt;Ctrl + n&lt;/code&gt; になっている。&lt;/p&gt;
+&lt;p&gt;ターミナルモードからノーマルモードに戻るためのショートカット。&lt;br&gt;
+通常のノーマルモードに戻るコマンドは&lt;code&gt;Ctrl \&lt;/code&gt; &lt;code&gt;Ctrl n&lt;/code&gt; になっている。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
 -- for people to discover. Otherwise, you normally need to press &amp;lt;C-\&amp;gt;&amp;lt;C-n&amp;gt;, which
 -- is not what someone will guess without a bit more experience.
@@ -653,17 +656,17 @@ vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;leader&amp;gt;q&apos;, vim.diagnosti
 vim.keymap.set(&apos;t&apos;, &apos;&amp;lt;Esc&amp;gt;&amp;lt;Esc&amp;gt;&apos;, &apos;&amp;lt;C-\\&amp;gt;&amp;lt;C-n&amp;gt;&apos;, { desc = &apos;Exit terminal mode&apos; })
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;矢印キーの無効化&lt;/h3&gt;
-&lt;p&gt;ノーマルモードでの矢印キーを無効化する。矢印キーを無効化したい場合はコメントアウトを外す。&lt;/p&gt;
-&lt;p&gt;矢印キーでの移動を絶対に許さないマン向け設定。&lt;/p&gt;
+&lt;p&gt;ノーマルモードでの矢印キーを無効化する。矢印キーを無効化したい場合はコメントアウトを外す。&lt;br&gt;
+矢印キーでの移動を絶対に許さないマン向け設定。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- TIP: Disable arrow keys in normal mode
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;left&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use h to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;right&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use l to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;up&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use k to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
--- vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;down&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use j to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;left&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use h to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;right&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use l to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;up&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use k to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
+vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;down&amp;gt;&apos;, &apos;&amp;lt;cmd&amp;gt;echo &amp;quot;Use j to move!!&amp;quot;&amp;lt;CR&amp;gt;&apos;)
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;分割ウインドウ移動&lt;/h3&gt;
-&lt;p&gt;分割ウインドウを&lt;code&gt;Ctrl h&lt;/code&gt;, &lt;code&gt;Ctrl l&lt;/code&gt;, &lt;code&gt;Ctrl j&lt;/code&gt;, &lt;code&gt;Ctrl k&lt;/code&gt; で移動できるようにする。&lt;/p&gt;
-&lt;p&gt;ちなみにウインドウ分割は以下の方法でできる。&lt;/p&gt;
+&lt;p&gt;分割ウインドウを&lt;code&gt;Ctrl h&lt;/code&gt;, &lt;code&gt;Ctrl l&lt;/code&gt;, &lt;code&gt;Ctrl j&lt;/code&gt;, &lt;code&gt;Ctrl k&lt;/code&gt; で移動できるようにする。&lt;br&gt;
+ちなみにウインドウ分割は以下の方法でできる。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;Ctrl w&lt;/code&gt; + &lt;code&gt;v&lt;/code&gt; 垂直分割&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;Ctrl w&lt;/code&gt; + &lt;code&gt;s&lt;/code&gt; 水平分割&lt;/li&gt;
@@ -680,8 +683,8 @@ vim.keymap.set(&apos;n&apos;, &apos;&amp;lt;C-k&amp;gt;&apos;, &apos;&amp;lt;C-w
 &lt;h2&gt;設定内容（Basic Autocommands）&lt;/h2&gt;
 &lt;h3&gt;ヤンク部分のハイライト&lt;/h3&gt;
 &lt;p&gt;NeovimのAutocommandは、特定のイベントが発生したときに自動的にコマンドを実行する機能のこと。&lt;/p&gt;
-&lt;p&gt;以下の設定では&lt;code&gt;TextYankPost&lt;/code&gt;というイベントで発火し、ヤンク時にヤンクした文字範囲をハイライトする。&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;TextYankPost&lt;/code&gt;はテキストをヤンクした後に実行されるイベントのこと。&lt;/p&gt;
+&lt;p&gt;以下の設定では&lt;code&gt;TextYankPost&lt;/code&gt;というイベントで発火し、ヤンク時にヤンクした文字範囲をハイライトする。&lt;br&gt;
+&lt;code&gt;TextYankPost&lt;/code&gt;はテキストをヤンクした後に実行されるイベントのこと。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-lua&quot;&gt;-- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -697,8 +700,9 @@ vim.api.nvim_create_autocmd(&apos;TextYankPost&apos;, {
 &lt;h2&gt;終わりに&lt;/h2&gt;
 &lt;p&gt;次回は長大なpluginなので投稿できるかな…?&lt;/p&gt;
 &lt;h2&gt;参考&lt;/h2&gt;
-&lt;blockquote&gt;&lt;/blockquote&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&quot;https://neovim.io/doc/user/autocmd.html&quot;&gt;https://neovim.io/doc/user/autocmd.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 </content:encoded></item><item><title>NeoVim kickstartの設定説明メモ（オプション編）</title><link>https://masa-dev.net/note/66e23631e6213d85f24fb260/</link><guid isPermaLink="true">https://masa-dev.net/note/66e23631e6213d85f24fb260/</guid><description>最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ</description><pubDate>Thu, 12 Sep 2024 00:41:01 GMT</pubDate><content:encoded>&lt;p&gt;最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ&lt;/p&gt;
 &lt;p&gt;↓nvim kickstart&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://github.com/nvim-lua/kickstart.nvim&quot;&gt;https://github.com/nvim-lua/kickstart.nvim&lt;/a&gt;&lt;/p&gt;
@@ -816,8 +820,10 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h2&gt;参考&lt;/h2&gt;
+&lt;blockquote&gt;
 &lt;p&gt;&lt;a href=&quot;https://vim-jp.org/vimdoc-ja/map.html&quot;&gt;https://vim-jp.org/vimdoc-ja/map.html&lt;/a&gt;&lt;br&gt;
 &lt;a href=&quot;https://vim-jp.org/vimdoc-ja/options.html&quot;&gt;https://vim-jp.org/vimdoc-ja/options.html&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
 </content:encoded></item><item><title>.NET MVCをSupabase + Cloud Runで動かしてみる</title><link>https://masa-dev.net/note/6425b90086e7de37b82ff1a6/</link><guid isPermaLink="true">https://masa-dev.net/note/6425b90086e7de37b82ff1a6/</guid><description>少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供</description><pubDate>Fri, 31 Mar 2023 18:25:05 GMT</pubDate><content:encoded>&lt;h2&gt;はじめに&lt;/h2&gt;
 &lt;p&gt;少し前に話題になっていた Supabase を最近になって知りました。&lt;br&gt;
 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供するプラットフォームのことです。&lt;/p&gt;
