@@ -10,7 +10,7 @@ const noteRes = await fetchNotes({ limit: 4, skip: 0 });
 ---
 
 <PostLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-  <div class="n-container-xl mx-auto mb-5">
+  <div class="n-container-xl mx-auto mb-5" data-pagefind-ignore>
     <h2 class="mb-5 mt-4 font-weight-bold">投稿一覧</h2>
     <PostList postList={postRes.items} />
     <div class="text-end">

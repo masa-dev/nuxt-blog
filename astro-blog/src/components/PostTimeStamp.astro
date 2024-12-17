@@ -1,11 +1,11 @@
 ---
 import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-const asiaTzName = 'Asia/Tokyo';
+const asiaTzName = "Asia/Tokyo";
 
 type Props = {
   createdAt: string;
@@ -15,11 +15,15 @@ type Props = {
 const { createdAt, updatedAt } = Astro.props;
 
 const getCreatedAtLocaled = () => {
-  return dayjs(createdAt).tz(asiaTzName).format("YYYY年M月D日 HH:mm");
+  return dayjs(createdAt).tz(asiaTzName).format("YYYY年M月D日");
 };
 
 const getUpdatedAtLocaled = () => {
-  return dayjs(updatedAt).tz(asiaTzName).format("YYYY年M月D日 HH:mm");
+  return dayjs(updatedAt).tz(asiaTzName).format("YYYY年M月D日");
+};
+
+const getCreatedAtIsoLocaled = () => {
+  return dayjs(createdAt).tz(asiaTzName).format("YYYY-MM-DD");
 };
 
 const getUpdatedAtIsoLocaled = () => {
@@ -31,7 +35,11 @@ const getUpdatedAtIsoLocaled = () => {
   {
     createdAt && (
       <div class="post-date-time time-create mb-1">
-        <time>{getCreatedAtLocaled()}</time>
+        {/* pageFind用の日付 */}
+        <time class="d-none" data-pagefind-meta="date">
+          {getCreatedAtLocaled()}
+        </time>
+        <time datetime={getCreatedAtIsoLocaled()}>{getCreatedAtLocaled()}</time>
       </div>
     )
   }

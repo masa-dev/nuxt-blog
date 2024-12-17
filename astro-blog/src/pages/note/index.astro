@@ -34,7 +34,7 @@ const linkGen = (pageNum: number) => {
 ---
 
 <PostLayout title={`Note一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
-  <div class="n-container-xl mx-auto mb-5">
+  <div class="n-container-xl mx-auto mb-5" data-pagefind-ignore>
     <h2 class="mb-5 mt-4 font-weight-bold">Note一覧</h2>
     <NoteList noteList={notes} />
     <Pagination

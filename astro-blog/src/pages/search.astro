@@ -1,0 +1,37 @@
+---
+import "@pagefind/default-ui/css/ui.css";
+import PostLayout from "../layouts/PostLayout.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+---
+
+<PostLayout title={`Search | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+  <h2 class="mb-4 mt-4 font-weight-bold">サイト内検索</h2>
+  <div id="search" class="n-container-xl mx-auto"></div>
+</PostLayout>
+
+<script>
+  import { PagefindUI } from "@pagefind/default-ui";
+
+  new PagefindUI({
+    element: "#search",
+  });
+</script>
+
+<style>
+  #search {
+    .pagefind-ui--reset input {
+      &:focus {
+        border-color: #86b7fe;
+        outline: none;
+      }
+    }
+
+    .pagefind-ui__message {
+      color: rgb(92, 96, 99);
+    }
+
+    .pagefind-ui__result {
+      padding-block: 16px;
+    }
+  }
+</style>
