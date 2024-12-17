@@ -1,12 +1,12 @@
 ---
 import type { Post } from "../types/newtApi";
 import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-const asiaTzName = 'Asia/Tokyo';
+const asiaTzName = "Asia/Tokyo";
 
 type Props = {
   postList: Post[];
@@ -33,7 +33,9 @@ const { postList } = Astro.props;
           <div class="ps-3 d-flex flex-column justify-content-between flex-fill">
             <h2 class="m-0">{post.title}</h2>
             <p class="small m-0 text-secondary">
-              {dayjs(post._sys.createdAt).tz(asiaTzName).format("YYYY年MM月DD日 HH:mm")}
+              {dayjs(post._sys.createdAt)
+                .tz(asiaTzName)
+                .format("YYYY年MM月DD日 HH:mm")}
             </p>
           </div>
         </a>

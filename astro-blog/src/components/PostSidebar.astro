@@ -1,12 +1,12 @@
 ---
 import dayjs from "dayjs";
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 import PostSidebarToc from "./PostSidebarToc";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
-const asiaTzName = 'Asia/Tokyo';
+const asiaTzName = "Asia/Tokyo";
 
 type Props = {
   createdAt: string;
