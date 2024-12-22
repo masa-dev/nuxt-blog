@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="ja" data-astro-cid-gjtny2mx> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v5.0.9"><!-- Canonical URL --><link rel="canonical" href="https://masa-dev.net/post/6425b90086e7de37b82ff1a6"><!-- Primary Meta Tags --><title>.NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog</title><meta name="title" content=".NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog"><meta name="description" content="少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供"><meta name="format-detection" content="telephone=no"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://masa-dev.net/post/6425b90086e7de37b82ff1a6"><meta property="og:title" content=".NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog"><meta property="og:description" content="少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供"><meta property="og:image" content="https://masa-dev.net/blog-placeholder-1.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://masa-dev.net/post/6425b90086e7de37b82ff1a6"><meta property="twitter:title" content=".NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog"><meta property="twitter:description" content="少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供"><meta property="twitter:image" content="https://masa-dev.net/blog-placeholder-1.jpg"><!-- Google Analyticls --><script src="https://www.googletagmanager.com/gtag/js?id=G-VQ4Z33CTQD" async></script><script async>
+<!DOCTYPE html><html lang="ja" data-astro-cid-gjtny2mx> <head><!-- Global Metadata --><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" type="image/x-icon" href="/favicon.ico"><meta name="generator" content="Astro v5.1.1"><!-- Canonical URL --><link rel="canonical" href="https://masa-dev.net/post/6425b90086e7de37b82ff1a6"><!-- Primary Meta Tags --><title>.NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog</title><meta name="title" content=".NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog"><meta name="description" content="少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供"><meta name="format-detection" content="telephone=no"><!-- Open Graph / Facebook --><meta property="og:type" content="website"><meta property="og:url" content="https://masa-dev.net/post/6425b90086e7de37b82ff1a6"><meta property="og:title" content=".NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog"><meta property="og:description" content="少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供"><meta property="og:image" content="https://masa-dev.net/blog-placeholder-1.jpg"><!-- Twitter --><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://masa-dev.net/post/6425b90086e7de37b82ff1a6"><meta property="twitter:title" content=".NET MVCをSupabase + Cloud Runで動かしてみる | MasaDev Blog"><meta property="twitter:description" content="少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供"><meta property="twitter:image" content="https://masa-dev.net/blog-placeholder-1.jpg"><!-- Google Analyticls --><script src="https://www.googletagmanager.com/gtag/js?id=G-VQ4Z33CTQD" async></script><script async>
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
@@ -7,7 +7,7 @@
   gtag("config", "G-VQ4Z33CTQD");
 </script><style>.tag-icon-link[data-astro-cid-bryq6zb6]{display:inline-flex;align-items:center;text-decoration:none;color:#000;padding-top:2px;padding-bottom:2px;padding-left:.6rem;padding-right:.6rem;transition:background-color .3s}.tag-icon-link[data-astro-cid-bryq6zb6]:hover{background-color:#343a400c}.icon-image[data-astro-cid-bryq6zb6]{width:1.5rem;height:1.5rem;object-fit:contain;padding:.2rem 0;margin-right:.4rem}.icon-image-name[data-astro-cid-bryq6zb6]{font-size:.85rem}.post-date[data-astro-cid-6zo6naht]{line-height:1.5}.post-date[data-astro-cid-6zo6naht] .post-date-time[data-astro-cid-6zo6naht]{font-size:.9rem;white-space:nowrap}.post-date[data-astro-cid-6zo6naht] .post-date-time[data-astro-cid-6zo6naht]:before{display:inline-block;height:.8rem;width:.8rem;margin-right:.5rem}.post-date[data-astro-cid-6zo6naht] .time-create[data-astro-cid-6zo6naht]:before{content:url(/img/pen-solid.svg)}.post-date[data-astro-cid-6zo6naht] .time-update[data-astro-cid-6zo6naht]:before{content:url(/img/rotate-right-solid.svg)}@media only screen and (min-width: 1000px){.post-date[data-astro-cid-6zo6naht]{display:none}}aside[data-astro-cid-g62n5fxi]{width:270px}aside[data-astro-cid-g62n5fxi] .sidebar-post-info[data-astro-cid-g62n5fxi]{background:#f1f1f1;border-radius:15px}aside[data-astro-cid-g62n5fxi] .sidebar-post-info[data-astro-cid-g62n5fxi] ul[data-astro-cid-g62n5fxi]>li[data-astro-cid-g62n5fxi]{font-size:.9rem}aside[data-astro-cid-g62n5fxi] .sidebar-post-info[data-astro-cid-g62n5fxi] ul[data-astro-cid-g62n5fxi]>li[data-astro-cid-g62n5fxi] img[data-astro-cid-g62n5fxi]{margin-bottom:2px}aside[data-astro-cid-g62n5fxi] .sticky-top[data-astro-cid-g62n5fxi]{top:1.5rem}@media only screen and (max-width: 1000px){aside[data-astro-cid-g62n5fxi]{display:none}}
 </style>
-<link rel="stylesheet" href="/_astro/index.N9XoNN_V.css">
+<link rel="stylesheet" href="/_astro/index.lVa02xLy.css">
 <style>.post-tag-list[data-astro-cid-eej4zok4]{display:flex;flex-wrap:wrap}.post-thumb-wrapper[data-astro-cid-eej4zok4]{max-height:480px;text-align:center}.post-thumb-wrapper[data-astro-cid-eej4zok4] img[data-astro-cid-eej4zok4]{max-height:inherit;max-width:100%}
 </style></head> <body data-astro-cid-gjtny2mx> <header class="navbar navbar-dark bg-dark justify-content-center p-container-0 m-0" data-astro-cid-3ef6ksr2> <nav class="navbar n-container-xxl navbar-dark bg-dark navbar-expand-md" data-astro-cid-3ef6ksr2> <h2 class="ps-2" data-astro-cid-3ef6ksr2><a class="text-white" href="/" data-astro-cid-3ef6ksr2>MasaDev Blog</a></h2> <div class="internal-links text-white pe-2 pe-md-0" data-astro-cid-3ef6ksr2> <a href="/" class="py-1" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Home </a>  <a href="/post" class="py-1 active" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Post </a>  <a href="/note" class="py-1" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Note </a>  <a href="/tag" class="py-1" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Tag </a>  <a href="/search" class="py-1 d-none d-sm-inline-block" data-astro-cid-3ef6ksr2="true" data-astro-cid-eimmu3lg> Search </a>  </div> <div class="social-links" data-astro-cid-3ef6ksr2> <a href="https://github.com/masa-dev" target="_blank" data-astro-cid-3ef6ksr2> <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" aria-label="github link icon" data-astro-cid-3ef6ksr2><path fill="white" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-3ef6ksr2></path></svg> </a> </div> </nav> </header>  <main class="n-container-xxl mx-auto wf-mplus1p px-3 px-sm-4" data-astro-cid-gjtny2mx>  <div class="d-flex justify-content-center" data-astro-cid-eej4zok4> <div class="n-container-xl mb-5 px-lg-4" data-astro-cid-eej4zok4> <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold h2-lg" data-astro-cid-eej4zok4>.NET MVCをSupabase + Cloud Runで動かしてみる</h1> <div class="mb-4 post-thumb-wrapper" data-astro-cid-eej4zok4> <img src="https://ik.imagekit.io/masahikoproject/aecceb25-e97f-4276-9269-071a54595d36/スクリーンショット2023-04-01001455.png" alt="dotnet mvc + supabase thumbnail" width="939" height="366" class="d-block mx-auto h-auto" data-astro-cid-eej4zok4> </div> <div class="post-date mb-3 text-end" data-astro-cid-6zo6naht> <div class="post-date-time time-create mb-1" data-astro-cid-6zo6naht>  <time class="d-none" data-pagefind-meta="date" data-astro-cid-6zo6naht> 2023年4月1日 </time> <time datetime="2023-04-01" data-astro-cid-6zo6naht>2023年4月1日</time> </div> <div class="post-date-time time-update" data-astro-cid-6zo6naht> <time datetime="2024-09-22T09:00:19.723Z" data-astro-cid-6zo6naht>2024年9月22日</time> </div> </div>  <div class="post-tag-list" data-astro-cid-eej4zok4> <a href="/tag/docker" class="tag-icon-link border rounded-pill me-2 mb-2" data-astro-cid-bryq6zb6> <img src="https://ik.imagekit.io/masahikoproject/a75363a1-6db1-46cf-a934-b73be93db963/docker-icon.svg" class="icon-image d-block" alt="Tag image" data-astro-cid-bryq6zb6> <div class="icon-image-name" data-astro-cid-bryq6zb6>Docker</div> </a> <a href="/tag/supabase" class="tag-icon-link border rounded-pill me-2 mb-2" data-astro-cid-bryq6zb6> <img src="https://ik.imagekit.io/masahikoproject/cd304215-b72e-4e42-b81d-db72e3b81ad5/supabase-icon.svg" class="icon-image d-block" alt="Tag image" data-astro-cid-bryq6zb6> <div class="icon-image-name" data-astro-cid-bryq6zb6>Supabase</div> </a> <a href="/tag/cloud-run" class="tag-icon-link border rounded-pill me-2 mb-2" data-astro-cid-bryq6zb6> <img src="https://ik.imagekit.io/masahikoproject/ad07d909-e9d9-4a71-bb94-e350f14c72c2/google-cloud-run.svg" class="icon-image d-block" alt="Tag image" data-astro-cid-bryq6zb6> <div class="icon-image-name" data-astro-cid-bryq6zb6>Cloud Run</div> </a> <a href="/tag/dotnet" class="tag-icon-link border rounded-pill me-2 mb-2" data-astro-cid-bryq6zb6> <img src="https://ik.imagekit.io/masahikoproject/d463d130-4d29-499d-b850-ed02c724a768/dotnet.svg" class="icon-image d-block" alt="Tag image" data-astro-cid-bryq6zb6> <div class="icon-image-name" data-astro-cid-bryq6zb6>.NET</div> </a>  </div> <div class="post-content" data-astro-cid-eej4zok4><h2 id="content-h-1">はじめに</h2>
 <p>少し前に話題になっていた Supabase を最近になって知りました。<br>
@@ -37,7 +37,8 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <h2 id="content-h-5">.NET Core Identity環境の作成</h2>
 <p>.NETの環境を作成します。<br>
 開発環境はVSCodeでDev Container拡張機能を使用します。</p>
-<div class="post-code-info"><span>Dockerfile</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">FROM</span><span style="color:#D4D4D4"> mcr.microsoft.com/dotnet/sdk:7.0 </span><span style="color:#569CD6">AS</span><span style="color:#D4D4D4"> runtime</span></span>
+<div class="post-code-info"><span>Dockerfile</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">FROM</span><span style="color:#D4D4D4"> mcr.microsoft.com/dotnet/sdk:7.0 </span><span style="color:#569CD6">AS</span><span style="color:#D4D4D4"> runtime</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#569CD6">WORKDIR</span><span style="color:#D4D4D4"> /app</span></span>
 <span class="line"></span>
@@ -53,7 +54,12 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"><span style="color:#569CD6">ENV</span><span style="color:#D4D4D4"> PATH $PATH:/root/.dotnet/tools</span></span>
 <span class="line"><span style="color:#569CD6">ENV</span><span style="color:#D4D4D4"> TZ Asia/Tokyo</span></span>
 <span class="line"></span></code></pre>
-<div class="post-code-info"><span>docker-compose.yml</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">version</span><span style="color:#D4D4D4">: </span><span style="color:#CE9178">'3.7'</span></span>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
+<div class="post-code-info"><span>docker-compose.yml</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">version</span><span style="color:#D4D4D4">: </span><span style="color:#CE9178">'3.7'</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#569CD6">services</span><span style="color:#D4D4D4">:</span></span>
 <span class="line"><span style="color:#569CD6">  supabase_web</span><span style="color:#D4D4D4">:</span></span>
@@ -80,16 +86,31 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"><span style="color:#D4D4D4">      - </span><span style="color:#CE9178">POSTGRES_DB=postgres</span></span>
 <span class="line"><span style="color:#D4D4D4">      - </span><span style="color:#CE9178">POSTGRES_PASSWORD=A9AbbsJiNXUA</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p><code>mkdir src</code>でsrcフォルダを作成したあとに、コマンドパレットを開き、<code>&gt;Dev Containers: Open Folder in Container...</code>を実行してコンテナを起動します。</p>
 <p>次に、下記コマンドで.NET MVCテンプレートを作成します。</p>
-<pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">cd</span><span style="color:#CE9178"> /</span></span>
+<div class="code-wrapper">
+        <pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">cd</span><span style="color:#CE9178"> /</span></span>
 <span class="line"><span style="color:#DCDCAA">dotnet</span><span style="color:#CE9178"> new</span><span style="color:#CE9178"> mvc</span><span style="color:#569CD6"> --auth</span><span style="color:#CE9178"> Individual</span><span style="color:#569CD6"> -uld</span><span style="color:#569CD6"> -o</span><span style="color:#CE9178"> app</span><span style="color:#569CD6"> -n</span><span style="color:#CE9178"> SupabaseTest</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>作成したら、下記コマンドでPostgresのNugetパッケージをインストールします。</p>
-<pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">dotnet</span><span style="color:#CE9178"> add</span><span style="color:#CE9178"> package</span><span style="color:#CE9178"> Npgsql.EntityFrameworkCore.PostgreSQL</span></span>
+<div class="code-wrapper">
+        <pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">dotnet</span><span style="color:#CE9178"> add</span><span style="color:#CE9178"> package</span><span style="color:#CE9178"> Npgsql.EntityFrameworkCore.PostgreSQL</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>PostgreSQLに接続できるように<code>Program.cs</code>ファイルを編集します。</p>
-<div class="post-code-info"><span>Program.cs</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#C586C0">using</span><span style="color:#4EC9B0"> Microsoft</span><span style="color:#D4D4D4">.</span><span style="color:#4EC9B0">AspNetCore</span><span style="color:#D4D4D4">.</span><span style="color:#4EC9B0">Identity</span><span style="color:#D4D4D4">;</span></span>
+<div class="post-code-info"><span>Program.cs</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#C586C0">using</span><span style="color:#4EC9B0"> Microsoft</span><span style="color:#D4D4D4">.</span><span style="color:#4EC9B0">AspNetCore</span><span style="color:#D4D4D4">.</span><span style="color:#4EC9B0">Identity</span><span style="color:#D4D4D4">;</span></span>
 <span class="line"><span style="color:#C586C0">using</span><span style="color:#4EC9B0"> Microsoft</span><span style="color:#D4D4D4">.</span><span style="color:#4EC9B0">EntityFrameworkCore</span><span style="color:#D4D4D4">;</span></span>
 <span class="line"><span style="color:#C586C0">using</span><span style="color:#4EC9B0"> SupabaseTest</span><span style="color:#D4D4D4">.</span><span style="color:#4EC9B0">Data</span><span style="color:#D4D4D4">;</span></span>
 <span class="line"></span>
@@ -104,8 +125,13 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"></span>
 <span class="line"><span style="color:#6A9955">// 略 //</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>また、<code>appSettings.Develop.json</code>を以下のように変更します。</p>
-<div class="post-code-info"><span>appSettings.Develop.json</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#D4D4D4">{</span></span>
+<div class="post-code-info"><span>appSettings.Develop.json</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#D4D4D4">{</span></span>
 <span class="line"><span style="color:#9CDCFE">  "DetailedErrors"</span><span style="color:#D4D4D4">: </span><span style="color:#569CD6">true</span><span style="color:#D4D4D4">,</span></span>
 <span class="line"><span style="color:#9CDCFE">  "ConnectionStrings"</span><span style="color:#D4D4D4">: {</span></span>
 <span class="line"><span style="color:#9CDCFE">    "DefaultConnection"</span><span style="color:#D4D4D4">: </span><span style="color:#CE9178">"Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=A9AbbsJiNXUA"</span></span>
@@ -118,9 +144,14 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"><span style="color:#D4D4D4">  }</span></span>
 <span class="line"><span style="color:#D4D4D4">}</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>次にマイグレーション関連を整理します。</p>
 <p>今のままではマイグレーションがSQL Server用のものとなっており、updateを行ってもエラーが発生します。そのため、下記コマンドで初期マイグレーションを再発行します。</p>
-<pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">cd</span><span style="color:#CE9178"> /app</span></span>
+<div class="code-wrapper">
+        <pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">cd</span><span style="color:#CE9178"> /app</span></span>
 <span class="line"><span style="color:#DCDCAA">rm</span><span style="color:#CE9178"> Data/Migrations/</span><span style="color:#569CD6">*</span><span style="color:#CE9178">.cs</span></span>
 <span class="line"><span style="color:#6A9955"># マイグレーションの発行</span></span>
 <span class="line"><span style="color:#DCDCAA">dotnet</span><span style="color:#CE9178"> ef</span><span style="color:#CE9178"> migrations</span><span style="color:#CE9178"> add</span><span style="color:#CE9178"> InitialCreate</span><span style="color:#569CD6"> --context</span><span style="color:#CE9178"> ApplicationDbContext</span><span style="color:#569CD6"> --output-dir</span><span style="color:#CE9178"> Data/Migrations</span></span>
@@ -128,6 +159,10 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"><span style="color:#6A9955"># マイグレーションをデータベースに反映</span></span>
 <span class="line"><span style="color:#DCDCAA">dotnet</span><span style="color:#CE9178"> ef</span><span style="color:#CE9178"> database</span><span style="color:#CE9178"> update</span><span style="color:#569CD6"> --context</span><span style="color:#CE9178"> ApplicationDbContext</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>次にデバッグできるようにVSCodeの左メニューから、「実行とデバッグ」を開き、「launch.jsonファイルを作成」し、.NET 5+ .NET MVCを選択して<code>launch.json</code>を自動生成します。<br>
 また、VSCodeの拡張機能で「C# <code>ms-dotnettools.csharp</code>」をインストールしておきます。</p>
 <p><code>launch.json</code>ファイルが自動生成できたら、<code>F5</code>キーを押してデバッグを開始します。</p>
@@ -137,7 +172,8 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <h2 id="content-h-6">本番環境にマイグレーション</h2>
 <p>CloudRunにデプロイした際にSupabaseのPostgreに接続できるようにする必要があります。</p>
 <p>まず、Postgresの接続情報を記載した<code>appsettings.Production.json</code>を作成します。</p>
-<div class="post-code-info"><span>appsettings.Production.json</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#D4D4D4">{</span></span>
+<div class="post-code-info"><span>appsettings.Production.json</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#D4D4D4">{</span></span>
 <span class="line"><span style="color:#9CDCFE">  "DetailedErrors"</span><span style="color:#D4D4D4">: </span><span style="color:#569CD6">false</span><span style="color:#D4D4D4">,</span></span>
 <span class="line"><span style="color:#9CDCFE">  "ConnectionStrings"</span><span style="color:#D4D4D4">: {</span></span>
 <span class="line"><span style="color:#9CDCFE">    "DefaultConnection"</span><span style="color:#D4D4D4">: </span><span style="color:#CE9178">"User Id=postgres;Password=XXXXXXXX;Server=db.xxxxxxxxxxxxxxxxxx.supabase.co;Port=5432;Database=postgre"</span></span>
@@ -150,12 +186,21 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"><span style="color:#D4D4D4">  }</span></span>
 <span class="line"><span style="color:#D4D4D4">}</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>次に下記のコマンドでsupabaseのデータベースを更新します。</p>
-<pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">cd</span><span style="color:#CE9178"> /app</span></span>
+<div class="code-wrapper">
+        <pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">cd</span><span style="color:#CE9178"> /app</span></span>
 <span class="line"><span style="color:#569CD6">export</span><span style="color:#9CDCFE"> ASPNETCORE_ENVIRONMENT</span><span style="color:#D4D4D4">=</span><span style="color:#CE9178">"Production"</span></span>
 <span class="line"><span style="color:#DCDCAA">dotnet</span><span style="color:#CE9178"> ef</span><span style="color:#CE9178"> database</span><span style="color:#CE9178"> update</span></span>
 <span class="line"><span style="color:#569CD6">export</span><span style="color:#9CDCFE"> ASPNETCORE_ENVIRONMENT</span><span style="color:#D4D4D4">=</span><span style="color:#CE9178">"Development"</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <h2 id="content-h-7">Cloud Runにデプロイ</h2>
 <p>まず、Cloud Runとは、サーバーレスのプラットフォームで、コンテナベースのWebアプリケーションを実行させることができます。</p>
 <p>要はDockerなどのコンテナからアプリケーションを実行するため、任意の言語の環境を使用することができます。また、Dockerベースの開発をする場合、ローカルの環境とCloud Runの環境を同じ環境にすることができるメリットがあります。</p>
@@ -172,7 +217,8 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <p>Cloud Runでデプロイするためにはデプロイするコンテナのイメージが必要なので、Cloud Buildを使用してCloud Registryにイメージを保存します。</p>
 <p>まず、デプロイ用のDocker設定ファイルである<code>CloudRun.Dockerfile</code>を作成します。<br><br>
 注意点としては、CloudRunにデプロイする場合は <strong>必ず8080ポートを公開する</strong>ことです。そうしないとデプロイ時にエラーが発生します。</p>
-<div class="post-code-info"><span>CloudRun.Dockerfile</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">FROM</span><span style="color:#D4D4D4"> mcr.microsoft.com/dotnet/sdk:7.0 </span><span style="color:#569CD6">AS</span><span style="color:#D4D4D4"> build</span></span>
+<div class="post-code-info"><span>CloudRun.Dockerfile</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">FROM</span><span style="color:#D4D4D4"> mcr.microsoft.com/dotnet/sdk:7.0 </span><span style="color:#569CD6">AS</span><span style="color:#D4D4D4"> build</span></span>
 <span class="line"></span>
 <span class="line"><span style="color:#569CD6">WORKDIR</span><span style="color:#D4D4D4"> /app</span></span>
 <span class="line"><span style="color:#569CD6">COPY</span><span style="color:#D4D4D4"> ./src .</span></span>
@@ -192,8 +238,13 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"></span>
 <span class="line"><span style="color:#569CD6">ENTRYPOINT</span><span style="color:#D4D4D4"> [</span><span style="color:#CE9178">"dotnet"</span><span style="color:#D4D4D4">, </span><span style="color:#CE9178">"SupabaseTest.dll"</span><span style="color:#D4D4D4">]</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>次にビルド設定の<code>cloudbuild.yml</code>を作成します。</p>
-<div class="post-code-info"><span>cloudbuild.yml</span></div><pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">steps</span><span style="color:#D4D4D4">:</span></span>
+<div class="post-code-info"><span>cloudbuild.yml</span></div><div class="code-wrapper">
+        <pre class="code-with-file shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#569CD6">steps</span><span style="color:#D4D4D4">:</span></span>
 <span class="line"><span style="color:#6A9955"># Build the container image</span></span>
 <span class="line"><span style="color:#D4D4D4">- </span><span style="color:#569CD6">name</span><span style="color:#D4D4D4">: </span><span style="color:#CE9178">'gcr.io/cloud-builders/docker'</span></span>
 <span class="line"><span style="color:#569CD6">  args</span><span style="color:#D4D4D4">: [</span><span style="color:#CE9178">'build'</span><span style="color:#D4D4D4">, </span><span style="color:#CE9178">'-t'</span><span style="color:#D4D4D4">, </span><span style="color:#CE9178">'gcr.io/PROJECT_ID/IMAGE'</span><span style="color:#D4D4D4">, </span><span style="color:#CE9178">'-f'</span><span style="color:#D4D4D4">, </span><span style="color:#CE9178">'CloudRun.Dockerfile'</span><span style="color:#D4D4D4">, </span><span style="color:#CE9178">'.'</span><span style="color:#D4D4D4">]</span></span>
@@ -207,6 +258,10 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 <span class="line"><span style="color:#569CD6">images</span><span style="color:#D4D4D4">:</span></span>
 <span class="line"><span style="color:#D4D4D4">- </span><span style="color:#CE9178">gcr.io/PROJECT_ID/IMAGE</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p><code>cloudbuild.yml</code>の各項目を変換しておいてください。</p>
 <table>
 <thead>
@@ -236,8 +291,13 @@ FirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開�
 </table>
 <h3 id="content-h-10">デプロイする</h3>
 <p>ローカル環境で<code>CloudRun.Dockerfile</code>のあるフォルダで以下のコマンドを実行します。</p>
-<pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">gcloud</span><span style="color:#CE9178"> builds</span><span style="color:#CE9178"> submit</span><span style="color:#CE9178"> ./</span><span style="color:#569CD6"> --config</span><span style="color:#CE9178"> cloudbuild.yml</span></span>
+<div class="code-wrapper">
+        <pre class="shiki dark-plus" style="background-color:#1E1E1E;color:#D4D4D4" tabindex="0"><code><span class="line"><span style="color:#DCDCAA">gcloud</span><span style="color:#CE9178"> builds</span><span style="color:#CE9178"> submit</span><span style="color:#CE9178"> ./</span><span style="color:#569CD6"> --config</span><span style="color:#CE9178"> cloudbuild.yml</span></span>
 <span class="line"></span></code></pre>
+        <button class="postBody_copyToClipboard" tabindex="-1">
+          <img src="/img/code_copy.svg" width="20" height="20">
+        </button>
+      </div>
 <p>特にエラーがなければデプロイの成功です。</p>
 <p>認証の機能が使用できていたので、データベースにも接続できていますね！</p>
 <p><img src="https://ik.imagekit.io/masahikoproject/8e50b2a3-edd8-4f72-9ae7-781009eaaa31/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-04-01001455.png" alt="スクリーンショット2023-04-01001455.png"></p>
@@ -252,4 +312,4 @@ Supabaseのプロジェクトは無料枠で2つのみなので、数を作成�
 更新日
 </div> <time datetime="2024-09-22T09:00:19.723Z" data-astro-cid-g62n5fxi> 2024年9月22日 18:00 </time> </li> </ul> </div> <style>astro-island,astro-slot,astro-static-slot{display:contents}</style><script>(()=>{var e=async t=>{await(await t())()};(self.Astro||(self.Astro={})).load=e;window.dispatchEvent(new Event("astro:load"));})();;(()=>{var A=Object.defineProperty;var g=(i,o,a)=>o in i?A(i,o,{enumerable:!0,configurable:!0,writable:!0,value:a}):i[o]=a;var d=(i,o,a)=>g(i,typeof o!="symbol"?o+"":o,a);{let i={0:t=>m(t),1:t=>a(t),2:t=>new RegExp(t),3:t=>new Date(t),4:t=>new Map(a(t)),5:t=>new Set(a(t)),6:t=>BigInt(t),7:t=>new URL(t),8:t=>new Uint8Array(t),9:t=>new Uint16Array(t),10:t=>new Uint32Array(t),11:t=>1/0*t},o=t=>{let[l,e]=t;return l in i?i[l](e):void 0},a=t=>t.map(o),m=t=>typeof t!="object"||t===null?t:Object.fromEntries(Object.entries(t).map(([l,e])=>[l,o(e)]));class y extends HTMLElement{constructor(){super(...arguments);d(this,"Component");d(this,"hydrator");d(this,"hydrate",async()=>{var b;if(!this.hydrator||!this.isConnected)return;let e=(b=this.parentElement)==null?void 0:b.closest("astro-island[ssr]");if(e){e.addEventListener("astro:hydrate",this.hydrate,{once:!0});return}let c=this.querySelectorAll("astro-slot"),n={},h=this.querySelectorAll("template[data-astro-template]");for(let r of h){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("data-astro-template")||"default"]=r.innerHTML,r.remove())}for(let r of c){let s=r.closest(this.tagName);s!=null&&s.isSameNode(this)&&(n[r.getAttribute("name")||"default"]=r.innerHTML)}let p;try{p=this.hasAttribute("props")?m(JSON.parse(this.getAttribute("props"))):{}}catch(r){let s=this.getAttribute("component-url")||"<unknown>",v=this.getAttribute("component-export");throw v&&(s+=` (export ${v})`),console.error(`[hydrate] Error parsing props for component ${s}`,this.getAttribute("props"),r),r}let u;await this.hydrator(this)(this.Component,p,n,{client:this.getAttribute("client")}),this.removeAttribute("ssr"),this.dispatchEvent(new CustomEvent("astro:hydrate"))});d(this,"unmount",()=>{this.isConnected||this.dispatchEvent(new CustomEvent("astro:unmount"))})}disconnectedCallback(){document.removeEventListener("astro:after-swap",this.unmount),document.addEventListener("astro:after-swap",this.unmount,{once:!0})}connectedCallback(){if(!this.hasAttribute("await-children")||document.readyState==="interactive"||document.readyState==="complete")this.childrenConnectedCallback();else{let e=()=>{document.removeEventListener("DOMContentLoaded",e),c.disconnect(),this.childrenConnectedCallback()},c=new MutationObserver(()=>{var n;((n=this.lastChild)==null?void 0:n.nodeType)===Node.COMMENT_NODE&&this.lastChild.nodeValue==="astro:end"&&(this.lastChild.remove(),e())});c.observe(this,{childList:!0}),document.addEventListener("DOMContentLoaded",e)}}async childrenConnectedCallback(){let e=this.getAttribute("before-hydration-url");e&&await import(e),this.start()}async start(){let e=JSON.parse(this.getAttribute("opts")),c=this.getAttribute("client");if(Astro[c]===void 0){window.addEventListener(`astro:${c}`,()=>this.start(),{once:!0});return}try{await Astro[c](async()=>{let n=this.getAttribute("renderer-url"),[h,{default:p}]=await Promise.all([import(this.getAttribute("component-url")),n?import(n):()=>()=>{}]),u=this.getAttribute("component-export")||"default";if(!u.includes("."))this.Component=h[u];else{this.Component=h;for(let f of u.split("."))this.Component=this.Component[f]}return this.hydrator=p,this.hydrate},e,this)}catch(n){console.error(`[astro-island] Error hydrating ${this.getAttribute("component-url")}`,n)}}attributeChangedCallback(){this.hydrate()}}d(y,"observedAttributes",["props"]),customElements.get("astro-island")||customElements.define("astro-island",y)}})();</script><astro-island uid="Z2dqKMk" prefix="r0" component-url="/_astro/PostSidebarToc.Ky8Ta-Ai.js" component-export="default" renderer-url="/_astro/client.BKX-yLGW.js" props="{&quot;data-astro-cid-g62n5fxi&quot;:[0,true]}" ssr client="load" opts="{&quot;name&quot;:&quot;PostSidebarToc&quot;,&quot;value&quot;:true}" await-children><div class="toc p-3 shadow mb-4"><ul class="p-0 m-0"></ul></div><!--astro:end--></astro-island> </div> </aside>  </div>  </main> <footer data-astro-cid-sz7xmlte>
 &copy; 2024 masa-dev. All rights reserved.
-<div class="social-links" data-astro-cid-sz7xmlte> <a href="https://github.com/withastro/astro" target="_blank" aria-label="masa-dev github link" data-astro-cid-sz7xmlte> <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" astro-icon="social/github" aria-label="github link icon" data-astro-cid-sz7xmlte><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-sz7xmlte></path></svg> </a> </div> </footer>  </body></html> 
+<div class="social-links" data-astro-cid-sz7xmlte> <a href="https://github.com/withastro/astro" target="_blank" aria-label="masa-dev github link" data-astro-cid-sz7xmlte> <svg viewBox="0 0 16 16" aria-hidden="true" width="32" height="32" astro-icon="social/github" aria-label="github link icon" data-astro-cid-sz7xmlte><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z" data-astro-cid-sz7xmlte></path></svg> </a> </div> </footer>  </body></html> <script type="module">const a=async t=>{const o=t.target.parentElement?.parentElement,n=o?.querySelector("code");if(n?.textContent){await navigator.clipboard.writeText(n?.textContent??"");const l="copy-tooltip",c=o?.querySelector(`div.${l}`);c&&c.remove();const e=document.createElement("div");e.classList.add(l),e.innerText="保存しました",o?.appendChild(e),setTimeout(()=>{e&&e.remove()},3e3)}};[...document.getElementsByClassName("postBody_copyToClipboard")].forEach(t=>t.addEventListener("click",a));</script> 
