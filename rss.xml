@@ -1,4 +1,67 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>MasaDev Blog</title><description>Welcome to my website!</description><link>https://masa-dev.net/</link><item><title>NeoVim kickstartの設定説明メモ（KeyMap編）</title><link>https://masa-dev.net/post/670280a2e016366845bc387a/</link><guid isPermaLink="true">https://masa-dev.net/post/670280a2e016366845bc387a/</guid><description>設定内容（KeyMap） 検索結果のハイライト削除  検索結果のハイライトを`ESC`キーで解除する。 デフォルトでは`/`で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。</description><pubDate>Sun, 06 Oct 2024 15:40:44 GMT</pubDate><content:encoded>&lt;p&gt;前回の続き&lt;/p&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>MasaDev Blog</title><description>Welcome to my website!</description><link>https://masa-dev.net/</link><item><title>CloudRun上での.NET Identityセッション切れ問題の解決方法</title><link>https://masa-dev.net/post/6777b64ea98a21b9fbbc527c/</link><guid isPermaLink="true">https://masa-dev.net/post/6777b64ea98a21b9fbbc527c/</guid><description>.NETをCloudRun上にデプロイした環境で、頻繁にIdentityのセッションが切れてしまう現象が発生します。  この問題の解決方法について、多少の需要があると思いましたので、記事にしました。</description><pubDate>Fri, 03 Jan 2025 13:56:13 GMT</pubDate><content:encoded>&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;.NETをCloudRun上にデプロイした環境で、頻繁にIdentityのセッションが切れてしまう現象が発生します。&lt;/p&gt;
+&lt;p&gt;この問題の解決方法について、多少の需要があると思いましたので、記事にしました。&lt;/p&gt;
+&lt;h2&gt;セッションが切断される理由&lt;/h2&gt;
+&lt;p&gt;.NET Identityではトークン認証を使用しており、サーバー側で暗号化したトークンをCookieでやりとりすることでセッションの状態を管理しています。&lt;/p&gt;
+&lt;p&gt;この認証に使用される暗号化キーの保存先は、.NETのデータ保護システムに設定された場所に保存されます。デフォルトで暗号化キーは&lt;strong&gt;メモリ&lt;/strong&gt;に保存されます。&lt;/p&gt;
+&lt;p&gt;一般的な単一のオンプレサーバーやVMなどでは、再起動などをしない限りメモリがリセットされないため、問題は発生しません。&lt;/p&gt;
+&lt;p&gt;ただし、CloudRunのようなアクセス数によってコンテナが増減する場合は問題が発生します。 &lt;br&gt;
+コンテナごとにメモリが別れているため、スケールインしてコンテナ数が0になった際にメモリがリセットされ、暗号化キーが失われてしまいます。 &lt;br&gt;
+また、スケールアウトしてコンテナ数が増えた場合でも、新規作成されたコンテナのメモリに暗号化キーは保存されていないため、セッションが切れてしまいます。&lt;/p&gt;
+&lt;p&gt;つまり、セッションが切断される理由は、コンテナ型Webサーバーでコンテナの増減によって、メモリ内に保存されている暗号化キーが失われてしまうからです。&lt;/p&gt;
+&lt;h2&gt;暗号化キーを別ストレージ（DBなど）に保存する&lt;/h2&gt;
+&lt;p&gt;上記の問題は、暗号化キーの保存先であるデータ保護システムのデフォルト保存先をメモリから別ストレージに変更することで解決できます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;amp;tabs=visual-studio&quot;&gt;https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;amp;tabs=visual-studio&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回は例として、暗号化キーの保存先をDB（Postgresql）に変更します。MySQLでも同じ方法で保存先を変更できます。&lt;/p&gt;
+&lt;h3&gt;依存パッケージのインストール&lt;/h3&gt;
+&lt;p&gt;まず、対象のプロジェクトに移動し、以下のパッケージをNugetからインストールします。バージョンは各プロジェクトに合わせます。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;dotnet add package Microsoft.AspNetCore.DataProtection.EntityFrameworkCore --version 9.0.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.nuget.org/packages/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore/&quot;&gt;https://www.nuget.org/packages/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore/&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;コードの変更&lt;/h3&gt;
+&lt;p&gt;次に、&lt;code&gt;Program.cs&lt;/code&gt;に以下の内容を追加します。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cs:Program.cs&quot;&gt;using Microsoft.AspNetCore.DataProtection;
+
+// 略
+
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext&amp;lt;ApplicationDbContext&amp;gt;();
+
+var app = builder.Build();
+// 略
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;次に、&lt;code&gt;ApplicationDbContext&lt;/code&gt;に&lt;code&gt;IDataProtectionKeyContext&lt;/code&gt;を継承し、&lt;code&gt;DataProtectionKeys&lt;/code&gt;プロパティを追加します。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cs:Data/ApplicationDbContext.cs&quot;&gt;using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+
+public class ApplicationDbContext : IdentityDbContext, IDataProtectionKeyContext
+{
+    // 略
+
+    public DbSet&amp;lt;DataProtectionKey&amp;gt; DataProtectionKeys { get; set; }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;マイグレーション反映&lt;/h3&gt;
+&lt;p&gt;上記の追加が完了したら、マイグレーションの作成、DB反映をします。&lt;br&gt;
+下記コードはサンプルになります。マイグレーションコードは既存コードに合わせて実行してください。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;# マイグレーションの発行
+dotnet ef migrations add AddDataProtectionKeysTable --context ApplicationDbContext --output-dir Data/Migrations
+
+# マイグレーションをデータベースに反映
+dotnet ef database update --context ApplicationDbContext
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;確認&lt;/h3&gt;
+&lt;p&gt;これでDBに &lt;code&gt;DataProtectionKeys&lt;/code&gt; というテーブルが作成されます。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://ik.imagekit.io/masahikoproject/d408e1d2-2147-4985-95fe-edcc1a53147a/dataprotectonkeytable1.png&quot; alt=&quot;dataprotectonkeytable1.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;ログイン時に作成された暗号化キーが保存されます。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://ik.imagekit.io/masahikoproject/de1eae86-6ef9-423a-ade2-7165ec6bb4f1/dataprotectonkeytable.png&quot; alt=&quot;dataprotectonkeytable.png&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;終わりに&lt;/h2&gt;
+&lt;p&gt;結構前からこの問題について調査していましたが、検索の仕方が悪かったのか、解決まで実は1年くらいかかっています。&lt;/p&gt;
+&lt;p&gt;それまでは、外部の認証プロバイダを使用するなりして誤魔化していましたが、記事の解決策のおかげで外部認証に依存せずに済みそうでハッピーです。&lt;/p&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;amp;tabs=visual-studio&quot;&gt;ASP.NET Core でのキー ストレージ プロバイダー | Microsoft Learn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content:encoded></item><item><title>NeoVim kickstartの設定説明メモ（KeyMap編）</title><link>https://masa-dev.net/post/670280a2e016366845bc387a/</link><guid isPermaLink="true">https://masa-dev.net/post/670280a2e016366845bc387a/</guid><description>設定内容（KeyMap） 検索結果のハイライト削除  検索結果のハイライトを`ESC`キーで解除する。 デフォルトでは`/`で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。</description><pubDate>Sun, 06 Oct 2024 15:40:44 GMT</pubDate><content:encoded>&lt;p&gt;前回の続き&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://masa-dev.net/post/66e23631e6213d85f24fb260&quot;&gt;NeoVim kickstartの設定説明メモ（オプション編）&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;設定内容（KeyMap）&lt;/h2&gt;
 &lt;h3&gt;検索結果のハイライト削除&lt;/h3&gt;
@@ -270,6 +333,9 @@ services:
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;cd /
 dotnet new mvc --auth Individual -uld -o app -n SupabaseTest
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;併せて、gitignoreファイルも作成します。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;cd /app &amp;amp;&amp;amp; dotnet new gitignore
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;作成したら、下記コマンドでPostgresのNugetパッケージをインストールします。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 &lt;/code&gt;&lt;/pre&gt;
@@ -293,7 +359,7 @@ builder.Services.AddDbContext&amp;lt;ApplicationDbContext&amp;gt;(options =&amp;
 &lt;pre&gt;&lt;code class=&quot;language-json:appSettings.Develop.json&quot;&gt;{
   &amp;quot;DetailedErrors&amp;quot;: true,
   &amp;quot;ConnectionStrings&amp;quot;: {
-    &amp;quot;DefaultConnection&amp;quot;: &amp;quot;Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=A9AbbsJiNXUA&amp;quot;
+    &amp;quot;DefaultConnection&amp;quot;: &amp;quot;Host= supabase_db;Port=5432;Database=postgres;Username=postgres;Password=A9AbbsJiNXUA&amp;quot;
   },
   &amp;quot;Logging&amp;quot;: {
     &amp;quot;LogLevel&amp;quot;: {
@@ -628,6 +694,69 @@ console.warn node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6465
 &lt;p&gt;&lt;a href=&quot;https://qiita.com/chan_kaku/items/7f3233053b0e209ef355#mounted&quot;&gt;Vueのライフサイクルを完全に理解した - Qiita&lt;/a&gt;&lt;br&gt;
 &lt;a href=&quot;https://jp.vuejs.org/v2/api/index.html#mounted&quot;&gt;API — Vue.js&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
+</content:encoded></item><item><title>CloudRun上での.NET Identityセッション切れ問題の解決方法</title><link>https://masa-dev.net/note/6777b64ea98a21b9fbbc527c/</link><guid isPermaLink="true">https://masa-dev.net/note/6777b64ea98a21b9fbbc527c/</guid><description>.NETをCloudRun上にデプロイした環境で、頻繁にIdentityのセッションが切れてしまう現象が発生します。  この問題の解決方法について、多少の需要があると思いましたので、記事にしました。</description><pubDate>Fri, 03 Jan 2025 13:56:13 GMT</pubDate><content:encoded>&lt;h2&gt;はじめに&lt;/h2&gt;
+&lt;p&gt;.NETをCloudRun上にデプロイした環境で、頻繁にIdentityのセッションが切れてしまう現象が発生します。&lt;/p&gt;
+&lt;p&gt;この問題の解決方法について、多少の需要があると思いましたので、記事にしました。&lt;/p&gt;
+&lt;h2&gt;セッションが切断される理由&lt;/h2&gt;
+&lt;p&gt;.NET Identityではトークン認証を使用しており、サーバー側で暗号化したトークンをCookieでやりとりすることでセッションの状態を管理しています。&lt;/p&gt;
+&lt;p&gt;この認証に使用される暗号化キーの保存先は、.NETのデータ保護システムに設定された場所に保存されます。デフォルトで暗号化キーは&lt;strong&gt;メモリ&lt;/strong&gt;に保存されます。&lt;/p&gt;
+&lt;p&gt;一般的な単一のオンプレサーバーやVMなどでは、再起動などをしない限りメモリがリセットされないため、問題は発生しません。&lt;/p&gt;
+&lt;p&gt;ただし、CloudRunのようなアクセス数によってコンテナが増減する場合は問題が発生します。 &lt;br&gt;
+コンテナごとにメモリが別れているため、スケールインしてコンテナ数が0になった際にメモリがリセットされ、暗号化キーが失われてしまいます。 &lt;br&gt;
+また、スケールアウトしてコンテナ数が増えた場合でも、新規作成されたコンテナのメモリに暗号化キーは保存されていないため、セッションが切れてしまいます。&lt;/p&gt;
+&lt;p&gt;つまり、セッションが切断される理由は、コンテナ型Webサーバーでコンテナの増減によって、メモリ内に保存されている暗号化キーが失われてしまうからです。&lt;/p&gt;
+&lt;h2&gt;暗号化キーを別ストレージ（DBなど）に保存する&lt;/h2&gt;
+&lt;p&gt;上記の問題は、暗号化キーの保存先であるデータ保護システムのデフォルト保存先をメモリから別ストレージに変更することで解決できます。&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;amp;tabs=visual-studio&quot;&gt;https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;amp;tabs=visual-studio&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;今回は例として、暗号化キーの保存先をDB（Postgresql）に変更します。MySQLでも同じ方法で保存先を変更できます。&lt;/p&gt;
+&lt;h3&gt;依存パッケージのインストール&lt;/h3&gt;
+&lt;p&gt;まず、対象のプロジェクトに移動し、以下のパッケージをNugetからインストールします。バージョンは各プロジェクトに合わせます。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;dotnet add package Microsoft.AspNetCore.DataProtection.EntityFrameworkCore --version 9.0.0
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.nuget.org/packages/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore/&quot;&gt;https://www.nuget.org/packages/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore/&lt;/a&gt;&lt;/p&gt;
+&lt;h3&gt;コードの変更&lt;/h3&gt;
+&lt;p&gt;次に、&lt;code&gt;Program.cs&lt;/code&gt;に以下の内容を追加します。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cs:Program.cs&quot;&gt;using Microsoft.AspNetCore.DataProtection;
+
+// 略
+
+builder.Services.AddDataProtection()
+    .PersistKeysToDbContext&amp;lt;ApplicationDbContext&amp;gt;();
+
+var app = builder.Build();
+// 略
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;次に、&lt;code&gt;ApplicationDbContext&lt;/code&gt;に&lt;code&gt;IDataProtectionKeyContext&lt;/code&gt;を継承し、&lt;code&gt;DataProtectionKeys&lt;/code&gt;プロパティを追加します。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-cs:Data/ApplicationDbContext.cs&quot;&gt;using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
+
+public class ApplicationDbContext : IdentityDbContext, IDataProtectionKeyContext
+{
+    // 略
+
+    public DbSet&amp;lt;DataProtectionKey&amp;gt; DataProtectionKeys { get; set; }
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;マイグレーション反映&lt;/h3&gt;
+&lt;p&gt;上記の追加が完了したら、マイグレーションの作成、DB反映をします。&lt;br&gt;
+下記コードはサンプルになります。マイグレーションコードは既存コードに合わせて実行してください。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;# マイグレーションの発行
+dotnet ef migrations add AddDataProtectionKeysTable --context ApplicationDbContext --output-dir Data/Migrations
+
+# マイグレーションをデータベースに反映
+dotnet ef database update --context ApplicationDbContext
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;確認&lt;/h3&gt;
+&lt;p&gt;これでDBに &lt;code&gt;DataProtectionKeys&lt;/code&gt; というテーブルが作成されます。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://ik.imagekit.io/masahikoproject/d408e1d2-2147-4985-95fe-edcc1a53147a/dataprotectonkeytable1.png&quot; alt=&quot;dataprotectonkeytable1.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;ログイン時に作成された暗号化キーが保存されます。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://ik.imagekit.io/masahikoproject/de1eae86-6ef9-423a-ade2-7165ec6bb4f1/dataprotectonkeytable.png&quot; alt=&quot;dataprotectonkeytable.png&quot;&gt;&lt;/p&gt;
+&lt;h2&gt;終わりに&lt;/h2&gt;
+&lt;p&gt;結構前からこの問題について調査していましたが、検索の仕方が悪かったのか、解決まで実は1年くらいかかっています。&lt;/p&gt;
+&lt;p&gt;それまでは、外部の認証プロバイダを使用するなりして誤魔化していましたが、記事の解決策のおかげで外部認証に依存せずに済みそうでハッピーです。&lt;/p&gt;
+&lt;h2&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;amp;tabs=visual-studio&quot;&gt;ASP.NET Core でのキー ストレージ プロバイダー | Microsoft Learn&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 </content:encoded></item><item><title>NeoVim kickstartの設定説明メモ（KeyMap編）</title><link>https://masa-dev.net/note/670280a2e016366845bc387a/</link><guid isPermaLink="true">https://masa-dev.net/note/670280a2e016366845bc387a/</guid><description>設定内容（KeyMap） 検索結果のハイライト削除  検索結果のハイライトを`ESC`キーで解除する。 デフォルトでは`/`で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。</description><pubDate>Sun, 06 Oct 2024 15:40:44 GMT</pubDate><content:encoded>&lt;p&gt;前回の続き&lt;/p&gt;
 &lt;p&gt;&lt;a href=&quot;https://masa-dev.net/post/66e23631e6213d85f24fb260&quot;&gt;NeoVim kickstartの設定説明メモ（オプション編）&lt;/a&gt;&lt;/p&gt;
 &lt;h2&gt;設定内容（KeyMap）&lt;/h2&gt;
@@ -900,6 +1029,9 @@ services:
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;cd /
 dotnet new mvc --auth Individual -uld -o app -n SupabaseTest
 &lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;併せて、gitignoreファイルも作成します。&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;cd /app &amp;amp;&amp;amp; dotnet new gitignore
+&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;作成したら、下記コマンドでPostgresのNugetパッケージをインストールします。&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;language-bash&quot;&gt;dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
 &lt;/code&gt;&lt;/pre&gt;
@@ -923,7 +1055,7 @@ builder.Services.AddDbContext&amp;lt;ApplicationDbContext&amp;gt;(options =&amp;
 &lt;pre&gt;&lt;code class=&quot;language-json:appSettings.Develop.json&quot;&gt;{
   &amp;quot;DetailedErrors&amp;quot;: true,
   &amp;quot;ConnectionStrings&amp;quot;: {
-    &amp;quot;DefaultConnection&amp;quot;: &amp;quot;Host=localhost;Port=5432;Database=postgres;Username=postgres;Password=A9AbbsJiNXUA&amp;quot;
+    &amp;quot;DefaultConnection&amp;quot;: &amp;quot;Host= supabase_db;Port=5432;Database=postgres;Username=postgres;Password=A9AbbsJiNXUA&amp;quot;
   },
   &amp;quot;Logging&amp;quot;: {
     &amp;quot;LogLevel&amp;quot;: {
