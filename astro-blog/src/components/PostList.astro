@@ -25,6 +25,7 @@ const { postList } = Astro.props;
               <img
                 src={post.image.src}
                 alt={post.image.altText ? post.image.altText : "Post Image"}
+                transition:name={`post-image-${post._id}`}
               />
             ) : (
               <img src="/img/dummy.png" alt="dummy image" />

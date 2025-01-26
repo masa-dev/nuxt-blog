@@ -52,6 +52,7 @@ body = setCopyCodeButton(body);
               width={post.image.width}
               height={post.image.height}
               class="d-block mx-auto h-auto"
+              transition:name={`post-image-${post._id}`}
             />
           ) : (
             <img src="/img/dummy.png" alt="dummy image" />
