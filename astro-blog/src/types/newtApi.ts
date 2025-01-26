@@ -58,6 +58,7 @@ export interface Author extends TimeStamp {
 }
 
 export interface Tag extends TimeStamp {
+  _id: string;
   name: string;
   slug: string;
   image: Image;
@@ -70,6 +71,7 @@ export interface ReferencedTag extends TimeStamp {
 }
 
 export interface Post extends TimeStamp {
+  _id: string;
   title: string;
   slug: string;
   description: string;
@@ -80,6 +82,7 @@ export interface Post extends TimeStamp {
 }
 
 export interface Note extends TimeStamp {
+  _id: string;
   title: string;
   slug: string;
   description: string;

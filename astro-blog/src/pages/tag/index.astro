@@ -34,8 +34,14 @@ const tags = tagRes.items.filter(
                 <img
                   src={tag.image.src}
                   alt={tag.image.altText ? tag.image.altText : "Tag logo"}
+                  transition:name={`tag-image-${tag._id}`}
                 />
-                <div class="ms-3 text-dark lh-base text-start">{tag.name}</div>
+                <div
+                  class="ms-3 text-dark lh-base text-start"
+                  transition:name={`tag-name-${tag.name}`}
+                >
+                  {tag.name}
+                </div>
               </div>
             </a>
           ))

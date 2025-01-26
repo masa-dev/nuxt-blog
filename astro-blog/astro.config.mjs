@@ -11,4 +11,14 @@ export default defineConfig({
   site: "https://masa-dev.net",
   integrations: [mdx(), sitemap(), react()],
   trailingSlash: "never",
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          // bootstrapの警告を非表示にする
+          silenceDeprecations: ["mixed-decls"],
+        },
+      },
+    },
+  },
 });
