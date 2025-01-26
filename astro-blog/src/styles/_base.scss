@@ -247,6 +247,43 @@ header {
       opacity: 1 !important;
     }
   }
+
+  div.code-wrapper {
+    position: relative;
+
+    .postBody_copyToClipboard {
+      display: none;
+      position: absolute;
+      background-color: transparent;
+      right: 0px;
+      top: 0px;
+      margin: 16px;
+      border: 0;
+      cursor: pointer;
+    }
+
+    .copy-tooltip {
+      position: absolute;
+      right: 56px;
+      top: 0px;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      color: #afb2b8;
+      display: none;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    &:hover {
+      .postBody_copyToClipboard {
+        display: flex;
+      }
+
+      .copy-tooltip {
+        display: unset;
+      }
+    }
+  }
 }
 
 aside .toc {

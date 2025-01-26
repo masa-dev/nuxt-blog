@@ -8,6 +8,7 @@ import PostTagIcon from "../../components/PostTagIcon.astro";
 import PostTimeStamp from "../../components/PostTimeStamp.astro";
 import PostSidebar from "../../components/PostSidebar.astro";
 import setHeadingId from "../../util/setHeadingId";
+import { setCopyCodeButton } from "../../util/setCopyCode";
 
 export async function getStaticPaths() {
   const params: ApiParams = { limit: 100, skip: 0 };
@@ -32,6 +33,7 @@ for (const postTag of post.tags) {
 
 let body = setHeadingId(post.body);
 body = await highlightCode(body ?? "", "dark-plus");
+body = setCopyCodeButton(body);
 ---
 
 <PostLayout
@@ -72,6 +74,18 @@ body = await highlightCode(body ?? "", "dark-plus");
     />
   </div>
 </PostLayout>
+
+<script>
+  import { handleClick_CopyToClipboard } from "../../util/setCopyCode";
+
+  [...document.getElementsByClassName("postBody_copyToClipboard")].forEach(
+    (el) =>
+      (el as HTMLElement).addEventListener(
+        "click",
+        handleClick_CopyToClipboard,
+      ),
+  );
+</script>
 
 <style lang="scss" scoped>
   .post-tag-list {
