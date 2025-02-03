@@ -28,7 +28,7 @@ function getTagImage(id: string | null) {
       const tagImage = getTagImage(note.tags[0]?._id);
       return (
         <div class="post-item mb-5">
-          <a href={`/note/${note._id}`} class="d-flex post-item-link w-100">
+          <a href={`/note/${note._id}/`} class="d-flex post-item-link w-100">
             <div class="post-image-wrapper">
               {tagImage ? (
                 <img
