@@ -29,7 +29,7 @@ const tags = tagRes.items.filter(
       {
         tags &&
           tags.map((tag) => (
-            <a href={`/tag/${tag.slug}`} class="mb-3 mx-2 tag-link rounded-3">
+            <a href={`/tag/${tag.slug}/`} class="mb-3 mx-2 tag-link rounded-3">
               <div class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-3 shadow-sm h-100">
                 <img
                   src={tag.image.src}

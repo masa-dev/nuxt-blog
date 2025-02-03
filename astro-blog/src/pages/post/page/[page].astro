@@ -42,7 +42,7 @@ const getPosts = async () => {
 };
 
 const linkGen = (pageNum: number) => {
-  return `/post/page/${pageNum}`;
+  return `/post/page/${pageNum}/`;
 };
 
 const { posts, pageMeta } = await getPosts();

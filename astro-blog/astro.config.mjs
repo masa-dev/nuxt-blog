@@ -10,7 +10,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   site: "https://masa-dev.net",
   integrations: [mdx(), sitemap(), react()],
-  trailingSlash: "always",
+  trailingSlash: "never",
   vite: {
     css: {
       preprocessorOptions: {

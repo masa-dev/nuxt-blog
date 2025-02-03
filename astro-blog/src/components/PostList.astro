@@ -19,7 +19,7 @@ const { postList } = Astro.props;
   {
     postList.map((post) => (
       <div class="post-item mb-5">
-        <a href={`/post/${post._id}`} class="d-flex post-item-link w-100">
+        <a href={`/post/${post._id}/`} class="d-flex post-item-link w-100">
           <div class="post-image-wrapper">
             {post.image ? (
               <img
