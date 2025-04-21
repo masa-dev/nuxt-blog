@@ -32,6 +32,6 @@
     "prettier": "^3.3.3",
     "prettier-plugin-astro": "^0.14.1",
     "sass-embedded": "^1.78.0",
-    "shiki": "^1.17.6"
+    "shiki": "^3.2.2"
   }
 }
