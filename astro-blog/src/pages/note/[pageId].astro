@@ -59,6 +59,18 @@ body = setCopyCodeButton(body);
   </div>
 </PostLayout>
 
+<script>
+  import { handleClick_CopyToClipboard } from "../../util/setCopyCode";
+
+  [...document.getElementsByClassName("postBody_copyToClipboard")].forEach(
+    (el) =>
+      (el as HTMLElement).addEventListener(
+        "click",
+        handleClick_CopyToClipboard,
+      ),
+  );
+</script>
+
 <style lang="scss" scoped>
   .post-tag-list {
     display: flex;
