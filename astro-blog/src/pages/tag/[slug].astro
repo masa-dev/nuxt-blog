@@ -1,59 +1,45 @@
 ---
-import NoteList from "../../components/NoteList.astro";
-import PostList from "../../components/PostList.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../../consts";
+import ContentList from "../../components/content/ContentList.astro";
+import { getAllEntries, getTagSummaries } from "../../lib/content";
 import PostLayout from "../../layouts/PostLayout.astro";
-import {
-  fetchNotes,
-  fetchPosts,
-  fetchTagBySlug,
-  fetchTags,
-} from "../../lib/newtClient";
-import type { ApiParams } from "../../types/newtApi";
 
 export async function getStaticPaths() {
-  const params: ApiParams = { limit: 100, skip: 0 };
-
-  const tagList = await fetchTags(params);
-
-  return tagList.items.map((tag) => ({
-    params: { slug: tag.slug },
-  }));
+  const tags = await getTagSummaries();
+  return tags.map((tag) => ({ params: { slug: tag.slug }, props: tag }));
 }
 
-const { slug } = Astro.params;
-
-const tag = await fetchTagBySlug(slug ?? "");
-const postRes = await fetchPosts({ limit: 100, skip: 0 });
-const noteRes = await fetchNotes({ limit: 100, skip: 0 });
+const tag = Astro.props;
+const allPosts = await getAllEntries("post");
+const allNotes = await getAllEntries("note");
+const postEntries = allPosts.filter((entry) =>
+  entry.tags.some((item) => item.slug === tag.slug),
+);
+const noteEntries = allNotes.filter((entry) =>
+  entry.tags.some((item) => item.slug === tag.slug),
+);
 ---
 
-<PostLayout title={`タグ一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+<PostLayout
+  title={`${tag.name} | MasaDev Blog`}
+  description={`${tag.name} に関連する記事一覧`}
+  image={tag.image}
+>
   <div class="n-container-xl mx-auto mb-5" data-pagefind-ignore>
     <div class="tag-title d-flex align-items-center my-3 my-sm-5">
-      <img
-        src={tag.image.src}
-        width="100"
-        height="100"
-        class="mr-4"
-        transition:name={`tag-image-${tag._id}`}
-      />
-      <h1
-        class="font-weight-bolder h2-lg"
-        transition:name={`tag-name-${tag.name}`}
-      >
-        {tag.name}
-      </h1>
+      {
+        tag.image && (
+          <img
+            src={typeof tag.image === "string" ? tag.image : tag.image.src}
+            width="100"
+            height="100"
+            class="mr-4"
+            alt={tag.name}
+          />
+        )
+      }
+      <h1 class="font-weight-bolder h2-lg">{tag.name}</h1>
     </div>
-    <PostList
-      postList={postRes.items.filter((post) =>
-        post.tags.some((t) => t.slug === slug),
-      )}
-    />
-    <NoteList
-      noteList={noteRes.items.filter((note) =>
-        note.tags.some((t) => t.slug === slug),
-      )}
-    />
+    {postEntries.length > 0 && <ContentList entries={postEntries} />}
+    {noteEntries.length > 0 && <ContentList entries={noteEntries} />}
   </div>
 </PostLayout>

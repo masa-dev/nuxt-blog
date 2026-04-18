@@ -7,7 +7,7 @@ services:
       context: "./"
       dockerfile: "Dockerfile"
     ports:
-      - 50081:8000
+      - 51081:8000
       - 4321:4321
     volumes:
       - ./astro-blog/:/app
@@ -19,7 +19,7 @@ services:
     container_name: "nuxt-web"
     image: nginx:1.23.1
     ports:
-      - 50082:80
+      - 51082:80
     volumes:
       - ./astro-blog/dist/:/usr/share/nginx/html
       - ./nginx/:/etc/nginx/conf.d/

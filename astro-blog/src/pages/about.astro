@@ -1,0 +1,37 @@
+---
+import PostLayout from "../layouts/PostLayout.astro";
+---
+
+<PostLayout
+  title="About | masa blog"
+  description="このブログの運用方針について"
+>
+  <section class="about">
+    <p class="eyebrow">About</p>
+    <h1>Astro に寄せたローカル運用の技術ブログです。</h1>
+    <p>
+      既存の Newt CMS ベース記事を静的なローカルデータへ移し、Cloudflare Pages
+      上で公開する前提で整理しています。
+    </p>
+    <p>
+      `post` はまとまった技術記事、`note`
+      はメモや短い検証ログを想定しています。旧 URL はリダイレクトで救済し、
+      新規記事は Astro の Content Collections と MDX で追記していく設計です。
+    </p>
+  </section>
+</PostLayout>
+
+<style>
+  .about {
+    max-width: 760px;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgb(var(--gray));
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+</style>

@@ -6,14 +6,15 @@ import Footer from "../components/Footer.astro";
 type Props = {
   title: string;
   description: string;
+  image?: string | import("astro").ImageMetadata;
 };
 
-const { title, description } = Astro.props;
+const { title, description, image } = Astro.props;
 ---
 
 <html lang="ja">
   <head>
-    <BaseHead title={title} description={description} />
+    <BaseHead title={title} description={description} image={image} />
     <style>
       main {
         pre {

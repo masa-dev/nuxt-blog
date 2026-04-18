@@ -1,0 +1,403 @@
+{
+    "skip": 0,
+    "limit": 100,
+    "total": 5,
+    "items": [
+        {
+            "_id": "66efe86d4ef7a227ab757aab",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2024-09-22T09:50:37.765Z",
+                    "updatedAt": "2024-09-22T09:50:37.765Z",
+                    "firstPublishedAt": "2024-09-22T09:50:37.765Z",
+                    "publishedAt": "2024-09-22T09:50:37.765Z"
+                },
+                "customOrder": 7,
+                "createdAt": "2024-09-22T09:50:37.765Z",
+                "updatedAt": "2024-09-22T09:50:37.765Z"
+            },
+            "title": "NewtCMSでGithub Actionsの自動デプロイが実行されなくなった",
+            "slug": "newt-deployment-failed",
+            "meta": {
+                "title": "NewtCMSでGithub Actionsの自動デプロイが実行されなくなった",
+                "description": "1年ちょっと程更新を怠っていたブログを久しぶりに更新したら、Github Actionsのデプロイが実行されなくなった  (´・ω・`)",
+                "ogimage": {
+                    "_id": "66e30c304a3ddce99efe1e53",
+                    "altText": "",
+                    "description": "",
+                    "fileName": "スクリーンショット2024-09-13004334.png",
+                    "fileSize": 20632,
+                    "fileType": "image/png",
+                    "height": 342,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/dab30154-e186-44f8-a2b2-8b5dc826d34d/スクリーンショット2024-09-13004334.png",
+                    "title": "",
+                    "width": 707
+                }
+            },
+            "body": "<p>1年ちょっと程更新を怠っていたブログを久しぶりに更新したら、Github Actionsのデプロイが実行されなくなった  (´・ω・`)</p>\n<h2>経緯</h2>\n<p>NeoVimのKickstartの内容を理解するためにメモ程度の内容を更新しようとしたところ、webhookを設定していたはずのGithub Actionsが一切実行されなくなっていました。</p>\n<h2>原因</h2>\n<p>普通にWebhook用のCredentialの期限が切れてるっぽい</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/a1d8150c-f2c1-4830-b665-4b14e7985790/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882024-09-13004530.png\" alt=\"スクリーンショット2024-09-13004530.png\"></p>\n<h2>対応</h2>\n<p>NewtがGithub ActionsへのWebhookの設定についての記事があるためそれを参考にします。</p>\n<p><a href=\"https://www.newt.so/docs/tutorials/trigger-github-actions-with-webhooks\">https://www.newt.so/docs/tutorials/trigger-github-actions-with-webhooks</a></p>\n<blockquote>\n<p>「contents:write」へのアクセスが許可されている個人アクセストークンを設定します。</p>\n</blockquote>\n<p>アクセストークンはGithubくんが推奨している「Fine-grained personal access tokens」を作ってみます。（Beta版だけどまぁ問題ないでしょ、知らんけど）</p>\n<p>ちなみに設定は以下の場所にあります。<br>\n「ユーザー設定 &gt; Developper settings &gt; Personal access token」</p>\n<p>特にトークン作成で考えることはありませんが、webhookを実行するためにNewtのサイトにあるようにContentsに読み込み・書き込み権限を付与する必要があります。</p>\n<p>ちなみにこの権限については権限とエンドポイントの対応一覧を以下サイトから確認できます。</p>\n<p><a href=\"https://docs.github.com/ja/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens?apiVersion=2022-11-28\">https://docs.github.com/ja/rest/authentication/permissions-required-for-fine-grained-personal-access-tokens?apiVersion=2022-11-28</a></p>\n<p>トークンが作成出来たら、apiトークンが取得できるので、NewtのWebhookを編集して、<code>Authorization</code>ヘッダーを置き換えれば動くはずです。</p>\n<p>※私の場合は動かなかったので、一から作り直しました、まあええか</p>\n<h2>参考</h2>\n<p><a href=\"https://docs.github.com/ja/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens\">個人用アクセス トークンを管理する - GitHub Docs</a></p>\n",
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "633f0f262c3aa4b593186ec4",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-10-06T17:23:50.965Z",
+                            "updatedAt": "2022-10-06T17:23:50.965Z",
+                            "firstPublishedAt": "2022-10-06T17:23:50.965Z",
+                            "publishedAt": "2022-10-06T17:23:50.965Z"
+                        },
+                        "createdAt": "2022-10-06T17:23:50.965Z",
+                        "updatedAt": "2022-10-06T17:23:50.965Z"
+                    },
+                    "name": "Github Actions",
+                    "slug": "github-actions",
+                    "image": "633f0f1e2c3aa4b593186e62"
+                },
+                {
+                    "_id": "633f0f082c3aa4b593186c2d",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-10-06T17:23:20.446Z",
+                            "updatedAt": "2022-10-06T17:23:20.446Z",
+                            "firstPublishedAt": "2022-10-06T17:23:20.446Z",
+                            "publishedAt": "2022-10-06T17:23:20.446Z"
+                        },
+                        "createdAt": "2022-10-06T17:23:20.446Z",
+                        "updatedAt": "2022-10-06T17:23:20.446Z"
+                    },
+                    "name": "Firebase",
+                    "slug": "firebase",
+                    "image": "633f00f52c3aa4b593141c01"
+                }
+            ]
+        },
+        {
+            "_id": "6431b4ee3b7747446c0762b5",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-04-08T18:39:42.999Z",
+                    "updatedAt": "2023-04-09T05:59:51.636Z",
+                    "firstPublishedAt": "2023-04-08T18:39:42.999Z",
+                    "publishedAt": "2023-04-09T05:59:51.636Z"
+                },
+                "customOrder": 6,
+                "createdAt": "2023-04-08T18:39:42.999Z",
+                "updatedAt": "2023-04-09T05:59:51.636Z"
+            },
+            "title": "Nuxtでcheerioを使えるようにする",
+            "slug": "how-to-use-nuxt-cheerio",
+            "body": "<p>NuxtでCheerioを使ってHTMLパースを使用しようとするとエラーが出るので、使えるようにします。</p>\n<h2>環境</h2>\n<ul>\n<li>Nuxt: 2.15.8</li>\n<li>Vue: 2.6.14</li>\n</ul>\n<h2>問題</h2>\n<p>以下のようにNuxt環境で<code>cheerio</code>を使用するコードがあります。</p>\n<pre><code class=\"language-ts\">import * as cheerio from 'cheerio'\n\nconst $ = cheerio.load('&lt;div&gt;test&lt;/div&gt;')\n</code></pre>\n<p>上記のコードを含めてビルドすると以下のようなエラーが出ます。</p>\n<pre><code class=\"language-log\">ERROR in ./node_modules/htmlparser2/lib/esm/index.js 48:9\nModule parse failed: Unexpected token (48:9)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n|  * They should probably be removed eventually.\n|  */\n&gt; export * as ElementType from &quot;domelementtype&quot;;\n| import { getFeed } from &quot;domutils&quot;;\n| export { getFeed } from &quot;domutils&quot;;\n @ ./node_modules/cheerio/lib/esm/index.js 11:0-68 13:6-26\n## 省略 ##\n\nERROR in ./node_modules/cheerio/node_modules/parse5/dist/index.js 7:9\nModule parse failed: Unexpected token (7:9)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n| export { ERR as ErrorCodes } from './common/error-codes.js';\n| /** @internal */\n&gt; export * as foreignContent from './common/foreign-content.js';\n| /** @internal */\n| export * as html from './common/html.js';\n @ ./node_modules/cheerio/lib/esm/parsers/parse5-adapter.js 2:0-79 22:10-23 23:10-23 48:18-32\n @ ./node_modules/cheerio/lib/esm/index.js\n## 省略 ##\n\nERROR in ./node_modules/parse5-htmlparser2-tree-adapter/node_modules/parse5/dist/index.js 7:9\nModule parse failed: Unexpected token (7:9)\nYou may need an appropriate loader to handle this file type, currently no loaders are configured to process this file. See https://webpack.js.org/concepts#loaders\n| export { ERR as ErrorCodes } from './common/error-codes.js';\n| /** @internal */\n&gt; export * as foreignContent from './common/foreign-content.js';\n| /** @internal */\n| export * as html from './common/html.js';\n @ ./node_modules/parse5-htmlparser2-tree-adapter/dist/index.js 1:0-30 35:25-29\n @ ./node_modules/cheerio/lib/esm/parsers/parse5-adapter.js\n @ ./node_modules/cheerio/lib/esm/index.js\n## 省略 ##\n\n FATAL  Nuxt build error\n\n  at WebpackBundler.webpackCompile (node_modules/@nuxt/webpack/dist/webpack.js:2127:21)\n  at processTicksAndRejections (node:internal/process/task_queues:96:5)\n  at async WebpackBundler.build (node_modules/@nuxt/webpack/dist/webpack.js:2076:5)\n  at async Builder.build (node_modules/@nuxt/builder/dist/builder.js:327:5)\n  at async Object.run (node_modules/@nuxt/cli/dist/cli-build.js:110:7)\n  at async NuxtCommand.run (node_modules/@nuxt/cli/dist/cli-index.js:413:7)\n\n   ╭─────────────────────────────╮\n   │                             │\n   │   ✖ Nuxt Fatal Error       │\n   │                             │\n   │   Error: Nuxt build error   │\n   │                             │\n   ╰─────────────────────────────╯\n</code></pre>\n<h2>解決策</h2>\n<p>解決策としては、webpackにcheerio用のローダーを読み込ませることで使用できるようになります。</p>\n<p>以下のように<code>nuxt.config.ts</code>を変更します。</p>\n<pre><code class=\"language-ts:nuxt.config.ts\">export default {\n  /* 略 */\n  build: {\n    extend(config: any) {\n      // htmlparser2 loader\n      config.module.rules.push({\n        test: /\/node_modules\/htmlparser2\/lib\/esm\/index\\.js$/,\n        loader: 'babel-loader',\n        options: {\n          presets: ['@babel/preset-env'],\n        },\n      })\n      // cheerio loader\n      config.module.rules.push({\n        test: /\/node_modules\/cheerio\/node_modules\/parse5\/dist\/index\\.js$/,\n        loader: 'babel-loader',\n        options: {\n          presets: ['@babel/preset-env'],\n        },\n      })\n      // parse5-htmlparser2-tree-adapter loader\n      config.module.rules.push({\n        test: /\/node_modules\/parse5-htmlparser2-tree-adapter\/node_modules\/parse5\/dist\/index\\.js$/,\n        loader: 'babel-loader',\n        options: {\n          presets: ['@babel/preset-env'],\n        },\n      })\n    },\n  },\n  /* 略 */\n}\n</code></pre>\n<p>これで読み込めるようになるはずです。</p>\n",
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "63161dcad59cbbc5fa89ad11",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-09-05T16:03:22.823Z",
+                            "updatedAt": "2022-09-05T16:03:22.823Z",
+                            "firstPublishedAt": "2022-09-05T16:03:22.823Z",
+                            "publishedAt": "2022-09-05T16:03:22.823Z"
+                        },
+                        "createdAt": "2022-09-05T16:03:22.823Z",
+                        "updatedAt": "2022-09-05T16:03:22.823Z"
+                    },
+                    "name": "Nuxt",
+                    "slug": "nuxt",
+                    "image": "63161dbbd59cbbc5fa89ac6c"
+                },
+                {
+                    "_id": "63161e12d59cbbc5fa89b16c",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-09-05T16:04:34.994Z",
+                            "updatedAt": "2022-09-05T16:04:34.994Z",
+                            "firstPublishedAt": "2022-09-05T16:04:34.994Z",
+                            "publishedAt": "2022-09-05T16:04:34.994Z"
+                        },
+                        "createdAt": "2022-09-05T16:04:34.994Z",
+                        "updatedAt": "2022-09-05T16:04:34.994Z"
+                    },
+                    "name": "TypeScript",
+                    "slug": "typescript",
+                    "image": "63161df6d59cbbc5fa89b0c6"
+                }
+            ]
+        },
+        {
+            "_id": "63de2d1916bdb9179574394b",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-02-04T10:02:01.974Z",
+                    "updatedAt": "2023-02-08T15:19:10.258Z",
+                    "firstPublishedAt": "2023-02-04T10:02:01.974Z",
+                    "publishedAt": "2023-02-08T15:19:10.258Z"
+                },
+                "customOrder": 5,
+                "createdAt": "2023-02-04T10:02:01.974Z",
+                "updatedAt": "2023-02-08T15:19:10.258Z"
+            },
+            "title": "「コマンド'Dev Containers: Open Folder in Container...'  でエラー (Illegal argument: base) が発生しました」の対処法",
+            "slug": "devcontainer-illegal-argument-base-error",
+            "meta": {
+                "title": "「コマンド'Dev Containers: Open Folder in Container...'  でエラー (Illegal argument: base) が発生しました」の対処法",
+                "description": "「コマンド'Dev Containers: Open Folder in Container...'  でエラー (Illegal argument: base) が発生しました」の対処法",
+                "ogimage": {
+                    "_id": "63de296516bdb917957146c0",
+                    "altText": "",
+                    "description": "",
+                    "fileName": "スクリーンショット2023-02-04184412.png",
+                    "fileSize": 7884,
+                    "fileType": "image/png",
+                    "height": null,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/212e7cf7-92fa-4693-97db-3392a984bd34/スクリーンショット2023-02-04184412.png",
+                    "title": "",
+                    "width": null
+                }
+            },
+            "body": "<p>ふと家のWindows環境でWSLのUbuntuからDevContainerを起動しようとしたところ、エラーが発生しました。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/212e7cf7-92fa-4693-97db-3392a984bd34/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-02-04184412.png\" alt=\"スクリーンショット2023-02-04184412.png\"></p>\n<p>調べても一切情報がなかったため、記事にしておきます。</p>\n<h2>試したこと（意味なかったこと）</h2>\n<ul>\n<li>Windowsの再起動</li>\n<li>Docker Desktopの再インストール</li>\n<li>WSLのアップデート</li>\n<li>Ubuntuの再インストール</li>\n</ul>\n<p>※Ubuntuの再インストールはアプリのアンインストール後に<a href=\"https://softantenna.com/blog/wsl-delete-data/\">wslから登録解除</a>を行う必要があります。</p>\n<h2>解決方法</h2>\n<p>VSCodeのDevContainer拡張機能ページから別のバージョンをインストールする</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/8c640caa-ec9c-4514-9c0b-efa41463bc74/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-02-04185252.png\" alt=\"スクリーンショット2023-02-04185252.png\"></p>\n<p>今回の問題点はプラグインの自動アップデートによる不具合のため、バージョンを戻したら正常に動作しました。</p>\n<p>後日談ですが、ChatGPT君に聞いてみたところ割といい線をいっていて、感心しました。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/c436d203-2d4b-4e2e-9f65-ad012450ccbc/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-02-04185952.png\" alt=\"スクリーンショット2023-02-04185952.png\"></p>\n<h2>おわりに</h2>\n<p>ひとこと言わせてください。</p>\n<p><strong>分かるかぁ！</strong></p>\n",
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "63ddffb216bdb91795660639",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2023-02-04T06:48:18.934Z",
+                            "updatedAt": "2023-02-04T06:48:18.934Z",
+                            "firstPublishedAt": "2023-02-04T06:48:18.934Z",
+                            "publishedAt": "2023-02-04T06:48:18.934Z"
+                        },
+                        "customOrder": 17,
+                        "createdAt": "2023-02-04T06:48:18.934Z",
+                        "updatedAt": "2023-02-04T06:48:18.934Z"
+                    },
+                    "name": "VS Code",
+                    "slug": "vscode",
+                    "image": "63ddff9a16bdb9179565fcb5"
+                },
+                {
+                    "_id": "631454fed59cbbc5fa2b599f",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-09-04T07:34:22.644Z",
+                            "updatedAt": "2022-09-04T07:34:22.644Z",
+                            "firstPublishedAt": "2022-09-04T07:34:22.644Z",
+                            "publishedAt": "2022-09-04T07:34:22.644Z"
+                        },
+                        "createdAt": "2022-09-04T07:34:22.644Z",
+                        "updatedAt": "2022-09-04T07:34:22.644Z"
+                    },
+                    "name": "Windows",
+                    "slug": "windows",
+                    "image": "631454f0d59cbbc5fa2b5941"
+                },
+                {
+                    "_id": "63ddfeed16bdb9179565e88f",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2023-02-04T06:45:01.047Z",
+                            "updatedAt": "2023-02-04T06:45:01.047Z",
+                            "firstPublishedAt": "2023-02-04T06:45:01.047Z",
+                            "publishedAt": "2023-02-04T06:45:01.047Z"
+                        },
+                        "customOrder": 16,
+                        "createdAt": "2023-02-04T06:45:01.047Z",
+                        "updatedAt": "2023-02-04T06:45:01.047Z"
+                    },
+                    "name": "Docker",
+                    "slug": "docker",
+                    "image": "63ddfecf16bdb9179565e59a"
+                }
+            ]
+        },
+        {
+            "_id": "638c4746ca4a512e0c08f9eb",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-12-04T07:07:50.740Z",
+                    "updatedAt": "2022-12-04T07:10:50.062Z",
+                    "firstPublishedAt": "2022-12-04T07:10:50.062Z",
+                    "publishedAt": "2022-12-04T07:10:50.062Z"
+                },
+                "customOrder": 4,
+                "createdAt": "2022-12-04T07:10:50.062Z",
+                "updatedAt": "2022-12-04T07:10:50.062Z"
+            },
+            "title": "Cliud Run上で、LaravelのSMTP のメール送信エラーが発生してしまう",
+            "slug": "send-error-by-laravel-smtp-occur-in-cloud-run",
+            "meta": {
+                "title": "Cliud Run上で、LaravelのSMTP のメール送信エラーが発生してしまう",
+                "description": "GCPのCloudRun上でLaravelのSMTPのメール送信メソッドで送信した時にエラーが発生  ローカルの環境ではエラーは発生しない。",
+                "ogimage": {
+                    "_id": "638c46b3ca4a512e0c08f13c",
+                    "altText": "",
+                    "description": "",
+                    "fileName": "laravel.svg",
+                    "fileSize": 2229,
+                    "fileType": "image/svg+xml",
+                    "height": 264,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/d456b660-e277-4141-89f2-322016184008/laravel.svg",
+                    "title": "",
+                    "width": 256
+                }
+            },
+            "body": "<h2>エラー内容</h2>\n<p>GCPのCloudRun上でLaravelのSMTPのメール送信メソッドで送信した時にエラーが発生</p>\n<p>ローカルの環境ではエラーは発生しない。</p>\n<pre><code class=\"language-log\">local.ERROR: Expected response code &quot;250&quot; but got code &quot;550&quot;, with message &quot;550 5.7.1 &lt;保有しているメールアドレス&gt;... Command rejected&quot;. \n\n....&quot;exception&quot;:&quot;[object] (Symfony\\\\Component\\\\Mailer\\\\Exception\\\\TransportException(code: 550): Expected response code \\&quot;250\\&quot; but got code \\&quot;550\\&quot;, with message \\&quot;550 5.7.1 &lt;&gt;... Command rejected\\&quot;. at /var/www/*****/vendor/symfony/mailer/Transport/Smtp/SmtpTransport.php:308)...\n</code></pre>\n<h2>原因</h2>\n<p>サクラのレンタルサーバーの設定で、メールの国外IPアドレスフィルタを設定していたため、弾かれていた</p>\n<h2>解決策</h2>\n<p>アクセス制限設定を解除（無効化）する。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/5793c916-b9cd-4046-9f71-8aaaa3eb45e3/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%880004-10-1215.17.19.png\" alt=\"スクリーンショット0004-10-1215.17.19.png\"></p>\n",
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "638c478cca4a512e0c0901bb",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-12-04T07:09:00.714Z",
+                            "updatedAt": "2022-12-04T07:16:39.540Z",
+                            "firstPublishedAt": "2022-12-04T07:09:00.714Z",
+                            "publishedAt": "2022-12-04T07:16:39.540Z"
+                        },
+                        "customOrder": 15,
+                        "createdAt": "2022-12-04T07:09:00.714Z",
+                        "updatedAt": "2022-12-04T07:16:39.540Z"
+                    },
+                    "name": "Cloud Run",
+                    "slug": "cloud-run",
+                    "image": "638c4773ca4a512e0c0900d2"
+                },
+                {
+                    "_id": "638c46cfca4a512e0c08f226",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-12-04T07:05:51.813Z",
+                            "updatedAt": "2022-12-04T07:05:51.813Z",
+                            "firstPublishedAt": "2022-12-04T07:05:51.813Z",
+                            "publishedAt": "2022-12-04T07:05:51.813Z"
+                        },
+                        "customOrder": 14,
+                        "createdAt": "2022-12-04T07:05:51.813Z",
+                        "updatedAt": "2022-12-04T07:05:51.813Z"
+                    },
+                    "name": "Laravel",
+                    "slug": "laravel",
+                    "image": "638c46b3ca4a512e0c08f13c"
+                }
+            ]
+        },
+        {
+            "_id": "636170453548a57ba116761e",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-11-01T19:15:17.916Z",
+                    "updatedAt": "2022-11-01T19:27:41.821Z",
+                    "firstPublishedAt": "2022-11-01T19:25:21.280Z",
+                    "publishedAt": "2022-11-01T19:27:41.821Z"
+                },
+                "customOrder": 3,
+                "createdAt": "2022-11-01T19:25:21.280Z",
+                "updatedAt": "2022-11-01T19:27:41.821Z"
+            },
+            "title": "GCSにアップロードしたPDFのリンクが勝手にダウンロードしてしまう",
+            "slug": "gcs-pdf-open-another-tab",
+            "body": "<h2>問題</h2>\n<p>GoogleCloudStorageでアップロードしたpdfのリンクをクリックするとPDF viewerが開かずにダウンロードされる。</p>\n<h2>原因</h2>\n<p>ファイルアップロード時に、<code>Content-Type</code>を明示的に指定しないと、<code>Content-Type</code>が勝手に<code>application/octet-stream</code>となってしまい、ファイルの種類が分からないが故に、ダウンロードしてしまうようです。</p>\n<p>Google Cloud Storageで「種類」をしていすることでPDF Viewerで開くことができます。</p>\n<h2>解決策</h2>\n<p>プログラムで明示的にContentTypeを指定します。</p>\n<h3>GCSから設定する場合</h3>\n<p>オブジェクトの詳細から、「メタデータを編集」をクリックします。その際に開くモーダルウインドウでContent-Typeを指定します。</p>\n<h3>C#の例</h3>\n<pre><code class=\"language-cs\">storage.UploadObject(bucketName, objectName, contentType, FileSource);\n</code></pre>\n<h3>コマンド</h3>\n<p>すでにアップロードしているファイルは、以下のコマンドで一括変更が可能</p>\n<pre><code class=\"language-bash\">gsutil ls &quot;gs://my-bucket-name/folder-name/&quot; \\\n| grep &quot;\\.pdf&quot; \\\n| xargs -I {} gsutil setmeta -h &quot;Content-Type: application/pdf&quot; &quot;{}&quot;\n</code></pre>\n",
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "636172993548a57ba116a49e",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-11-01T19:25:13.490Z",
+                            "updatedAt": "2022-12-04T07:24:35.499Z",
+                            "firstPublishedAt": "2022-11-01T19:25:13.490Z",
+                            "publishedAt": "2022-12-04T07:24:35.499Z"
+                        },
+                        "customOrder": 13,
+                        "createdAt": "2022-11-01T19:25:13.490Z",
+                        "updatedAt": "2022-12-04T07:24:35.499Z"
+                    },
+                    "name": "Cloud Storage",
+                    "slug": "google-cloud-storage",
+                    "image": "6361727b3548a57ba116a3b5"
+                }
+            ]
+        }
+    ]
+}

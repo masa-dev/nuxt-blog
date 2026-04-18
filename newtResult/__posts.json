@@ -1,0 +1,672 @@
+{
+    "skip": 0,
+    "limit": 100,
+    "total": 7,
+    "items": [
+        {
+            "_id": "6777b64ea98a21b9fbbc527c",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2025-01-03T10:05:02.525Z",
+                    "updatedAt": "2025-01-06T00:39:38.624Z",
+                    "firstPublishedAt": "2025-01-03T13:56:13.087Z",
+                    "publishedAt": "2025-01-06T00:39:38.624Z"
+                },
+                "customOrder": 10,
+                "createdAt": "2025-01-03T13:56:13.087Z",
+                "updatedAt": "2025-01-06T00:39:38.624Z"
+            },
+            "title": "CloudRun上での.NET Identityセッション切れ問題の解決方法",
+            "slug": "dotnet-session-logout",
+            "description": ".NETをCloudRun上にデプロイした環境で、頻繁にIdentityのセッションが切れてしまう現象が発生します。  この問題の解決方法について、多少の需要があると思いましたので、記事にしました。",
+            "meta": {
+                "title": "CloudRun上での.NET Identityセッション切れ問題の解決方法",
+                "description": "CloudRun上でデプロイした.NETアプリケーションで頻繁に発生するセッション切れの問題を解決する方法を紹介します。",
+                "ogImage": {
+                    "_id": "64272294a184ff3f874d7305",
+                    "altText": "",
+                    "description": "",
+                    "fileName": "dotnet.svg",
+                    "fileSize": 1040,
+                    "fileType": "image/svg+xml",
+                    "height": 256,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/d463d130-4d29-499d-b850-ed02c724a768/dotnet.svg",
+                    "title": "",
+                    "width": 256
+                }
+            },
+            "body": "<h2>はじめに</h2>\n<p>.NETをCloudRun上にデプロイした環境で、頻繁にIdentityのセッションが切れてしまう現象が発生します。</p>\n<p>この問題の解決方法について、多少の需要があると思いましたので、記事にしました。</p>\n<h2>セッションが切断される理由</h2>\n<p>.NET Identityではトークン認証を使用しており、サーバー側で暗号化したトークンをCookieでやりとりすることでセッションの状態を管理しています。</p>\n<p>この認証に使用される暗号化キーの保存先は、.NETのデータ保護システムに設定された場所に保存されます。デフォルトで暗号化キーは<strong>メモリ</strong>に保存されます。</p>\n<p>一般的な単一のオンプレサーバーやVMなどでは、再起動などをしない限りメモリがリセットされないため、問題は発生しません。</p>\n<p>ただし、CloudRunのようなアクセス数によってコンテナが増減する場合は問題が発生します。 <br>\nコンテナごとにメモリが別れているため、スケールインしてコンテナ数が0になった際にメモリがリセットされ、暗号化キーが失われてしまいます。 <br>\nまた、スケールアウトしてコンテナ数が増えた場合でも、新規作成されたコンテナのメモリに暗号化キーは保存されていないため、セッションが切れてしまいます。</p>\n<p>つまり、セッションが切断される理由は、コンテナ型Webサーバーでコンテナの増減によって、メモリ内に保存されている暗号化キーが失われてしまうからです。</p>\n<h2>暗号化キーを別ストレージ（DBなど）に保存する</h2>\n<p>上記の問題は、暗号化キーの保存先であるデータ保護システムのデフォルト保存先をメモリから別ストレージに変更することで解決できます。</p>\n<p><a href=\"https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;tabs=visual-studio\">https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;tabs=visual-studio</a></p>\n<p>今回は例として、暗号化キーの保存先をDB（Postgresql）に変更します。MySQLでも同じ方法で保存先を変更できます。</p>\n<h3>依存パッケージのインストール</h3>\n<p>まず、対象のプロジェクトに移動し、以下のパッケージをNugetからインストールします。バージョンは各プロジェクトに合わせます。</p>\n<pre><code class=\"language-bash\">dotnet add package Microsoft.AspNetCore.DataProtection.EntityFrameworkCore --version 9.0.0\n</code></pre>\n<p><a href=\"https://www.nuget.org/packages/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore/\">https://www.nuget.org/packages/Microsoft.AspNetCore.DataProtection.EntityFrameworkCore/</a></p>\n<h3>コードの変更</h3>\n<p>次に、<code>Program.cs</code>に以下の内容を追加します。</p>\n<pre><code class=\"language-cs:Program.cs\">using Microsoft.AspNetCore.DataProtection;\n\n// 略\n\nbuilder.Services.AddDataProtection()\n    .PersistKeysToDbContext&lt;ApplicationDbContext&gt;();\n\nvar app = builder.Build();\n// 略\n</code></pre>\n<p>次に、<code>ApplicationDbContext</code>に<code>IDataProtectionKeyContext</code>を継承し、<code>DataProtectionKeys</code>プロパティを追加します。</p>\n<pre><code class=\"language-cs:Data/ApplicationDbContext.cs\">using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;\n\npublic class ApplicationDbContext : IdentityDbContext, IDataProtectionKeyContext\n{\n    // 略\n\n    public DbSet&lt;DataProtectionKey&gt; DataProtectionKeys { get; set; }\n}\n</code></pre>\n<h3>マイグレーション反映</h3>\n<p>上記の追加が完了したら、マイグレーションの作成、DB反映をします。<br>\n下記コードはサンプルになります。マイグレーションコードは既存コードに合わせて実行してください。</p>\n<pre><code class=\"language-bash\"># マイグレーションの発行\ndotnet ef migrations add AddDataProtectionKeysTable --context ApplicationDbContext --output-dir Data/Migrations\n\n# マイグレーションをデータベースに反映\ndotnet ef database update --context ApplicationDbContext\n</code></pre>\n<h3>確認</h3>\n<p>これでDBに <code>DataProtectionKeys</code> というテーブルが作成されます。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/d408e1d2-2147-4985-95fe-edcc1a53147a/dataprotectonkeytable1.png\" alt=\"dataprotectonkeytable1.png\"></p>\n<p>ログイン時に作成された暗号化キーが保存されます。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/de1eae86-6ef9-423a-ade2-7165ec6bb4f1/dataprotectonkeytable.png\" alt=\"dataprotectonkeytable.png\"></p>\n<h2>終わりに</h2>\n<p>結構前からこの問題について調査していましたが、検索の仕方が悪かったのか、解決まで実は1年くらいかかっています。</p>\n<p>それまでは、外部の認証プロバイダを使用するなりして誤魔化していましたが、記事の解決策のおかげで外部認証に依存せずに済みそうでハッピーです。</p>\n<h2>参考</h2>\n<ul>\n<li><a href=\"https://learn.microsoft.com/ja-jp/aspnet/core/security/data-protection/implementation/key-storage-providers?view=aspnetcore-9.0&amp;tabs=visual-studio\">ASP.NET Core でのキー ストレージ プロバイダー | Microsoft Learn</a></li>\n</ul>\n",
+            "image": {
+                "_id": "64272294a184ff3f874d7305",
+                "altText": "",
+                "description": "",
+                "fileName": "dotnet.svg",
+                "fileSize": 1040,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/d463d130-4d29-499d-b850-ed02c724a768/dotnet.svg",
+                "title": "",
+                "width": 256
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "642722b7a184ff3f874d85a7",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2023-03-31T18:13:11.030Z",
+                            "updatedAt": "2023-03-31T18:13:11.030Z",
+                            "firstPublishedAt": "2023-03-31T18:13:11.030Z",
+                            "publishedAt": "2023-03-31T18:13:11.030Z"
+                        },
+                        "customOrder": 20,
+                        "createdAt": "2023-03-31T18:13:11.030Z",
+                        "updatedAt": "2023-03-31T18:13:11.030Z"
+                    },
+                    "name": ".NET",
+                    "slug": "dotnet",
+                    "image": "64272294a184ff3f874d7305"
+                },
+                {
+                    "_id": "638c478cca4a512e0c0901bb",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-12-04T07:09:00.714Z",
+                            "updatedAt": "2022-12-04T07:16:39.540Z",
+                            "firstPublishedAt": "2022-12-04T07:09:00.714Z",
+                            "publishedAt": "2022-12-04T07:16:39.540Z"
+                        },
+                        "customOrder": 15,
+                        "createdAt": "2022-12-04T07:09:00.714Z",
+                        "updatedAt": "2022-12-04T07:16:39.540Z"
+                    },
+                    "name": "Cloud Run",
+                    "slug": "cloud-run",
+                    "image": "638c4773ca4a512e0c0900d2"
+                }
+            ]
+        },
+        {
+            "_id": "670280a2e016366845bc387a",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2024-10-06T12:20:50.383Z",
+                    "updatedAt": "2024-10-06T16:26:35.176Z",
+                    "firstPublishedAt": "2024-10-06T15:40:44.010Z",
+                    "publishedAt": "2024-10-06T16:26:35.176Z"
+                },
+                "customOrder": 8,
+                "createdAt": "2024-10-06T15:40:44.010Z",
+                "updatedAt": "2024-10-06T16:26:35.176Z"
+            },
+            "title": "NeoVim kickstartの設定説明メモ（KeyMap編）",
+            "slug": "neovim-kickstart-keymap",
+            "description": "設定内容（KeyMap） 検索結果のハイライト削除  検索結果のハイライトを`ESC`キーで解除する。 デフォルトでは`/`で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。",
+            "meta": {
+                "title": "NeoVim kickstartの設定説明メモ（KeyMap編）",
+                "description": "設定内容（KeyMap） 検索結果のハイライト削除  検索結果のハイライトを`ESC`キーで解除する。 デフォルトでは`/`で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。",
+                "ogImage": {
+                    "_id": "66e2387ce6213d85f2514d73",
+                    "altText": "",
+                    "description": "",
+                    "fileName": "1000001300.svg",
+                    "fileSize": 10808,
+                    "fileType": "image/svg+xml",
+                    "height": 148,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/bb3e7fee-9d09-4f3c-8bab-892ddd535260/1000001300.svg",
+                    "title": "",
+                    "width": 512
+                }
+            },
+            "body": "<p>前回の続き</p>\n<p><a href=\"https://masa-dev.net/post/66e23631e6213d85f24fb260\">NeoVim kickstartの設定説明メモ（オプション編）</a></p>\n<h2>設定内容（KeyMap）</h2>\n<h3>検索結果のハイライト削除</h3>\n<p>検索結果のハイライトを<code>ESC</code>キーで解除する。<br>\nデフォルトでは<code>/</code>で検索を確定した後、別の検索をしないとそのハイライトが残り続ける。結構邪魔。</p>\n<pre><code class=\"language-lua\">-- Clear highlights on search when pressing &lt;Esc&gt; in normal mode\n--  See `:help hlsearch`\nvim.keymap.set('n', '&lt;Esc&gt;', '&lt;cmd&gt;nohlsearch&lt;CR&gt;')\n</code></pre>\n<h3>診断ツールを表示する</h3>\n<p><code>&lt;Space&gt;</code> + <code>q</code> で診断ツールを分割ウインドウとして表示する。<br>\n診断ツールはLSPのアラートなどの表示のこと。VSCodeでいう「問題」タブ。</p>\n<pre><code class=\"language-lua\">-- Diagnostic keymaps\nvim.keymap.set('n', '&lt;leader&gt;q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })\n</code></pre>\n<h3>ターミナルモードからノーマルモードに戻る</h3>\n<p>ターミナルモードからノーマルモードに戻るためのショートカット。<br>\n通常のノーマルモードに戻るコマンドは<code>Ctrl \\</code> <code>Ctrl n</code> になっている。</p>\n<pre><code class=\"language-lua\">-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier\n-- for people to discover. Otherwise, you normally need to press &lt;C-\\&gt;&lt;C-n&gt;, which\n-- is not what someone will guess without a bit more experience.\n--\n-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping\n-- or just use &lt;C-\\&gt;&lt;C-n&gt; to exit terminal mode\nvim.keymap.set('t', '&lt;Esc&gt;&lt;Esc&gt;', '&lt;C-\\\\&gt;&lt;C-n&gt;', { desc = 'Exit terminal mode' })\n</code></pre>\n<h3>矢印キーの無効化</h3>\n<p>ノーマルモードでの矢印キーを無効化する。矢印キーを無効化したい場合はコメントアウトを外す。<br>\n矢印キーでの移動を絶対に許さないマン向け設定。</p>\n<pre><code class=\"language-lua\">-- TIP: Disable arrow keys in normal mode\nvim.keymap.set('n', '&lt;left&gt;', '&lt;cmd&gt;echo &quot;Use h to move!!&quot;&lt;CR&gt;')\nvim.keymap.set('n', '&lt;right&gt;', '&lt;cmd&gt;echo &quot;Use l to move!!&quot;&lt;CR&gt;')\nvim.keymap.set('n', '&lt;up&gt;', '&lt;cmd&gt;echo &quot;Use k to move!!&quot;&lt;CR&gt;')\nvim.keymap.set('n', '&lt;down&gt;', '&lt;cmd&gt;echo &quot;Use j to move!!&quot;&lt;CR&gt;')\n</code></pre>\n<h3>分割ウインドウ移動</h3>\n<p>分割ウインドウを<code>Ctrl h</code>, <code>Ctrl l</code>, <code>Ctrl j</code>, <code>Ctrl k</code> で移動できるようにする。<br>\nちなみにウインドウ分割は以下の方法でできる。</p>\n<ul>\n<li><code>Ctrl w</code> + <code>v</code> 垂直分割</li>\n<li><code>Ctrl w</code> + <code>s</code> 水平分割</li>\n</ul>\n<pre><code class=\"language-lua\">-- Keybinds to make split navigation easier.\n--  Use CTRL+&lt;hjkl&gt; to switch between windows\n--\n--  See `:help wincmd` for a list of all window commands\nvim.keymap.set('n', '&lt;C-h&gt;', '&lt;C-w&gt;&lt;C-h&gt;', { desc = 'Move focus to the left window' })\nvim.keymap.set('n', '&lt;C-l&gt;', '&lt;C-w&gt;&lt;C-l&gt;', { desc = 'Move focus to the right window' })\nvim.keymap.set('n', '&lt;C-j&gt;', '&lt;C-w&gt;&lt;C-j&gt;', { desc = 'Move focus to the lower window' })\nvim.keymap.set('n', '&lt;C-k&gt;', '&lt;C-w&gt;&lt;C-k&gt;', { desc = 'Move focus to the upper window' })\n</code></pre>\n<h2>設定内容（Basic Autocommands）</h2>\n<h3>ヤンク部分のハイライト</h3>\n<p>NeovimのAutocommandは、特定のイベントが発生したときに自動的にコマンドを実行する機能のこと。</p>\n<p>以下の設定では<code>TextYankPost</code>というイベントで発火し、ヤンク時にヤンクした文字範囲をハイライトする。<br>\n<code>TextYankPost</code>はテキストをヤンクした後に実行されるイベントのこと。</p>\n<pre><code class=\"language-lua\">-- Highlight when yanking (copying) text\n--  Try it with `yap` in normal mode\n--  See `:help vim.highlight.on_yank()`\nvim.api.nvim_create_autocmd('TextYankPost', {\n  desc = 'Highlight when yanking (copying) text',\n  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),\n  callback = function()\n    vim.highlight.on_yank()\n  end,\n})\n</code></pre>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/8783fb06-b261-4f4f-b3a3-0f4bf91abab4/basic-autocmd-yank-highlight.gif\" alt=\"basic-autocmd-yank-highlight.gif\"></p>\n<h2>終わりに</h2>\n<p>次回は長大なpluginなので投稿できるかな…?</p>\n<h2>参考</h2>\n<blockquote>\n<p><a href=\"https://neovim.io/doc/user/autocmd.html\">https://neovim.io/doc/user/autocmd.html</a></p>\n</blockquote>\n",
+            "image": {
+                "_id": "66e2387ce6213d85f2514d73",
+                "altText": "",
+                "description": "",
+                "fileName": "1000001300.svg",
+                "fileSize": 10808,
+                "fileType": "image/svg+xml",
+                "height": 148,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/bb3e7fee-9d09-4f3c-8bab-892ddd535260/1000001300.svg",
+                "title": "",
+                "width": 512
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "66e23782e6213d85f2507114",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2024-09-12T00:36:18.925Z",
+                            "updatedAt": "2024-09-12T00:36:27.124Z",
+                            "firstPublishedAt": "2024-09-12T00:36:27.124Z",
+                            "publishedAt": "2024-09-12T00:36:27.124Z"
+                        },
+                        "customOrder": 21,
+                        "createdAt": "2024-09-12T00:36:27.124Z",
+                        "updatedAt": "2024-09-12T00:36:27.124Z"
+                    },
+                    "name": "NeoVim",
+                    "slug": "neovim",
+                    "image": "66e2376fe6213d85f2506baa"
+                },
+                {
+                    "_id": "66e237c5e6213d85f2508722",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2024-09-12T00:37:25.862Z",
+                            "updatedAt": "2024-09-12T00:37:25.862Z",
+                            "firstPublishedAt": "2024-09-12T00:37:25.862Z",
+                            "publishedAt": "2024-09-12T00:37:25.862Z"
+                        },
+                        "customOrder": 22,
+                        "createdAt": "2024-09-12T00:37:25.862Z",
+                        "updatedAt": "2024-09-12T00:37:25.862Z"
+                    },
+                    "name": "Lua",
+                    "slug": "lua",
+                    "image": "66e237bee6213d85f25084d2"
+                }
+            ]
+        },
+        {
+            "_id": "66e23631e6213d85f24fb260",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2024-09-12T00:30:41.940Z",
+                    "updatedAt": "2024-10-06T16:20:14.678Z",
+                    "firstPublishedAt": "2024-09-12T00:41:01.825Z",
+                    "publishedAt": "2024-10-06T16:20:14.678Z"
+                },
+                "customOrder": 7,
+                "createdAt": "2024-09-12T00:41:01.825Z",
+                "updatedAt": "2024-10-06T16:20:14.678Z"
+            },
+            "title": "NeoVim kickstartの設定説明メモ（オプション編）",
+            "slug": "neovim-kickstart-options",
+            "description": "最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ",
+            "meta": {
+                "title": "NeoVim kickstartの設定説明（オプションなど）",
+                "description": "最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ",
+                "ogImage": {
+                    "_id": "66e2387ce6213d85f2514d73",
+                    "altText": "",
+                    "description": "",
+                    "fileName": "1000001300.svg",
+                    "fileSize": 10808,
+                    "fileType": "image/svg+xml",
+                    "height": 148,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/bb3e7fee-9d09-4f3c-8bab-892ddd535260/1000001300.svg",
+                    "title": "",
+                    "width": 512
+                }
+            },
+            "body": "<p>最近NeoVimのキックスタートを使ってみたところ、意外と使いやすかったので、そのキックスタートの設定の内容のまとめ</p>\n<p>↓nvim kickstart</p>\n<p><a href=\"https://github.com/nvim-lua/kickstart.nvim\">https://github.com/nvim-lua/kickstart.nvim</a></p>\n<p>続くかわからないけど、今回はオプション周りをまとめる</p>\n<h2>設定内容</h2>\n<h3><code>&lt;Leader&gt;</code>キーの設定</h3>\n<p><code>&lt;Leader&gt;</code>キーの設定を半角スペースにする<br>\nデフォルトはバックスラッシュ（<code>\\</code>）</p>\n<pre><code class=\"language-lua\">-- Set &lt;space&gt; as the leader key\n-- See `:help mapleader`\n--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)\nvim.g.mapleader = ' '\nvim.g.maplocalleader = ' '\n</code></pre>\n<h3>Nerd Fontに対応しているか</h3>\n<p>Nerd Font対応していれば <code>true</code> にする</p>\n<pre><code class=\"language-lua\">-- Set to true if you have a Nerd Font installed and selected in the terminal\nvim.g.have_nerd_font = false\n</code></pre>\n<h3>行番号の有効化</h3>\n<p>相対的な行番号も設定できるとのこと</p>\n<pre><code class=\"language-lua\">-- Make line numbers default\nvim.opt.number = true\n-- You can also add relative line numbers, to help with jumping.\n--  Experiment for yourself to see if you like it!\n-- vim.opt.relativenumber = true\n</code></pre>\n<h3>マウスモードを有効化</h3>\n<p>有効化するとマウスでのカーソル位置の移動ができる様になる</p>\n<pre><code class=\"language-lua\">-- Enable mouse mode, can be useful for resizing splits for example!\nvim.opt.mouse = 'a'\n</code></pre>\n<h3>モードを表示するかの設定</h3>\n<p>すでにステータスラインに表示しているため表示しないとのこと</p>\n<pre><code class=\"language-lua\">-- Don't show the mode, since it's already in the status line\nvim.opt.showmode = false\n</code></pre>\n<h3>クリックボードの同期</h3>\n<p>OSとのクリップボード同期を有効化するが、起動時間が長くなるため<code>UiEnter</code>の後に設定</p>\n<pre><code class=\"language-lua\">-- Sync clipboard between OS and Neovim.\n--  Schedule the setting after `UiEnter` because it can increase startup-time.\n--  Remove this option if you want your OS clipboard to remain independent.\n--  See `:help 'clipboard'`\nvim.schedule(function()\n  vim.opt.clipboard = 'unnamedplus'\nend)\n</code></pre>\n<h3>ブレークインデントの有効化</h3>\n<p>有効にすると改行時にインデントされた状態になる</p>\n<pre><code class=\"language-lua\">-- Enable break indent\nvim.opt.breakindent = true\n</code></pre>\n<h3>Undoファイルの有効化</h3>\n<p><code>u</code>コマンドのでのundoを記録する</p>\n<pre><code class=\"language-lua\">-- Save undo history\nvim.opt.undofile = true\n</code></pre>\n<h3>検索時の大文字・小文字の無視設定</h3>\n<p><code>\\C</code>か大文字が含まれていない限りは区別せずに検索する</p>\n<pre><code class=\"language-lua\">-- Case-insensitive searching UNLESS \\C or one or more capital letters in the search term\nvim.opt.ignorecase = true\nvim.opt.smartcase = true\n</code></pre>\n<h3>サインカラムの有効化</h3>\n<p>サインカラムをデフォルトに設定する<br>\nサインカラムは、行番号の左に表示される記号の行のこと</p>\n<pre><code class=\"language-lua\">-- Keep signcolumn on by default\nvim.opt.signcolumn = 'yes'\n</code></pre>\n<h3>スワップファイルの更新時間</h3>\n<p>この時間の間 (ミリ秒単位) 入力がなければ、スワップファイルがディスクに書き込まれる（参照：<a href=\"https://vim-jp.org/vimdoc-ja/options.html\">https://vim-jp.org/vimdoc-ja/options.html</a>）</p>\n<pre><code class=\"language-lua\">-- Decrease update time\nvim.opt.updatetime = 250\n</code></pre>\n<h3>キーマッピングシーケンスの待ち時間</h3>\n<p>キーマッピングシーケンスの待ち時間を減らす<br>\n例）<code>&lt;Leader&gt;w</code>のマッピングの場合、<code>&lt;Leader&gt;</code>入力後の待ち時間を設定する<br>\nwhich-keyのポップアップ表示を早めるために0.3秒に設定</p>\n<pre><code class=\"language-lua\">-- Decrease mapped sequence wait time\n-- Displays which-key popup sooner\nvim.opt.timeoutlen = 300\n</code></pre>\n<h3>分割画面の方向設定</h3>\n<ul>\n<li>横に分割する場合は、右に新しいウインドウを作成</li>\n<li>縦に分割する場合は、下に新しいウインドウを作成</li>\n</ul>\n<pre><code class=\"language-lua\">-- Configure how new splits should be opened\nvim.opt.splitright = true\nvim.opt.splitbelow = true\n</code></pre>\n<h3>リストモードの有効化</h3>\n<p>有効化した場合、<code>listchars</code>にある文字が反映される</p>\n<pre><code class=\"language-lua\">-- Sets how neovim will display certain whitespace characters in the editor.\n--  See `:help 'list'`\n--  and `:help 'listchars'`\nvim.opt.list = true\nvim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }\n</code></pre>\n<h3>コマンド結果のプレビュー</h3>\n<p>コマンドの結果を分割画面でプレビューできる<br>\n置換（<code>:%s/</code>）がわかりやすい</p>\n<pre><code class=\"language-lua\">-- Preview substitutions live, as you type!\nvim.opt.inccommand = 'split'\n</code></pre>\n<h3>カーソル行の強調表示</h3>\n<p>カーソルの行がどこにあるかわかる様にする</p>\n<pre><code class=\"language-lua\">-- Show which line your cursor is on\nvim.opt.cursorline = true\n</code></pre>\n<h3>カーソルの上下に表示する行数の設定</h3>\n<p>カーソルの上下に表示する画面行数の最小値を設定する</p>\n<p>開始・終了行以外では、設定された行数より下にカーソルを移動するとスクロールする</p>\n<pre><code class=\"language-lua\">-- Minimal number of screen lines to keep above and below the cursor.\nvim.opt.scrolloff = 10\n</code></pre>\n<h2>参考</h2>\n<blockquote>\n<p><a href=\"https://vim-jp.org/vimdoc-ja/map.html\">https://vim-jp.org/vimdoc-ja/map.html</a><br>\n<a href=\"https://vim-jp.org/vimdoc-ja/options.html\">https://vim-jp.org/vimdoc-ja/options.html</a></p>\n</blockquote>\n",
+            "image": {
+                "_id": "66e2387ce6213d85f2514d73",
+                "altText": "",
+                "description": "",
+                "fileName": "1000001300.svg",
+                "fileSize": 10808,
+                "fileType": "image/svg+xml",
+                "height": 148,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/bb3e7fee-9d09-4f3c-8bab-892ddd535260/1000001300.svg",
+                "title": "",
+                "width": 512
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "66e23782e6213d85f2507114",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2024-09-12T00:36:18.925Z",
+                            "updatedAt": "2024-09-12T00:36:27.124Z",
+                            "firstPublishedAt": "2024-09-12T00:36:27.124Z",
+                            "publishedAt": "2024-09-12T00:36:27.124Z"
+                        },
+                        "customOrder": 21,
+                        "createdAt": "2024-09-12T00:36:27.124Z",
+                        "updatedAt": "2024-09-12T00:36:27.124Z"
+                    },
+                    "name": "NeoVim",
+                    "slug": "neovim",
+                    "image": "66e2376fe6213d85f2506baa"
+                },
+                {
+                    "_id": "66e237c5e6213d85f2508722",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2024-09-12T00:37:25.862Z",
+                            "updatedAt": "2024-09-12T00:37:25.862Z",
+                            "firstPublishedAt": "2024-09-12T00:37:25.862Z",
+                            "publishedAt": "2024-09-12T00:37:25.862Z"
+                        },
+                        "customOrder": 22,
+                        "createdAt": "2024-09-12T00:37:25.862Z",
+                        "updatedAt": "2024-09-12T00:37:25.862Z"
+                    },
+                    "name": "Lua",
+                    "slug": "lua",
+                    "image": "66e237bee6213d85f25084d2"
+                }
+            ]
+        },
+        {
+            "_id": "6425b90086e7de37b82ff1a6",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-03-30T16:29:52.297Z",
+                    "updatedAt": "2025-01-03T09:46:04.313Z",
+                    "firstPublishedAt": "2023-03-31T18:25:05.756Z",
+                    "publishedAt": "2025-01-03T09:46:04.313Z"
+                },
+                "customOrder": 6,
+                "createdAt": "2023-03-31T18:25:05.756Z",
+                "updatedAt": "2025-01-03T09:46:04.313Z"
+            },
+            "title": ".NET MVCをSupabase + Cloud Runで動かしてみる",
+            "slug": "dotnet-supabase-cloudrun",
+            "description": "少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供",
+            "meta": {
+                "title": ".NET MVCをSupabase + Cloud Runで動かしてみる",
+                "description": "少し前に話題になっていた Supabase を最近になって知りました。 SupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証などの Postgresのデータベ",
+                "ogImage": {
+                    "_id": "66efdc1f4ef7a227ab6cee73",
+                    "altText": "dotnet mvc + supabase thumbnail",
+                    "description": "",
+                    "fileName": "スクリーンショット2023-04-01001455.png",
+                    "fileSize": 19465,
+                    "fileType": "image/png",
+                    "height": 366,
+                    "metadata": {},
+                    "src": "https://ik.imagekit.io/masahikoproject/aecceb25-e97f-4276-9269-071a54595d36/スクリーンショット2023-04-01001455.png",
+                    "title": "dotnet mvc + supabase thumbnail",
+                    "width": 939
+                }
+            },
+            "body": "<h2>はじめに</h2>\n<p>少し前に話題になっていた Supabase を最近になって知りました。<br>\nSupabaseはFirebaseの代替手段と謳っており、Postgresのデータベースや認証、ストレージなどの機能を提供するプラットフォームのことです。</p>\n<p>個人的にPosrgresデータベースを無料枠で使用することができる点が素晴らしいと思っています。<br>\nFirebaseのNoSQLもいいですが、EntityFrameworkとの相性は悪くて開発体験がよくないですから、あまり使いたくはありません。また、Cloud SQLや RDSのようなフルマネージドデータベースを使用するという選択肢もありますが、いかんせんコストが高いので、個人開発には向きません。</p>\n<p>そんなこんなでCloudRun + Supabaseを使用すれば、実質無料で.NETの環境を作ることができるのではないかと思って、試してみました。</p>\n<h2>インフラ</h2>\n<ul>\n<li>Cloud Run</li>\n<li>Supabase (Postgres)</li>\n</ul>\n<h2>環境</h2>\n<ul>\n<li>Docker</li>\n<li>.NET MVC Identity</li>\n<li>Postgres</li>\n</ul>\n<h2>Supabaseでプロジェクト作成</h2>\n<p>ログインは割愛します。</p>\n<p>まず、プロジェクトを作成します。（データベースパスワードは控えておく）</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/e842523a-063b-4fb9-abaa-7e9940b1b4a8/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-03-31002638.png\" alt=\"スクリーンショット2023-03-31002638.png\"></p>\n<p>プロジェクトを作成してプロジェクト詳細に入ったら、左メニューの設定（Project Settings）&gt;Databaseに移動します。</p>\n<p>Connection stringの.NETタブを選択すると.NETアプリ用の接続設定を取得できます。<br>\nこの時点でSQLクライアントソフトから接続確認ができました。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/cdd387f3-fc4d-4580-9067-56e57c16fb6a/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-03-31010948.png\" alt=\"スクリーンショット2023-03-31010948.png\"></p>\n<h2>.NET Core Identity環境の作成</h2>\n<p>.NETの環境を作成します。<br>\n開発環境はVSCodeでDev Container拡張機能を使用します。</p>\n<pre><code class=\"language-dockerfile:Dockerfile\">FROM mcr.microsoft.com/dotnet/sdk:7.0 AS runtime\n\nWORKDIR /app\n\nCOPY ./src .\n\nRUN apt-get update &amp;&amp; apt-get install -y \\\n    git \\\n    vim\n\nRUN dotnet tool install --global dotnet-ef --version 7.0\nRUN dotnet tool install --global dotnet-aspnet-codegenerator --version 7.0\n\nENV PATH $PATH:/root/.dotnet/tools\nENV TZ Asia/Tokyo\n</code></pre>\n<pre><code class=\"language-yml:docker-compose.yml\">version: '3.7'\n\nservices:\n  supabase_web:\n    container_name: &quot;supabase_web&quot;\n    build:\n      context: ./\n      dockerfile: Dockerfile\n    ports:\n      - &quot;50001:8080&quot;\n    working_dir: /app/\n    tty: true\n    volumes:\n      - ./src/:/app/\n\n  supabase_db:\n    container_name: &quot;supabase_db&quot;\n    image: postgres:13-bullseye\n    ports:\n      - &quot;55432:5432&quot;\n    volumes:\n      - .dbstore:/var/lib/postgresql/data\n    environment:\n      - POSTGRES_USER=postgres\n      - POSTGRES_DB=postgres\n      - POSTGRES_PASSWORD=A9AbbsJiNXUA\n</code></pre>\n<p><code>mkdir src</code>でsrcフォルダを作成したあとに、コマンドパレットを開き、<code>&gt;Dev Containers: Open Folder in Container...</code>を実行してコンテナを起動します。</p>\n<p>次に、下記コマンドで.NET MVCテンプレートを作成します。</p>\n<pre><code class=\"language-bash\">cd /\ndotnet new mvc --auth Individual -uld -o app -n SupabaseTest\n</code></pre>\n<p>併せて、gitignoreファイルも作成します。</p>\n<pre><code class=\"language-bash\">cd /app &amp;&amp; dotnet new gitignore\n</code></pre>\n<p>作成したら、下記コマンドでPostgresのNugetパッケージをインストールします。</p>\n<pre><code class=\"language-bash\">dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL\n</code></pre>\n<p>PostgreSQLに接続できるように<code>Program.cs</code>ファイルを編集します。</p>\n<pre><code class=\"language-cs:Program.cs\">using Microsoft.AspNetCore.Identity;\nusing Microsoft.EntityFrameworkCore;\nusing SupabaseTest.Data;\n\nvar builder = WebApplication.CreateBuilder(args);\n\nbuilder.WebHost.UseUrls(&quot;http://0.0.0.0:8080&quot;);\n\n// Add services to the container.\nvar connectionString = builder.Configuration.GetConnectionString(&quot;DefaultConnection&quot;) ?? throw new InvalidOperationException(&quot;Connection string 'DefaultConnection' not found.&quot;);\nbuilder.Services.AddDbContext&lt;ApplicationDbContext&gt;(options =&gt;\n    options.UseNpgsql(connectionString));\n\n// 略 //\n</code></pre>\n<p>また、<code>appSettings.Develop.json</code>を以下のように変更します。</p>\n<pre><code class=\"language-json:appSettings.Develop.json\">{\n  &quot;DetailedErrors&quot;: true,\n  &quot;ConnectionStrings&quot;: {\n    &quot;DefaultConnection&quot;: &quot;Host= supabase_db;Port=5432;Database=postgres;Username=postgres;Password=A9AbbsJiNXUA&quot;\n  },\n  &quot;Logging&quot;: {\n    &quot;LogLevel&quot;: {\n      &quot;Default&quot;: &quot;Information&quot;,\n      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;\n    }\n  }\n}\n</code></pre>\n<p>次にマイグレーション関連を整理します。</p>\n<p>今のままではマイグレーションがSQL Server用のものとなっており、updateを行ってもエラーが発生します。そのため、下記コマンドで初期マイグレーションを再発行します。</p>\n<pre><code class=\"language-bash\">cd /app\nrm Data/Migrations/*.cs\n# マイグレーションの発行\ndotnet ef migrations add InitialCreate --context ApplicationDbContext --output-dir Data/Migrations\n\n# マイグレーションをデータベースに反映\ndotnet ef database update --context ApplicationDbContext\n</code></pre>\n<p>次にデバッグできるようにVSCodeの左メニューから、「実行とデバッグ」を開き、「launch.jsonファイルを作成」し、.NET 5+ .NET MVCを選択して<code>launch.json</code>を自動生成します。<br>\nまた、VSCodeの拡張機能で「C# <code>ms-dotnettools.csharp</code>」をインストールしておきます。</p>\n<p><code>launch.json</code>ファイルが自動生成できたら、<code>F5</code>キーを押してデバッグを開始します。</p>\n<p>デバッグが実行出来たら、<a href=\"http://localhost:50001/\">http://localhost:50001/</a> でアクセスできます。</p>\n<p>データベースに接続できているか確認するために適当にユーザーを登録して、「Click here to confirm your account」をクリックします。その後、ログインができていたらDBは接続できています。</p>\n<p>これでローカルで開発できる環境ができました。</p>\n<h2>本番環境にマイグレーション</h2>\n<p>CloudRunにデプロイした際にSupabaseのPostgreに接続できるようにする必要があります。</p>\n<p>まず、Postgresの接続情報を記載した<code>appsettings.Production.json</code>を作成します。</p>\n<pre><code class=\"language-json:appsettings.Production.json\">{\n  &quot;DetailedErrors&quot;: false,\n  &quot;ConnectionStrings&quot;: {\n    &quot;DefaultConnection&quot;: &quot;User Id=postgres;Password=XXXXXXXX;Server=db.xxxxxxxxxxxxxxxxxx.supabase.co;Port=5432;Database=postgre&quot;\n  },\n  &quot;Logging&quot;: {\n    &quot;LogLevel&quot;: {\n      &quot;Default&quot;: &quot;Information&quot;,\n      &quot;Microsoft.AspNetCore&quot;: &quot;Warning&quot;\n    }\n  }\n}\n</code></pre>\n<p>次に下記のコマンドでsupabaseのデータベースを更新します。</p>\n<pre><code class=\"language-bash\">cd /app\nexport ASPNETCORE_ENVIRONMENT=&quot;Production&quot;\ndotnet ef database update\nexport ASPNETCORE_ENVIRONMENT=&quot;Development&quot;\n</code></pre>\n<h2>Cloud Runにデプロイ</h2>\n<p>まず、Cloud Runとは、サーバーレスのプラットフォームで、コンテナベースのWebアプリケーションを実行させることができます。</p>\n<p>要はDockerなどのコンテナからアプリケーションを実行するため、任意の言語の環境を使用することができます。また、Dockerベースの開発をする場合、ローカルの環境とCloud Runの環境を同じ環境にすることができるメリットがあります。</p>\n<p>先ほど作成した.NETアプリケーションをCloud Runにデプロイします。</p>\n<h3>GCPのロール変更</h3>\n<p>GCPのサービスアカウントからCloudRunにデプロイするため、権限を付与する必要があります。</p>\n<ol>\n<li>Cloud Buildに移動して、左メニューの「設定」に移動</li>\n<li>「Cloud Run」のステータスを有効に変更</li>\n<li>モーダルの「すべてのサービス アカウントにアクセス権を付与」</li>\n</ol>\n<h3>Cloud buildでイメージをビルドする</h3>\n<p>gcloud sdkがローカルにインストールされている前提で話します。</p>\n<p>Cloud Runでデプロイするためにはデプロイするコンテナのイメージが必要なので、Cloud Buildを使用してCloud Registryにイメージを保存します。</p>\n<p>まず、デプロイ用のDocker設定ファイルである<code>CloudRun.Dockerfile</code>を作成します。<br><br>\n注意点としては、CloudRunにデプロイする場合は <strong>必ず8080ポートを公開する</strong>ことです。そうしないとデプロイ時にエラーが発生します。</p>\n<pre><code class=\"language-dockerfile:CloudRun.Dockerfile\">FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build\n\nWORKDIR /app\nCOPY ./src .\n\nRUN dotnet publish -c Release -o dist\n\nFROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime\n\nWORKDIR /app\nCOPY --from=build /app/dist .\n\nENV TZ Asia/Tokyo\nENV ASPNETCORE_ENVIRONMENT Production\n\nENV PORT=8080\nEXPOSE 8080\n\nENTRYPOINT [&quot;dotnet&quot;, &quot;SupabaseTest.dll&quot;]\n</code></pre>\n<p>次にビルド設定の<code>cloudbuild.yml</code>を作成します。</p>\n<pre><code class=\"language-yml:cloudbuild.yml\">steps:\n# Build the container image\n- name: 'gcr.io/cloud-builders/docker'\n  args: ['build', '-t', 'gcr.io/PROJECT_ID/IMAGE', '-f', 'CloudRun.Dockerfile', '.']\n# Push the container image to Container Registry\n- name: 'gcr.io/cloud-builders/docker'\n  args: ['push', 'gcr.io/PROJECT_ID/IMAGE']\n# Deploy container image to Cloud Run\n- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'\n  entrypoint: gcloud\n  args: ['run', 'deploy', 'SERVICE_NAME', '--image', 'gcr.io/PROJECT_ID/IMAGE', '--region', 'REGION', '--allow-unauthenticated']\nimages:\n- gcr.io/PROJECT_ID/IMAGE\n</code></pre>\n<p><code>cloudbuild.yml</code>の各項目を変換しておいてください。</p>\n<table>\n<thead>\n<tr>\n<th>変換前</th>\n<th>内容</th>\n</tr>\n</thead>\n<tbody>\n<tr>\n<td><code>PROJECT_ID</code></td>\n<td>プロジェクトのID</td>\n</tr>\n<tr>\n<td><code>IMAGE</code></td>\n<td>Contaier Registoryに保存する名前</td>\n</tr>\n<tr>\n<td><code>SERVICE_NAME</code></td>\n<td>デプロイサービスの名前</td>\n</tr>\n<tr>\n<td><code>REGION</code></td>\n<td>デプロイ先のリージョン<br>東京なら<code>asia-northeast1</code></td>\n</tr>\n</tbody>\n</table>\n<h3>デプロイする</h3>\n<p>ローカル環境で<code>CloudRun.Dockerfile</code>のあるフォルダで以下のコマンドを実行します。</p>\n<pre><code class=\"language-bash\">gcloud builds submit ./ --config cloudbuild.yml\n</code></pre>\n<p>特にエラーがなければデプロイの成功です。</p>\n<p>認証の機能が使用できていたので、データベースにも接続できていますね！</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/8e50b2a3-edd8-4f72-9ae7-781009eaaa31/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-04-01001455.png\" alt=\"スクリーンショット2023-04-01001455.png\"></p>\n<h2>おわりに</h2>\n<p>実際にCloud RunとSupabaseを使用することで.NETの環境を限りなく安くなるように作成できました。ただ、今回作成した.NETアプリは、Cloud Runの特性上、十数分程度でログインセッションが切れてしまうため、セッションをインメモリからデータベースに保存するなどの対応が必要になりそうです。<br><br>\nSupabaseのプロジェクトは無料枠で2つのみなので、数を作成できませんが、個人開発にはもっていこいのサービスだと思います。</p>\n<p>Cloud Runなので.NET Coreの環境にとどまらず、頑張ればWordpressの環境も作成できるんじゃないかと思います。ほぼ無料でWordpress環境は夢があっていいですね。</p>\n<p>さいごに、サクッと記事が書けるだろうと思って書き始めましたが、思ったより基本的な説明に時間をとってしまう形になってしまいました。記事を作成するのは難しいですね...</p>\n",
+            "image": {
+                "_id": "66efdc1f4ef7a227ab6cee73",
+                "altText": "dotnet mvc + supabase thumbnail",
+                "description": "",
+                "fileName": "スクリーンショット2023-04-01001455.png",
+                "fileSize": 19465,
+                "fileType": "image/png",
+                "height": 366,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/aecceb25-e97f-4276-9269-071a54595d36/スクリーンショット2023-04-01001455.png",
+                "title": "dotnet mvc + supabase thumbnail",
+                "width": 939
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "63ddfeed16bdb9179565e88f",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2023-02-04T06:45:01.047Z",
+                            "updatedAt": "2023-02-04T06:45:01.047Z",
+                            "firstPublishedAt": "2023-02-04T06:45:01.047Z",
+                            "publishedAt": "2023-02-04T06:45:01.047Z"
+                        },
+                        "customOrder": 16,
+                        "createdAt": "2023-02-04T06:45:01.047Z",
+                        "updatedAt": "2023-02-04T06:45:01.047Z"
+                    },
+                    "name": "Docker",
+                    "slug": "docker",
+                    "image": "63ddfecf16bdb9179565e59a"
+                },
+                {
+                    "_id": "64272284a184ff3f874d6b48",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2023-03-31T18:12:20.908Z",
+                            "updatedAt": "2023-03-31T18:12:20.908Z",
+                            "firstPublishedAt": "2023-03-31T18:12:20.908Z",
+                            "publishedAt": "2023-03-31T18:12:20.908Z"
+                        },
+                        "customOrder": 19,
+                        "createdAt": "2023-03-31T18:12:20.908Z",
+                        "updatedAt": "2023-03-31T18:12:20.908Z"
+                    },
+                    "name": "Supabase",
+                    "slug": "supabase",
+                    "image": "64272268a184ff3f874d6804"
+                },
+                {
+                    "_id": "638c478cca4a512e0c0901bb",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-12-04T07:09:00.714Z",
+                            "updatedAt": "2022-12-04T07:16:39.540Z",
+                            "firstPublishedAt": "2022-12-04T07:09:00.714Z",
+                            "publishedAt": "2022-12-04T07:16:39.540Z"
+                        },
+                        "customOrder": 15,
+                        "createdAt": "2022-12-04T07:09:00.714Z",
+                        "updatedAt": "2022-12-04T07:16:39.540Z"
+                    },
+                    "name": "Cloud Run",
+                    "slug": "cloud-run",
+                    "image": "638c4773ca4a512e0c0900d2"
+                },
+                {
+                    "_id": "642722b7a184ff3f874d85a7",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2023-03-31T18:13:11.030Z",
+                            "updatedAt": "2023-03-31T18:13:11.030Z",
+                            "firstPublishedAt": "2023-03-31T18:13:11.030Z",
+                            "publishedAt": "2023-03-31T18:13:11.030Z"
+                        },
+                        "customOrder": 20,
+                        "createdAt": "2023-03-31T18:13:11.030Z",
+                        "updatedAt": "2023-03-31T18:13:11.030Z"
+                    },
+                    "name": ".NET",
+                    "slug": "dotnet",
+                    "image": "64272294a184ff3f874d7305"
+                }
+            ]
+        },
+        {
+            "_id": "63d6a6932772b5781daab492",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-01-29T17:02:11.761Z",
+                    "updatedAt": "2023-02-05T04:42:43.149Z",
+                    "firstPublishedAt": "2023-01-29T17:50:08.797Z",
+                    "publishedAt": "2023-02-05T04:42:43.149Z"
+                },
+                "customOrder": 4,
+                "createdAt": "2023-01-29T17:50:08.797Z",
+                "updatedAt": "2023-02-05T04:42:43.149Z"
+            },
+            "title": "Windowsのbash環境を整備していく",
+            "slug": "windows-bash-environmental-setting",
+            "description": "Windowsのbash環境を整備していく",
+            "meta": {
+                "title": "Windowsのbash環境を整備していく",
+                "description": "Windowsのbash環境を整備していく",
+                "ogImage": null
+            },
+            "body": "<h2>はじめに</h2>\n<p>最近（一年前）に引っ越してから Windows 環境を一新したので、 シェル関連で今までやってきたことをまとめようとおもいます。</p>\n<h2>実行ターミナル</h2>\n<p>まず、シェルの実行環境は、Windows Terminal と <a href=\"https://hyper.is/\">Hyper</a> を使用しています。<br><br>\n気分でどちらを使うか決めているのですが、使いやすさでいうなら Windows Terminal の方がいいです。Windows の Hyper は画面分割ができますが、コピーとペーストのショートカットが通常と違って使いにくいです。</p>\n<p>Hyperにはポケモンのテーマなどもあるので、（見にくくなりますが）気になる人は使ってみてもいいかもしれないですね。</p>\n<h2>シェル</h2>\n<p>基本的に Git Bash を使用しています。<br><br>\nGit Bash はGitをインストールする勝手にインストールされているので、使用している人も多いんじゃないでしょうか。</p>\n<p>bash でできることが大体できますし、デフォルトでgitのブランチが表示されている点が優秀です。</p>\n<p>最初はPowerShellを使用していましたが、<code>ls</code>コマンドが使用できなかったり、専用のコマンドがよくわからなかったりと、不満があったので結果として Git Bash を使う形に落ち着いています。</p>\n<h2>コマンド</h2>\n<p>Git Bashを使いやすくするため、いくつかのコマンドを使えるようにしています。</p>\n<ul>\n<li>vim</li>\n<li>peco</li>\n</ul>\n<p>それぞれ説明していきます。</p>\n<h3>Vim</h3>\n<p>名前だけは聞いたことがある人も多いんじゃないでしょうか。Vim はコマンドラインエディタの一種であり、アプリの切り替えを行わずにコマンドラインから直接ファイルの編集を行うことができます。</p>\n<p><code>.bashrc</code>などのちょっとした設定ファイルなどの編集を行う際などによく使っています。<br><br>\nかなり癖のある UI をしていますが、住めば都というように、慣れれば VS Code で Vim の拡張機能を入れたくなるほどになります。</p>\n<p>また、プラグインをインストールすることで、デフォルトのカラースキームを変更できたり、エクスプローラーのような機能を追加することもできます。その設定などは機会があれば別の記事にしようと思います。</p>\n<h3>Peco</h3>\n<p><a href=\"https://github.com/peco/peco\">peco</a> は与えられた入力を視覚的に選択できるコマンドです。</p>\n<p>基本的なコマンドの使用方法は、与えられた入力リストをselectのように選択させて、選択させたものを文字列として出力します。</p>\n<pre><code class=\"language-bash\"># ls の出力リストから選択させる\nls | peco\n</code></pre>\n<p>上述のような使い方は基本的にはせずに、<code>.bash_history</code>の内容を読むようにして、<code>Ctrl + r</code>などのバインディングでコマンドの履歴検索をできるようにしています。</p>\n<p><img src=\"https://ik.imagekit.io/masahikoproject/1b9d5393-50b4-46d6-9ce5-0ecd5eb384e3/%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%B3%E3%82%B7%E3%83%A7%E3%83%83%E3%83%882023-01-30020344.png\" alt=\"スクリーンショット2023-01-30020344.png\"></p>\n<h2>さいごに</h2>\n<p>vim のプラグインなどを考えて記事を書き始めましたが、後からvim関係は別に分けた方がいいのではないかと思い、vim関係を書かなくした結果、思ったより記事の内容が薄くなってしまいました。</p>\n<p>まぁ、見てる人そんなにいないし、ここまで見ている人いないから、問題なし！ 安全確認ヨシ！</p>\n",
+            "image": {
+                "_id": "63d6a6ff2772b5781daacccc",
+                "altText": "peco bash windows",
+                "description": "",
+                "fileName": "スクリーンショット2023-01-30020344.png",
+                "fileSize": 6272,
+                "fileType": "image/png",
+                "height": null,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/1b9d5393-50b4-46d6-9ce5-0ecd5eb384e3/スクリーンショット2023-01-30020344.png",
+                "title": "peco bash windows",
+                "width": null
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "631454fed59cbbc5fa2b599f",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-09-04T07:34:22.644Z",
+                            "updatedAt": "2022-09-04T07:34:22.644Z",
+                            "firstPublishedAt": "2022-09-04T07:34:22.644Z",
+                            "publishedAt": "2022-09-04T07:34:22.644Z"
+                        },
+                        "createdAt": "2022-09-04T07:34:22.644Z",
+                        "updatedAt": "2022-09-04T07:34:22.644Z"
+                    },
+                    "name": "Windows",
+                    "slug": "windows",
+                    "image": "631454f0d59cbbc5fa2b5941"
+                }
+            ]
+        },
+        {
+            "_id": "633f007e2c3aa4b59313ccd1",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-10-06T16:21:18.615Z",
+                    "updatedAt": "2022-10-07T07:46:38.074Z",
+                    "firstPublishedAt": "2022-10-06T17:08:31.771Z",
+                    "publishedAt": "2022-10-07T07:46:38.074Z"
+                },
+                "createdAt": "2022-10-06T17:08:31.771Z",
+                "updatedAt": "2022-10-07T07:46:38.074Z"
+            },
+            "title": "FirebaseのCIデプロイが突然落ちるようになった",
+            "slug": "firebase-github-actions-error",
+            "description": "本サイトの環境はFirebaseにデプロイしており、GitHub Actionsで自動でデプロイするようにしていますが、突然エラーが発生して落ちるようになりました。",
+            "meta": {
+                "title": "FirebaseのCIデプロイが突然落散るようになった",
+                "description": "",
+                "ogImage": null
+            },
+            "body": "<h2>エラー発生</h2>\n<p>本サイトの環境はFirebaseにデプロイしており、GitHub Actionsで自動でデプロイするようにしていますが、突然エラーが発生して落ちるようになりました。</p>\n<h2>エラー内容</h2>\n<p>エラー内容は以下です。</p>\n<pre><code class=\"language-log\">Error: Failed to list functions for *******\n\nThe process '/usr/local/bin/npx' failed with exit code 1\nError: The process '/usr/local/bin/npx' failed with exit code 1\n</code></pre>\n<p>さすがにさっきのだけじゃあ何もわからないので少し探してみる。</p>\n<h3>エラー1</h3>\n<p>調べると以下のエラーが発生していました。</p>\n<pre><code class=\"language-log\">[2022-10-06T16:20:32.871Z] [functions] HTTP Error: 403, Cloud Functions API has not been used in project 700***** before or it is disabled. Enable it by visiting \n</code></pre>\n<p>エラーの少し前になんかそれっぽいことが書いてありますね。「Cloud Functions API」とやらが有効化されていないから有効化しろとのことです。</p>\n<p>とりあえず、GCPにログインして、対象のプロジェクトで「Cloud Functions API」を有効化します。</p>\n<h3>エラー2</h3>\n<p>先ほどのエラーはなくなりましたが、今度は以下のようなエラーが発生。（もともとあったかもしんない）</p>\n<pre><code class=\"language-log\">Error: HTTP Error: 403, Permission 'cloudfunctions.functions.list' denied on 'projects/**********/locations/-/functions'\n</code></pre>\n<p>firebaseのバグっぽい？調べると以下のIssueにあたりました。<br>\n<a href=\"https://github.com/FirebaseExtended/action-hosting-deploy/issues/203\">https://github.com/FirebaseExtended/action-hosting-deploy/issues/203</a></p>\n<p>一番評価がありそうな解決策を試してみます。<br>\n<a href=\"https://github.com/FirebaseExtended/action-hosting-deploy/issues/203#issuecomment-1127732956\">https://github.com/FirebaseExtended/action-hosting-deploy/issues/203#issuecomment-1127732956</a></p>\n<p>方法は以下の通りです</p>\n<ol>\n<li>「IAMと管理 &gt; IAM」に移動して<code>github-actions</code>から始まるアカウントを探す</li>\n<li>鉛筆マークで「別のロールを追加」から、<code>Cloud Functions 閲覧者</code>を追加</li>\n<li>正しいプロジェクトにいるか念のために確認</li>\n</ol>\n<p>保存してGithubActionsを再実行したところ、うまく動作しました。</p>\n<h2>解決策・まとめ</h2>\n<p>どうやら、GCP関連の権限不足だった模様です。<br>\nどうしていきなり発生したのかはわかりません。本日（2022/10/6）にfirebaseから規約変更などのメールはありましたがそれが原因とは思えません。（GithubのIssueは数か月前のもの）<br>\n利用からちょうど３か月経とうかというところなので、無料期間外だからでしょうか。</p>\n<p>まぁ、よくわからんけど解決したからヨシ！</p>\n<p>2022/10/7 追記<br>\nIssueを追ってみたら、昨日あたりからこのエラーが発生したようです。<br>\n具体的な原因についてはわかりませんでした。</p>\n<p>今回の問題は、以下の二つの操作で解決できました。</p>\n<ul>\n<li><code>Cloud Functions API</code>の有効化</li>\n<li>アカウントのロール追加</li>\n</ul>\n",
+            "image": {
+                "_id": "633f00f52c3aa4b593141c01",
+                "altText": "",
+                "description": "",
+                "fileName": "firebase.svg",
+                "fileSize": 2608,
+                "fileType": "image/svg+xml",
+                "height": 351,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/819f9f03-7710-4edc-b936-2507fe7e3a9a/firebase.svg",
+                "title": "",
+                "width": 256
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "633f0f082c3aa4b593186c2d",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-10-06T17:23:20.446Z",
+                            "updatedAt": "2022-10-06T17:23:20.446Z",
+                            "firstPublishedAt": "2022-10-06T17:23:20.446Z",
+                            "publishedAt": "2022-10-06T17:23:20.446Z"
+                        },
+                        "createdAt": "2022-10-06T17:23:20.446Z",
+                        "updatedAt": "2022-10-06T17:23:20.446Z"
+                    },
+                    "name": "Firebase",
+                    "slug": "firebase",
+                    "image": "633f00f52c3aa4b593141c01"
+                },
+                {
+                    "_id": "633f0f262c3aa4b593186ec4",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-10-06T17:23:50.965Z",
+                            "updatedAt": "2022-10-06T17:23:50.965Z",
+                            "firstPublishedAt": "2022-10-06T17:23:50.965Z",
+                            "publishedAt": "2022-10-06T17:23:50.965Z"
+                        },
+                        "createdAt": "2022-10-06T17:23:50.965Z",
+                        "updatedAt": "2022-10-06T17:23:50.965Z"
+                    },
+                    "name": "Github Actions",
+                    "slug": "github-actions",
+                    "image": "633f0f1e2c3aa4b593186e62"
+                }
+            ]
+        },
+        {
+            "_id": "632f56d68834f719d021b2d6",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-24T19:13:26.484Z",
+                    "updatedAt": "2023-04-02T01:53:43.479Z",
+                    "firstPublishedAt": "2022-09-24T19:13:26.484Z",
+                    "publishedAt": "2023-04-02T01:53:43.479Z"
+                },
+                "createdAt": "2022-09-24T19:13:26.484Z",
+                "updatedAt": "2023-04-02T01:53:43.479Z"
+            },
+            "title": "Vue3のVue Test Utils で地獄をみた（Chart.js部門）",
+            "slug": "vue-3-vue-test-utils-chatjs",
+            "description": "はじめはVuexのストアが問題で発生していると思い込んで、ひたすらモック作成に取り組んでいたけど一向にエラー文が変わらない絶望 そんなこんなで、色々いじくりまわしてるとあることに気づいた",
+            "meta": {
+                "title": "Vue3のVue Test Utils で地獄をみた（Chart.js部門）",
+                "description": "というのも、mountedでは子コンポーネント全てをマウントしたことは保証しないらしく、すべてのコンポーネントがマウントされているとは限らないそうです。公式ドキュメントにも普通に書いてあったので参考に載っけときます。",
+                "ogImage": null
+            },
+            "body": "<p>あまり気力がないのでかなり端折って書きます。</p>\n<h2>環境</h2>\n<ul>\n<li>vue@3.2.19</li>\n<li>vuex@4.0.2</li>\n<li>chart.js@2.9.4</li>\n<li>@vue/test-utils@2.0.0-rc.15</li>\n</ul>\n<p>ここで関係のなさそうな一般ライブラリが入っているってことは、つまりそういうことなんです。</p>\n<h2>問題の部分</h2>\n<p>本当ならもっと長いけど、問題となった部分はここだけ</p>\n<pre><code class=\"language-html:src/components/Chart.vue\">&lt;template&gt;\n  &lt;div class=&quot;chart&quot;&gt;\n    &lt;canvas id=&quot;myChart&quot;&gt;&lt;/canvas&gt;\n  &lt;/div&gt;\n&lt;/template&gt;\n\n&lt;script&gt;\nimport Chart from &quot;chart.js&quot;;\nimport &quot;chartjs-plugin-colorschemes&quot;;\n\nexport default {\n  ...略\n  methods: {\n    drawLineChart() {\n      const ctx = document.getElementById(&quot;myChart&quot;);\n\n      // グラフの作成及び設定を指定する\n      window.populationChart = new Chart(ctx, {\n\t    ...略\n\t  });\n    },\n  },\n  mounted() {\n    // グラフの作成\n    this.drawLineChart();\n  },\n};\n&lt;/script&gt;\n</code></pre>\n</br>\n<pre><code class=\"language-js:tests/unit/Chart.spec.js\">import { shallowMount } from &quot;@vue/test-utils&quot;;\nimport Chart from &quot;@/components/Chart.vue&quot;;\n\n\ntest(&quot;Chart&quot;, () =&gt; {\n  const state = {\n\t...略\n  }\n\n  const $store = {\n\t...略\n  }\n\n  const wrapper = shallowMount(Chart, {\n    global: {\n      mocks: {\n        $store\n      }\n    }\n  })\n});\n</code></pre>\n<h2>何が起きたのか・エラー内容</h2>\n<p>なんと！こんな素敵なエラーが出てきました✨✨</p>\n<pre><code class=\"language-log\">FAIL  tests/unit/PopulationChart.spec.js\n ● Console\n\nconsole.warn node_modules/@vue/runtime-core/dist/runtime-core.cjs.js:6465\n  [Vue warn]: Unhandled error during execution of mounted hook \n\tat &lt;PopulationChart ref=&quot;VTU_COMPONENT&quot; &gt; \n\tat &lt;VTUROOT&gt;\n\n ● \n\n  TypeError: Cannot read property 'length' of null\n  \n  ...略\n</code></pre>\n<p>な...何を言っているのかわからねーと思うが、おれも何をされたのかわからなかった...</p>\n<p>どこのことを言っているの分からなかったし、時間をかけて調べても何にも出てこない、マジで</p>\n<p>はじめはVuexのストアが問題で発生していると思い込んで、ひたすらモック作成に取り組んでいたけど一向にエラー文が変わらない絶望...</p>\n<p>そんなこんなで、色々いじくりまわしてるとあることに気づいた</p>\n<pre><code class=\"language-log\">TypeError: Cannot read property 'length' of null\n\n  at Object.acquireContext (node_modules/chart.js/dist/Chart.js:7756:19)\n  at Chart.construct (node_modules/chart.js/dist/Chart.js:9324:26)\n  at new Chart (node_modules/chart.js/dist/Chart.js:9311:7)\n  at Proxy.drawLineChart (src/components/PopulationChart.vue:760:32)\n  at Proxy.mounted (src/components/PopulationChart.vue:816:10)\n  ...略\n</code></pre>\n<p>さっきは略していましたが、よく見ると<code>Chart</code>やら<code>Context</code>やら書いてある...</p>\n<p>もしかしてもしかするとこの<code>Chart.js</code>が問題のパターン？と思い、たくさん調べてみましたよ。</p>\n<p>ライブラリの問題部分を読んでみると、どうやらコンストラクタの引数のcanvasエレメントが問題だった。さらに調べた結果、canvasが表示されきってないとかどうとかで読み込めなかったらしい。／(^o^)＼ﾅﾝﾃｺｯﾀｲ</p>\n<h2>問題の解決方法</h2>\n<p>ということで、数時間かけて問題に対処した結果、コードの修正部分は以下の通りです‼‼‼‼</p>\n<p><code>src/components/Chart.vue</code>の<code>mounted</code></p>\n<pre><code class=\"language-js:src/components/Chart.vue\">  mounted() {\n    // this.$nextTickで囲むだけ‼‼‼‼‼‼ 簡単だね‼\n    this.$nextTick(function () {\n      // グラフの作成\n      this.drawLineChart();\n    });\n  },\n</code></pre>\n<p>そう、ここだけ‼</p>\n<p><code>canvas</code>がマウントされきっていないため、<code>$nextTick</code>を使ってすべてのコンポーネントがマウントされるのを待ったらいけました。</p>\n<p>というのも、<code>mounted</code>では子コンポーネント全てをマウントしたことは保証しないらしく、すべてのコンポーネントがマウントされているとは限らないそうです。公式ドキュメントにも普通に書いてあったので参考に載っけときます。</p>\n<h2>おわりに</h2>\n<p>数時間悩んだ結果2行追加で解決でつらいよ、俺の努力はいったい...</p>\n<p>／(^o^)＼ﾅﾝﾃｺｯﾀｲ</p>\n<p>深夜テンションで書きましたのでもう寝ます( ˘ω˘)ｽﾔｧ</p>\n<p>誤字脱字はゆるしてください</p>\n<h2>参考</h2>\n<blockquote>\n<p><a href=\"https://qiita.com/chan_kaku/items/7f3233053b0e209ef355#mounted\">Vueのライフサイクルを完全に理解した - Qiita</a><br>\n<a href=\"https://jp.vuejs.org/v2/api/index.html#mounted\">API — Vue.js</a></p>\n</blockquote>\n",
+            "image": {
+                "_id": "63161d23d59cbbc5fa89a677",
+                "altText": "",
+                "description": "",
+                "fileName": "vue.svg",
+                "fileSize": 569,
+                "fileType": "image/svg+xml",
+                "height": 221,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/4cc2a9dc-036c-4164-9c6e-ad2de68644c0%2Fvue.svg",
+                "title": "",
+                "width": 256
+            },
+            "author": {
+                "_id": "61a7359d8131ac001847fbb4",
+                "_sys": {
+                    "raw": {
+                        "createdAt": "2021-12-01T08:43:09.433Z",
+                        "updatedAt": "2023-02-04T07:00:38.318Z",
+                        "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                        "publishedAt": "2023-02-04T07:00:38.318Z"
+                    },
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "name": "masa",
+                "slug": "masa",
+                "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+                "image": "63de027516bdb9179566c9ba"
+            },
+            "tags": [
+                {
+                    "_id": "63161d44d59cbbc5fa89a71c",
+                    "_sys": {
+                        "raw": {
+                            "createdAt": "2022-09-05T16:01:08.024Z",
+                            "updatedAt": "2022-09-05T16:01:08.024Z",
+                            "firstPublishedAt": "2022-09-05T16:01:08.024Z",
+                            "publishedAt": "2022-09-05T16:01:08.024Z"
+                        },
+                        "createdAt": "2022-09-05T16:01:08.024Z",
+                        "updatedAt": "2022-09-05T16:01:08.024Z"
+                    },
+                    "name": "Vue.js",
+                    "slug": "vuejs",
+                    "image": "63161d23d59cbbc5fa89a677"
+                }
+            ]
+        }
+    ]
+}

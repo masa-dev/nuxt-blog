@@ -12,12 +12,7 @@ const generatePaginatePage = () => {
   const maxPage = Math.min(page + 3, numberOfPages);
   const displayPageLength = maxPage - minPage + 1;
 
-  const pages = Array.from(
-    { length: displayPageLength },
-    (_, i) => i + minPage,
-  );
-
-  return pages;
+  return Array.from({ length: displayPageLength }, (_, i) => i + minPage);
 };
 
 const pages = generatePaginatePage();
@@ -32,8 +27,8 @@ const pages = generatePaginatePage();
     </li>
     {
       pages.map((p) => (
-        <li class={`page-item ${page == p ? "active" : ""}`}>
-          <a class="page-link" href={page == p ? null : linkGen(p)}>
+        <li class={`page-item ${page === p ? "active" : ""}`}>
+          <a class="page-link" href={page === p ? undefined : linkGen(p)}>
             {p}
           </a>
         </li>

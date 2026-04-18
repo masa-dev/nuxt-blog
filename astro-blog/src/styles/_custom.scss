@@ -1,4 +1,4 @@
-@import "./variables";
+@use "./variables" as *;
 
 .lh-1 {
   line-height: 1 !important;

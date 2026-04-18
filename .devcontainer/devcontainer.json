@@ -40,7 +40,8 @@
         "editorconfig.editorconfig",
         "mhutchie.git-graph",
         "astro-build.astro-vscode",
-        "genieai.chatgpt-vscode"
+        "genieai.chatgpt-vscode",
+        "unifiedjs.vscode-mdx"
       ]
     }
   }

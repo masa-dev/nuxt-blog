@@ -1,5 +1,5 @@
-@import "./variables";
-@import "./func.scss";
+@use "./variables" as *;
+@use "./func.scss" as *;
 
 $side-card-bg-color: rgb(241, 241, 241);
 

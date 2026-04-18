@@ -1,0 +1,26 @@
+---
+import { render } from "astro:content";
+import ContentLayout from "../../layouts/ContentLayout.astro";
+import { getAllEntries, getEntryBySlug } from "../../lib/content";
+
+export async function getStaticPaths() {
+  const posts = await getAllEntries("post");
+  return posts.map((entry) => ({
+    params: { slug: entry.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const entry = slug ? await getEntryBySlug("post", slug) : undefined;
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const rendered = await render(entry.entry);
+const { Content } = rendered;
+---
+
+<ContentLayout entry={entry}>
+  <Content />
+</ContentLayout>

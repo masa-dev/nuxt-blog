@@ -1,24 +1,58 @@
 // @ts-check
-import { defineConfig } from "astro/config";
+
 import mdx from "@astrojs/mdx";
-
-import sitemap from "@astrojs/sitemap";
-
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
+import { defineConfig, fontProviders } from "astro/config";
 
-// https://astro.build/config
 export default defineConfig({
-  site: "https://masa-dev.net",
+  site: process.env.SITE_URL,
   integrations: [mdx(), sitemap(), react()],
   trailingSlash: "always",
+  server: {
+    host: "0.0.0.0",
+  },
   vite: {
+    optimizeDeps: {
+      include: [
+        "react",
+        "react-dom",
+        "react-dom/client",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+      ],
+      force: true,
+    },
     css: {
       preprocessorOptions: {
         scss: {
-          // bootstrapの警告を非表示にする
-          silenceDeprecations: ["mixed-decls"],
+          quietDeps: true,
         },
       },
     },
   },
+  fonts: [
+    {
+      provider: fontProviders.local(),
+      name: "Atkinson",
+      cssVariable: "--font-atkinson",
+      fallbacks: ["sans-serif"],
+      options: {
+        variants: [
+          {
+            src: ["./src/assets/fonts/atkinson-regular.woff"],
+            weight: 400,
+            style: "normal",
+            display: "swap",
+          },
+          {
+            src: ["./src/assets/fonts/atkinson-bold.woff"],
+            weight: 700,
+            style: "normal",
+            display: "swap",
+          },
+        ],
+      },
+    },
+  ],
 });

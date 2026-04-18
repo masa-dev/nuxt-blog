@@ -1,0 +1,36 @@
+{
+    "skip": 0,
+    "limit": 100,
+    "total": 1,
+    "items": [
+        {
+            "_id": "61a7359d8131ac001847fbb4",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2021-12-01T08:43:09.433Z",
+                    "updatedAt": "2023-02-04T07:00:38.318Z",
+                    "firstPublishedAt": "2021-12-01T08:43:09.433Z",
+                    "publishedAt": "2023-02-04T07:00:38.318Z"
+                },
+                "createdAt": "2021-12-01T08:43:09.433Z",
+                "updatedAt": "2023-02-04T07:00:38.318Z"
+            },
+            "name": "masa",
+            "slug": "masa",
+            "biography": "<p>Webエンジニアです。</p><p>よろしくお願いします。</p>",
+            "image": {
+                "_id": "63de027516bdb9179566c9ba",
+                "altText": "",
+                "description": "",
+                "fileName": "IMG_20191028_124950_2.jpg",
+                "fileSize": 611177,
+                "fileType": "image/jpeg",
+                "height": 2689,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/7e195ec3-1779-4c5f-9f0e-1d0bcf7d6c34/IMG_20191028_124950_2.jpg",
+                "title": "",
+                "width": 2689
+            }
+        }
+    ]
+}

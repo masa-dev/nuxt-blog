@@ -1,31 +1,15 @@
 ---
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
 import PostSidebarToc from "./PostSidebarToc";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-const asiaTzName = "Asia/Tokyo";
+import { format } from "date-fns";
 
 type Props = {
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt?: Date;
 };
 
 const { createdAt, updatedAt } = Astro.props;
 
-const getCreatedAtLocaled = () => {
-  return dayjs(createdAt).tz(asiaTzName).format("YYYY年M月D日 HH:mm");
-};
-
-const getUpdatedAtLocaled = () => {
-  return dayjs(updatedAt).tz(asiaTzName).format("YYYY年M月D日 HH:mm");
-};
-
-const getUpdatedAtIsoLocaled = () => {
-  return dayjs(updatedAt).tz(asiaTzName).toISOString();
-};
+const formatDateTime = (date: Date) => format(date, "yyyy年M月d日 HH:mm");
 ---
 
 <aside class="mt-5">
@@ -45,12 +29,12 @@ const getUpdatedAtIsoLocaled = () => {
                 />
                 公開日
               </div>
-              <time>{getCreatedAtLocaled()}</time>
+              <time>{formatDateTime(createdAt)}</time>
             </li>
           )
         }
         {
-          createdAt && (
+          updatedAt && (
             <li class="d-flex flex-row justify-content-between">
               <div>
                 <img
@@ -62,8 +46,8 @@ const getUpdatedAtIsoLocaled = () => {
                 />
                 更新日
               </div>
-              <time datetime={getUpdatedAtIsoLocaled()}>
-                {getUpdatedAtLocaled()}
+              <time datetime={updatedAt.toISOString()}>
+                {formatDateTime(updatedAt)}
               </time>
             </li>
           )
@@ -75,7 +59,7 @@ const getUpdatedAtIsoLocaled = () => {
 </aside>
 
 <style lang="scss">
-  @import "../styles/variables";
+  @use "../styles/variables" as *;
 
   aside {
     $side-card-bg-color: rgb(241, 241, 241);

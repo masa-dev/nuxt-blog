@@ -1,0 +1,633 @@
+{
+    "skip": 0,
+    "limit": 100,
+    "total": 22,
+    "items": [
+        {
+            "_id": "66e237c5e6213d85f2508722",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2024-09-12T00:37:25.862Z",
+                    "updatedAt": "2024-09-12T00:37:25.862Z",
+                    "firstPublishedAt": "2024-09-12T00:37:25.862Z",
+                    "publishedAt": "2024-09-12T00:37:25.862Z"
+                },
+                "customOrder": 22,
+                "createdAt": "2024-09-12T00:37:25.862Z",
+                "updatedAt": "2024-09-12T00:37:25.862Z"
+            },
+            "name": "Lua",
+            "slug": "lua",
+            "image": {
+                "_id": "66e237bee6213d85f25084d2",
+                "altText": "",
+                "description": "",
+                "fileName": "1000001299.svg",
+                "fileSize": 12224,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/e1f2a61d-4b93-41a0-973e-a4be421422eb/1000001299.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "66e23782e6213d85f2507114",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2024-09-12T00:36:18.925Z",
+                    "updatedAt": "2024-09-12T00:36:27.124Z",
+                    "firstPublishedAt": "2024-09-12T00:36:27.124Z",
+                    "publishedAt": "2024-09-12T00:36:27.124Z"
+                },
+                "customOrder": 21,
+                "createdAt": "2024-09-12T00:36:27.124Z",
+                "updatedAt": "2024-09-12T00:36:27.124Z"
+            },
+            "name": "NeoVim",
+            "slug": "neovim",
+            "image": {
+                "_id": "66e2376fe6213d85f2506baa",
+                "altText": "",
+                "description": "",
+                "fileName": "1000001298.svg",
+                "fileSize": 768,
+                "fileType": "image/svg+xml",
+                "height": 64,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/f07e80ff-23ff-4b86-96c0-6d731aaf1aef/1000001298.svg",
+                "title": "",
+                "width": 64
+            }
+        },
+        {
+            "_id": "642722b7a184ff3f874d85a7",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-03-31T18:13:11.030Z",
+                    "updatedAt": "2023-03-31T18:13:11.030Z",
+                    "firstPublishedAt": "2023-03-31T18:13:11.030Z",
+                    "publishedAt": "2023-03-31T18:13:11.030Z"
+                },
+                "customOrder": 20,
+                "createdAt": "2023-03-31T18:13:11.030Z",
+                "updatedAt": "2023-03-31T18:13:11.030Z"
+            },
+            "name": ".NET",
+            "slug": "dotnet",
+            "image": {
+                "_id": "64272294a184ff3f874d7305",
+                "altText": "",
+                "description": "",
+                "fileName": "dotnet.svg",
+                "fileSize": 1040,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/d463d130-4d29-499d-b850-ed02c724a768/dotnet.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "64272284a184ff3f874d6b48",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-03-31T18:12:20.908Z",
+                    "updatedAt": "2023-03-31T18:12:20.908Z",
+                    "firstPublishedAt": "2023-03-31T18:12:20.908Z",
+                    "publishedAt": "2023-03-31T18:12:20.908Z"
+                },
+                "customOrder": 19,
+                "createdAt": "2023-03-31T18:12:20.908Z",
+                "updatedAt": "2023-03-31T18:12:20.908Z"
+            },
+            "name": "Supabase",
+            "slug": "supabase",
+            "image": {
+                "_id": "64272268a184ff3f874d6804",
+                "altText": "",
+                "description": "",
+                "fileName": "supabase-icon.svg",
+                "fileSize": 1082,
+                "fileType": "image/svg+xml",
+                "height": 263,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/cd304215-b72e-4e42-b81d-db72e3b81ad5/supabase-icon.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63de00d516bdb9179566768b",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-02-04T06:53:09.793Z",
+                    "updatedAt": "2023-02-04T06:53:09.793Z",
+                    "firstPublishedAt": "2023-02-04T06:53:09.793Z",
+                    "publishedAt": "2023-02-04T06:53:09.793Z"
+                },
+                "customOrder": 18,
+                "createdAt": "2023-02-04T06:53:09.793Z",
+                "updatedAt": "2023-02-04T06:53:09.793Z"
+            },
+            "name": "GAS",
+            "slug": "gas",
+            "image": {
+                "_id": "63de00c316bdb9179566728a",
+                "altText": "",
+                "description": "",
+                "fileName": "google_script_apps_logo_icon_159351.svg",
+                "fileSize": 2606,
+                "fileType": "image/svg+xml",
+                "height": 150,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/4e2631be-086c-4d14-aef6-a22fa350ad30/google_script_apps_logo_icon_159351.svg",
+                "title": "",
+                "width": 150
+            }
+        },
+        {
+            "_id": "63ddffb216bdb91795660639",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-02-04T06:48:18.934Z",
+                    "updatedAt": "2023-02-04T06:48:18.934Z",
+                    "firstPublishedAt": "2023-02-04T06:48:18.934Z",
+                    "publishedAt": "2023-02-04T06:48:18.934Z"
+                },
+                "customOrder": 17,
+                "createdAt": "2023-02-04T06:48:18.934Z",
+                "updatedAt": "2023-02-04T06:48:18.934Z"
+            },
+            "name": "VS Code",
+            "slug": "vscode",
+            "image": {
+                "_id": "63ddff9a16bdb9179565fcb5",
+                "altText": "",
+                "description": "",
+                "fileName": "visual-studio-code.svg",
+                "fileSize": 2507,
+                "fileType": "image/svg+xml",
+                "height": 254,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/0cd0eaf5-abd4-445a-b400-3ce7edf16bbf/visual-studio-code.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63ddfeed16bdb9179565e88f",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2023-02-04T06:45:01.047Z",
+                    "updatedAt": "2023-02-04T06:45:01.047Z",
+                    "firstPublishedAt": "2023-02-04T06:45:01.047Z",
+                    "publishedAt": "2023-02-04T06:45:01.047Z"
+                },
+                "customOrder": 16,
+                "createdAt": "2023-02-04T06:45:01.047Z",
+                "updatedAt": "2023-02-04T06:45:01.047Z"
+            },
+            "name": "Docker",
+            "slug": "docker",
+            "image": {
+                "_id": "63ddfecf16bdb9179565e59a",
+                "altText": "",
+                "description": "",
+                "fileName": "docker-icon.svg",
+                "fileSize": 900,
+                "fileType": "image/svg+xml",
+                "height": 185,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/a75363a1-6db1-46cf-a934-b73be93db963/docker-icon.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "638c478cca4a512e0c0901bb",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-12-04T07:09:00.714Z",
+                    "updatedAt": "2022-12-04T07:16:39.540Z",
+                    "firstPublishedAt": "2022-12-04T07:09:00.714Z",
+                    "publishedAt": "2022-12-04T07:16:39.540Z"
+                },
+                "customOrder": 15,
+                "createdAt": "2022-12-04T07:09:00.714Z",
+                "updatedAt": "2022-12-04T07:16:39.540Z"
+            },
+            "name": "Cloud Run",
+            "slug": "cloud-run",
+            "image": {
+                "_id": "638c4773ca4a512e0c0900d2",
+                "altText": "",
+                "description": "",
+                "fileName": "google-cloud-run.svg",
+                "fileSize": 940,
+                "fileType": "image/svg+xml",
+                "height": 231,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/ad07d909-e9d9-4a71-bb94-e350f14c72c2/google-cloud-run.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "638c46cfca4a512e0c08f226",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-12-04T07:05:51.813Z",
+                    "updatedAt": "2022-12-04T07:05:51.813Z",
+                    "firstPublishedAt": "2022-12-04T07:05:51.813Z",
+                    "publishedAt": "2022-12-04T07:05:51.813Z"
+                },
+                "customOrder": 14,
+                "createdAt": "2022-12-04T07:05:51.813Z",
+                "updatedAt": "2022-12-04T07:05:51.813Z"
+            },
+            "name": "Laravel",
+            "slug": "laravel",
+            "image": {
+                "_id": "638c46b3ca4a512e0c08f13c",
+                "altText": "",
+                "description": "",
+                "fileName": "laravel.svg",
+                "fileSize": 2229,
+                "fileType": "image/svg+xml",
+                "height": 264,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/d456b660-e277-4141-89f2-322016184008/laravel.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "636172993548a57ba116a49e",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-11-01T19:25:13.490Z",
+                    "updatedAt": "2022-12-04T07:24:35.499Z",
+                    "firstPublishedAt": "2022-11-01T19:25:13.490Z",
+                    "publishedAt": "2022-12-04T07:24:35.499Z"
+                },
+                "customOrder": 13,
+                "createdAt": "2022-11-01T19:25:13.490Z",
+                "updatedAt": "2022-12-04T07:24:35.499Z"
+            },
+            "name": "Cloud Storage",
+            "slug": "google-cloud-storage",
+            "image": {
+                "_id": "6361727b3548a57ba116a3b5",
+                "altText": "",
+                "description": "",
+                "fileName": "cloud_storage.svg",
+                "fileSize": 745,
+                "fileType": "image/svg+xml",
+                "height": 24,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/966a47dd-970a-4d41-a073-d8515f12d909/cloud_storage.svg",
+                "title": "",
+                "width": 24
+            }
+        },
+        {
+            "_id": "633f0f262c3aa4b593186ec4",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-10-06T17:23:50.965Z",
+                    "updatedAt": "2022-10-06T17:23:50.965Z",
+                    "firstPublishedAt": "2022-10-06T17:23:50.965Z",
+                    "publishedAt": "2022-10-06T17:23:50.965Z"
+                },
+                "createdAt": "2022-10-06T17:23:50.965Z",
+                "updatedAt": "2022-10-06T17:23:50.965Z"
+            },
+            "name": "Github Actions",
+            "slug": "github-actions",
+            "image": {
+                "_id": "633f0f1e2c3aa4b593186e62",
+                "altText": "",
+                "description": "",
+                "fileName": "github-actions.svg",
+                "fileSize": 3237,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/34b7fbad-72d9-4a2a-b7b4-7d3bfd1bc892/github-actions.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "633f0f082c3aa4b593186c2d",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-10-06T17:23:20.446Z",
+                    "updatedAt": "2022-10-06T17:23:20.446Z",
+                    "firstPublishedAt": "2022-10-06T17:23:20.446Z",
+                    "publishedAt": "2022-10-06T17:23:20.446Z"
+                },
+                "createdAt": "2022-10-06T17:23:20.446Z",
+                "updatedAt": "2022-10-06T17:23:20.446Z"
+            },
+            "name": "Firebase",
+            "slug": "firebase",
+            "image": {
+                "_id": "633f00f52c3aa4b593141c01",
+                "altText": "",
+                "description": "",
+                "fileName": "firebase.svg",
+                "fileSize": 2608,
+                "fileType": "image/svg+xml",
+                "height": 351,
+                "metadata": {},
+                "src": "https://ik.imagekit.io/masahikoproject/819f9f03-7710-4edc-b936-2507fe7e3a9a/firebase.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161f5bd59cbbc5fa89bf5a",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:10:03.065Z",
+                    "updatedAt": "2022-09-05T16:10:03.065Z",
+                    "firstPublishedAt": "2022-09-05T16:10:03.065Z",
+                    "publishedAt": "2022-09-05T16:10:03.065Z"
+                },
+                "createdAt": "2022-09-05T16:10:03.065Z",
+                "updatedAt": "2022-09-05T16:10:03.065Z"
+            },
+            "name": "Next.js",
+            "slug": "nextjs",
+            "image": {
+                "_id": "63161f47d59cbbc5fa89beb5",
+                "altText": "",
+                "description": "",
+                "fileName": "nextjs-icon.svg",
+                "fileSize": 2960,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/5a94cf51-c3e6-4d43-918c-68d1ac7dfcf0%2Fnextjs-icon.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161f29d59cbbc5fa89bc9c",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:09:13.486Z",
+                    "updatedAt": "2022-09-05T16:09:13.486Z",
+                    "firstPublishedAt": "2022-09-05T16:09:13.486Z",
+                    "publishedAt": "2022-09-05T16:09:13.486Z"
+                },
+                "createdAt": "2022-09-05T16:09:13.486Z",
+                "updatedAt": "2022-09-05T16:09:13.486Z"
+            },
+            "name": "JavaScript",
+            "slug": "javascript",
+            "image": {
+                "_id": "63161f17d59cbbc5fa89bbf7",
+                "altText": "",
+                "description": "",
+                "fileName": "javascript.svg",
+                "fileSize": 1705,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/64fdc32a-5f8d-40a6-a5aa-51cc09742e48%2Fjavascript.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161eefd59cbbc5fa89b9c2",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:08:15.225Z",
+                    "updatedAt": "2022-09-05T16:08:15.225Z",
+                    "firstPublishedAt": "2022-09-05T16:08:15.225Z",
+                    "publishedAt": "2022-09-05T16:08:15.225Z"
+                },
+                "createdAt": "2022-09-05T16:08:15.225Z",
+                "updatedAt": "2022-09-05T16:08:15.225Z"
+            },
+            "name": "HTML",
+            "slug": "html",
+            "image": {
+                "_id": "63161eded59cbbc5fa89b91d",
+                "altText": "",
+                "description": "",
+                "fileName": "html-5.svg",
+                "fileSize": 2817,
+                "fileType": "image/svg+xml",
+                "height": 361,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/b31f6c6c-0980-47ea-a619-027d62e80378%2Fhtml-5.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161eb3d59cbbc5fa89b704",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:07:15.844Z",
+                    "updatedAt": "2022-09-05T16:07:15.844Z",
+                    "firstPublishedAt": "2022-09-05T16:07:15.844Z",
+                    "publishedAt": "2022-09-05T16:07:15.844Z"
+                },
+                "createdAt": "2022-09-05T16:07:15.844Z",
+                "updatedAt": "2022-09-05T16:07:15.844Z"
+            },
+            "name": "CSS",
+            "slug": "css",
+            "image": {
+                "_id": "63161ea7d59cbbc5fa89b65f",
+                "altText": "",
+                "description": "",
+                "fileName": "css-3.svg",
+                "fileSize": 2503,
+                "fileType": "image/svg+xml",
+                "height": 361,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/12bbb562-e41a-47e7-8259-fd8fb9267abb%2Fcss-3.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161e3ed59cbbc5fa89b445",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:05:18.487Z",
+                    "updatedAt": "2022-09-05T16:05:18.487Z",
+                    "firstPublishedAt": "2022-09-05T16:05:18.487Z",
+                    "publishedAt": "2022-09-05T16:05:18.487Z"
+                },
+                "createdAt": "2022-09-05T16:05:18.487Z",
+                "updatedAt": "2022-09-05T16:05:18.487Z"
+            },
+            "name": "Python",
+            "slug": "python",
+            "image": {
+                "_id": "63161e30d59cbbc5fa89b3a0",
+                "altText": "",
+                "description": "",
+                "fileName": "python.svg",
+                "fileSize": 2905,
+                "fileType": "image/svg+xml",
+                "height": 255,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/89419003-2eba-4e8e-a668-54b952a18173%2Fpython.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161e12d59cbbc5fa89b16c",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:04:34.994Z",
+                    "updatedAt": "2022-09-05T16:04:34.994Z",
+                    "firstPublishedAt": "2022-09-05T16:04:34.994Z",
+                    "publishedAt": "2022-09-05T16:04:34.994Z"
+                },
+                "createdAt": "2022-09-05T16:04:34.994Z",
+                "updatedAt": "2022-09-05T16:04:34.994Z"
+            },
+            "name": "TypeScript",
+            "slug": "typescript",
+            "image": {
+                "_id": "63161df6d59cbbc5fa89b0c6",
+                "altText": "",
+                "description": "",
+                "fileName": "typescript-icon.svg",
+                "fileSize": 2551,
+                "fileType": "image/svg+xml",
+                "height": 256,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/a7dc8c94-d46c-4e3c-b704-d61de1364868%2Ftypescript-icon.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161dcad59cbbc5fa89ad11",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:03:22.823Z",
+                    "updatedAt": "2022-09-05T16:03:22.823Z",
+                    "firstPublishedAt": "2022-09-05T16:03:22.823Z",
+                    "publishedAt": "2022-09-05T16:03:22.823Z"
+                },
+                "createdAt": "2022-09-05T16:03:22.823Z",
+                "updatedAt": "2022-09-05T16:03:22.823Z"
+            },
+            "name": "Nuxt",
+            "slug": "nuxt",
+            "image": {
+                "_id": "63161dbbd59cbbc5fa89ac6c",
+                "altText": "",
+                "description": "",
+                "fileName": "nuxt-icon.svg",
+                "fileSize": 947,
+                "fileType": "image/svg+xml",
+                "height": 172,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/e144d635-0edd-4b08-9479-78dcf44d6d1f%2Fnuxt-icon.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161d8ed59cbbc5fa89aa37",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:02:22.384Z",
+                    "updatedAt": "2022-09-05T16:02:22.384Z",
+                    "firstPublishedAt": "2022-09-05T16:02:22.384Z",
+                    "publishedAt": "2022-09-05T16:02:22.384Z"
+                },
+                "createdAt": "2022-09-05T16:02:22.384Z",
+                "updatedAt": "2022-09-05T16:02:22.384Z"
+            },
+            "name": "Sass",
+            "slug": "sass",
+            "image": {
+                "_id": "63161d7dd59cbbc5fa89a9c6",
+                "altText": "",
+                "description": "",
+                "fileName": "sass.svg",
+                "fileSize": 8143,
+                "fileType": "image/svg+xml",
+                "height": 192,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/a74c7a10-dab3-4705-ae5d-ff978ae5ee87%2Fsass.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "63161d44d59cbbc5fa89a71c",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-05T16:01:08.024Z",
+                    "updatedAt": "2022-09-05T16:01:08.024Z",
+                    "firstPublishedAt": "2022-09-05T16:01:08.024Z",
+                    "publishedAt": "2022-09-05T16:01:08.024Z"
+                },
+                "createdAt": "2022-09-05T16:01:08.024Z",
+                "updatedAt": "2022-09-05T16:01:08.024Z"
+            },
+            "name": "Vue.js",
+            "slug": "vuejs",
+            "image": {
+                "_id": "63161d23d59cbbc5fa89a677",
+                "altText": "",
+                "description": "",
+                "fileName": "vue.svg",
+                "fileSize": 569,
+                "fileType": "image/svg+xml",
+                "height": 221,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/4cc2a9dc-036c-4164-9c6e-ad2de68644c0%2Fvue.svg",
+                "title": "",
+                "width": 256
+            }
+        },
+        {
+            "_id": "631454fed59cbbc5fa2b599f",
+            "_sys": {
+                "raw": {
+                    "createdAt": "2022-09-04T07:34:22.644Z",
+                    "updatedAt": "2022-09-04T07:34:22.644Z",
+                    "firstPublishedAt": "2022-09-04T07:34:22.644Z",
+                    "publishedAt": "2022-09-04T07:34:22.644Z"
+                },
+                "createdAt": "2022-09-04T07:34:22.644Z",
+                "updatedAt": "2022-09-04T07:34:22.644Z"
+            },
+            "name": "Windows",
+            "slug": "windows",
+            "image": {
+                "_id": "631454f0d59cbbc5fa2b5941",
+                "altText": "windows-logo",
+                "description": "Windows ロゴ",
+                "fileName": "microsoft-windows.svg",
+                "fileSize": 740,
+                "fileType": "image/svg+xml",
+                "height": 257,
+                "metadata": {},
+                "src": "https://storage.googleapis.com/p_6302578c3183a77882ff85f3/37f55cea-032f-4675-bc9e-e8bb4dbeeedc%2Fmicrosoft-windows.svg",
+                "title": "Windows ロゴ",
+                "width": 256
+            }
+        }
+    ]
+}

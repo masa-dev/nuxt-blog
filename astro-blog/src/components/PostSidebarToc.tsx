@@ -7,7 +7,6 @@ type TocTitle = {
   anchorLink: string;
 };
 
-// サイドバーの目次メニュー
 export default function PostSidebarToc() {
   const [titles, setTitles] = useState<TocTitle[]>([]);
   const [execOnceFlag, setExecOnceFlag] = useState<boolean>(false);
@@ -15,7 +14,7 @@ export default function PostSidebarToc() {
   const observerOptions = {
     root: null,
     rootMargin: "0% 0px -60% 0px",
-    thredshold: 0,
+    threshold: 0,
   };
 
   useEffect(() => {
@@ -25,12 +24,12 @@ export default function PostSidebarToc() {
 
     if (titles.length === 0) {
       boxes.forEach((box, index) => {
-        box.id = `content-h-${index + 1}`;
+        box.id = box.id || `content-h-${index + 1}`;
 
         titles.push({
           title: box.textContent ?? "",
           isActive: false,
-          anchorLink: `#content-h-${index + 1}`,
+          anchorLink: `#${box.id}`,
           isH3: box.tagName === "H3",
         });
       });
@@ -49,11 +48,7 @@ export default function PostSidebarToc() {
       for (const entry of entries) {
         if (entry.isIntersecting === true) {
           titles.forEach((t) => {
-            if (t.anchorLink === "#" + entry.target.id) {
-              t.isActive = true;
-            } else {
-              t.isActive = false;
-            }
+            t.isActive = t.anchorLink === "#" + entry.target.id;
           });
           setTitles([...titles]);
           return;

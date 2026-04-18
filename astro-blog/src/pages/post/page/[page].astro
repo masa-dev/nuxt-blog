@@ -1,57 +1,36 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, POST_LIMIT } from "../../../consts";
-import type { ApiParams } from "../../../types/newtApi";
-import { fetchPosts } from "../../../lib/newtClient";
-import PostList from "../../../components/PostList.astro";
-import PostLayout from "../../../layouts/PostLayout.astro";
 import Pagination from "../../../components/Pagination.astro";
+import ContentList from "../../../components/content/ContentList.astro";
+import { POST_LIMIT, SITE_DESCRIPTION, SITE_TITLE } from "../../../consts";
+import { getAllEntries } from "../../../lib/content";
+import PostLayout from "../../../layouts/PostLayout.astro";
 
 export async function getStaticPaths() {
-  const params: ApiParams = { limit: 1, skip: 1 };
-
-  const postList = await fetchPosts(params);
-
-  const pageCount = Math.ceil(postList.total / POST_LIMIT);
-  const pages = [...Array(pageCount)].map((_, i) => ({
-    params: { page: i + 1 },
+  const posts = await getAllEntries("post");
+  const pageCount = Math.ceil(posts.length / POST_LIMIT);
+  return [...Array(pageCount)].map((_, i) => ({
+    params: { page: String(i + 1) },
   }));
-
-  return pages;
 }
 
 const { page } = Astro.params;
-
-const getPosts = async () => {
-  const params: ApiParams = {
-    limit: POST_LIMIT,
-    skip: (page - 1) * POST_LIMIT,
-  };
-
-  const postList = await fetchPosts(params);
-
-  const pageMeta = {
-    rows: Math.ceil(postList.total / postList.limit),
-    perPage: postList.limit,
-    currentPage: page,
-  };
-
-  return {
-    posts: postList.items,
-    pageMeta,
-  };
+const currentPage = Number(page ?? "1");
+const posts = await getAllEntries("post");
+const pageMeta = {
+  rows: Math.ceil(posts.length / POST_LIMIT),
+  currentPage,
 };
-
-const linkGen = (pageNum: number) => {
-  return `/post/page/${pageNum}/`;
-};
-
-const { posts, pageMeta } = await getPosts();
+const pagePosts = posts.slice(
+  (currentPage - 1) * POST_LIMIT,
+  currentPage * POST_LIMIT,
+);
+const linkGen = (pageNum: number) => `/post/page/${pageNum}/`;
 ---
 
 <PostLayout title={`Post一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
   <div class="n-container-xl mx-auto mb-5" data-pagefind-ignore>
     <h2 class="mb-5 mt-4 font-weight-bold">Post一覧</h2>
-    <PostList postList={posts} />
+    <ContentList entries={pagePosts} />
     <Pagination
       page={pageMeta.currentPage}
       linkGen={linkGen}

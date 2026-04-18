@@ -1,42 +1,21 @@
 ---
-import { SITE_TITLE, SITE_DESCRIPTION, POST_LIMIT } from "../../consts";
-import type { ApiParams } from "../../types/newtApi";
-import PostLayout from "../../layouts/PostLayout.astro";
-import { fetchNotes } from "../../lib/newtClient";
 import Pagination from "../../components/Pagination.astro";
-import NoteList from "../../components/NoteList.astro";
-
-const getPosts = async () => {
-  const params: ApiParams = {
-    limit: POST_LIMIT,
-    skip: 0,
-  };
-
-  const noteList = await fetchNotes(params);
-
-  const pageMeta = {
-    rows: Math.ceil(noteList.total / noteList.limit),
-    perPage: noteList.limit,
-    currentPage: 1,
-  };
-
-  return {
-    notes: noteList.items,
-    pageMeta,
-  };
+import ContentList from "../../components/content/ContentList.astro";
+import { NOTE_LIMIT } from "../../consts";
+import { getAllEntries } from "../../lib/content";
+import PostLayout from "../../layouts/PostLayout.astro";
+const notes = await getAllEntries("note");
+const pageMeta = {
+  rows: Math.ceil(notes.length / NOTE_LIMIT),
+  currentPage: 1,
 };
-
-const { notes, pageMeta } = await getPosts();
-
-const linkGen = (pageNum: number) => {
-  return `/note/page/${pageNum}/`;
-};
+const linkGen = (pageNum: number) => `/note/page/${pageNum}/`;
 ---
 
-<PostLayout title={`Note一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
+<PostLayout title="Note一覧 | MasaDev Blog" description="メモと短い記事の一覧">
   <div class="n-container-xl mx-auto mb-5" data-pagefind-ignore>
     <h2 class="mb-5 mt-4 font-weight-bold">Note一覧</h2>
-    <NoteList noteList={notes} />
+    <ContentList entries={notes.slice(0, NOTE_LIMIT)} />
     <Pagination
       page={pageMeta.currentPage}
       linkGen={linkGen}

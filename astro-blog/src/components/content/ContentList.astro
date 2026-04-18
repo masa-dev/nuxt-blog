@@ -1,0 +1,14 @@
+---
+import ContentCard from "./ContentCard.astro";
+import type { NormalizedContentEntry } from "../../types/content";
+
+interface Props {
+  entries: NormalizedContentEntry[];
+}
+
+const { entries } = Astro.props;
+---
+
+<div class="d-flex flex-wrap justify-content-between mb-3">
+  {entries.map((entry) => <ContentCard entry={entry} />)}
+</div>

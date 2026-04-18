@@ -1,45 +1,26 @@
 ---
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-import timezone from "dayjs/plugin/timezone";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-const asiaTzName = "Asia/Tokyo";
+import { format } from "date-fns";
 
 type Props = {
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt?: Date;
 };
 
 const { createdAt, updatedAt } = Astro.props;
 
-const getCreatedAtLocaled = () => {
-  return dayjs(createdAt).tz(asiaTzName).format("YYYY年M月D日");
-};
+const formatDate = (date: Date) => format(date, "yyyy年M月d日");
 
-const getUpdatedAtLocaled = () => {
-  return dayjs(updatedAt).tz(asiaTzName).format("YYYY年M月D日");
-};
-
-const getCreatedAtIsoLocaled = () => {
-  return dayjs(createdAt).tz(asiaTzName).format("YYYY-MM-DD");
-};
-
-const getUpdatedAtIsoLocaled = () => {
-  return dayjs(updatedAt).tz(asiaTzName).toISOString();
-};
+const toISODate = (date: Date) => format(date, "yyyy-MM-dd");
 ---
 
 <div class="post-date mb-3 text-end">
   {
     createdAt && (
       <div class="post-date-time time-create mb-1">
-        {/* pageFind用の日付 */}
         <time class="d-none" data-pagefind-meta="date">
-          {getCreatedAtLocaled()}
+          {formatDate(createdAt)}
         </time>
-        <time datetime={getCreatedAtIsoLocaled()}>{getCreatedAtLocaled()}</time>
+        <time datetime={toISODate(createdAt)}>{formatDate(createdAt)}</time>
       </div>
     )
   }
@@ -47,14 +28,14 @@ const getUpdatedAtIsoLocaled = () => {
   {
     updatedAt && (
       <div class="post-date-time time-update">
-        <time datetime={getUpdatedAtIsoLocaled()}>{getUpdatedAtLocaled()}</time>
+        <time datetime={updatedAt.toISOString()}>{formatDate(updatedAt)}</time>
       </div>
     )
   }
 </div>
 
 <style lang="scss" scoped>
-  @import "../styles/variables";
+  @use "../styles/variables" as *;
 
   .post-date {
     line-height: 1.5;

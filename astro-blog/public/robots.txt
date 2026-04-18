@@ -1,4 +1,0 @@
-User-Agent: *
-Allow: /
-
-Sitemap: https://masa-dev.net/sitemap-index.xml

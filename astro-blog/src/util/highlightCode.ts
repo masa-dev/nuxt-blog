@@ -1,18 +1,17 @@
 import { createHighlighter, type BundledTheme } from "shiki";
 
-const HtmlCodeLangRegex =
+const htmlCodeLangRegex =
   /class="language-(?<lang>[^:]+?)(:(?<filename>.+?))?"/;
 
 const createShikiHighlighter = async (
   body: string,
   theme: BundledTheme | "none",
 ) => {
-  var langs = [...body.matchAll(new RegExp(HtmlCodeLangRegex, "g"))]
-    .map((lgs) => lgs.groups?.lang ?? "")
+  let langs = [...body.matchAll(new RegExp(htmlCodeLangRegex, "g"))]
+    .map((match) => match.groups?.lang ?? "")
     .filter(Boolean);
   langs = Array.from(new Set(langs));
-
-  return await createHighlighter({ langs, themes: [theme] });
+  return createHighlighter({ langs, themes: [theme] });
 };
 
 const createFileNameElement = (fileName: string | null | undefined) => {
@@ -28,26 +27,24 @@ export const highlightCode = async (
   return body.replace(
     /<pre><code(.+?)>([\s\S]+?)<\/code><\/pre>/g,
     (_, language: string, code: string) => {
-      const langMatch = language.match(HtmlCodeLangRegex);
-      const retHTML = highlighter.codeToHtml(
+      const langMatch = language.match(htmlCodeLangRegex);
+      const html = highlighter.codeToHtml(
         code
           .replace(/&quot;/g, '"')
           .replace(/&apos;/g, "'")
           .replace(/&lt;/g, "<")
           .replace(/&gt;/g, ">")
           .replace(/&amp;/g, "&"),
-        { lang: langMatch?.groups?.lang ?? "", theme },
+        { lang: langMatch?.groups?.lang ?? "text", theme },
       );
-
       const fileNameEl = createFileNameElement(langMatch?.groups?.filename);
-
       if (fileNameEl) {
         return (
           fileNameEl +
-          retHTML.replace('<pre class="', '<pre class="code-with-file ')
+          html.replace('<pre class="', '<pre class="code-with-file ')
         );
       }
-      return fileNameEl + retHTML;
+      return fileNameEl + html;
     },
   );
 };

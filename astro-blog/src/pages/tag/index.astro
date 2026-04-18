@@ -1,16 +1,9 @@
 ---
 import { SITE_DESCRIPTION, SITE_TITLE } from "../../consts";
 import PostLayout from "../../layouts/PostLayout.astro";
-import { fetchNotes, fetchPosts, fetchTags } from "../../lib/newtClient";
+import { getTagSummaries } from "../../lib/content";
 
-const tagRes = await fetchTags({ limit: 100, skip: 0 });
-const postRes = await fetchPosts({ limit: 1000, skip: 0 });
-const noteRes = await fetchNotes({ limit: 1000, skip: 0 });
-const tags = tagRes.items.filter(
-  (tag) =>
-    postRes.items.some((post) => post.tags.some((t) => t._id === tag._id)) ||
-    noteRes.items.some((note) => note.tags.some((t) => t._id === tag._id)),
-);
+const tags = (await getTagSummaries()).filter((tag) => tag.count > 0);
 ---
 
 <PostLayout title={`タグ一覧 | ${SITE_TITLE}`} description={SITE_DESCRIPTION}>
@@ -31,11 +24,15 @@ const tags = tagRes.items.filter(
           tags.map((tag) => (
             <a href={`/tag/${tag.slug}/`} class="mb-3 mx-2 tag-link rounded-3">
               <div class="tag-item-wrapper d-flex align-items-center p-3 border border-light rounded-3 shadow-sm h-100">
-                <img
-                  src={tag.image.src}
-                  alt={tag.image.altText ? tag.image.altText : "Tag logo"}
-                  transition:name={`tag-image-${tag._id}`}
-                />
+                {tag.image && (
+                  <img
+                    src={
+                      typeof tag.image === "string" ? tag.image : tag.image.src
+                    }
+                    alt={tag.name}
+                    transition:name={`tag-image-${tag.id}`}
+                  />
+                )}
                 <div
                   class="ms-3 text-dark lh-base text-start"
                   transition:name={`tag-name-${tag.name}`}

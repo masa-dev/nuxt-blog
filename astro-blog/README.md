@@ -1,76 +1,58 @@
-# Astro Starter Kit: Blog
+# astro-blog2
+
+`astro-blog` を `Astro + ローカルコンテンツ` に寄せて移植するためのプロジェクトです。
+
+## 現在の方針
+
+- 記事種別は `post` と `note`
+- `newtResult/*.json` は移行元データとしてのみ使用
+- 同期時に `src/content/post/_migrated` / `src/content/note/_migrated` へ記事ファイルを生成
+- タグは `src/content/tag/*.yaml` に独立定義し、記事側は slug だけ持つ
+- 正式 URL は `slug`
+- 旧 `_id` URL は `public/_redirects` で 301 リダイレクト
+- 画像は `public/media` に同期し、本文 URL は `/media/...` へ置換
+- 新規記事は `src/content/post` / `src/content/note` の MD / MDX で追加
+
+## データ同期
+
+`newtResult/posts.json`、`note.json`、`tsgs.json` から、以下を生成します。
+
+- `src/content/post/_migrated/*.md`
+- `src/content/note/_migrated/*.md`
+- `src/content/tag/*.yaml`
+- `public/media/*`
+- `public/_redirects`
+
+実行コマンド:
 
 ```sh
-npm create astro@latest -- --template blog
+npm run sync:content
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/blog)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/blog)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/blog/devcontainer.json)
+`dev` と `build` の前にも自動実行されます。
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Cloudflare Pages では `SITE_URL` を本番 URL で設定してください。
 
-![blog](https://github.com/withastro/astro/assets/2244813/ff10799f-a816-4703-b967-c78997e8323d)
+## 記事 frontmatter
 
-Features:
-
-- ✅ Minimal styling (make it your own!)
-- ✅ 100/100 Lighthouse performance
-- ✅ SEO-friendly with canonical URLs and OpenGraph data
-- ✅ Sitemap support
-- ✅ RSS Feed support
-- ✅ Markdown & MDX support
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-├── public/
-├── src/
-│   ├── components/
-│   ├── content/
-│   ├── layouts/
-│   └── pages/
-├── astro.config.mjs
-├── README.md
-├── package.json
-└── tsconfig.json
+```yaml
+title: "..."
+description: "..."
+pubDate: "2025-01-03T13:56:13.087Z"
+updatedDate: "2025-01-06T00:39:38.624Z"
+slug: "dotnet-session-logout"
+legacyIds:
+  - "6777b64ea98a21b9fbbc527c"
+tags:
+  - "dotnet"
+  - "cloud-run"
+heroImage: "/media/d463d130-4d29-499d-b850-ed02c724a768/dotnet.svg"
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page
-is exposed as a route based on its file name.
+## タグ定義
 
-There's nothing special about `src/components/`, but that's where we like to put
-any Astro/React/Vue/Svelte/Preact components.
-
-The `src/content/` directory contains "collections" of related Markdown and MDX
-documents. Use `getCollection()` to retrieve posts from `src/content/blog/`, and
-type-check your frontmatter using an optional schema. See
-[Astro's Content Collections docs](https://docs.astro.build/en/guides/content-collections/)
-to learn more.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [our documentation](https://docs.astro.build) or jump into our
-[Discord server](https://astro.build/chat).
-
-## Credit
-
-This theme is based off of the lovely
-[Bear Blog](https://github.com/HermanMartinus/bearblog/).
+```yaml
+name: ".NET"
+slug: "dotnet"
+image: "/media/d463d130-4d29-499d-b850-ed02c724a768/dotnet.svg"
+```

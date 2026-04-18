@@ -1,0 +1,39 @@
+@import "./legacy-common.css";
+
+.post-content .code-wrapper {
+  position: relative;
+}
+.post-content .code-wrapper .postBody_copyToClipboard {
+  display: none;
+  position: absolute;
+  background-color: transparent;
+  right: 0;
+  top: 0;
+  margin: 16px;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  line-height: 0;
+}
+.post-content .code-wrapper .postBody_copyToClipboard img {
+  width: 20px;
+  height: 20px;
+  border-radius: 0;
+}
+.post-content .code-wrapper .copy-tooltip {
+  position: absolute;
+  right: 56px;
+  top: 0;
+  margin-top: 14px;
+  font-size: 0.9rem;
+  color: #afb2b8;
+  display: none;
+  user-select: none;
+  pointer-events: none;
+}
+.post-content .code-wrapper:hover .postBody_copyToClipboard {
+  display: flex;
+}
+.post-content .code-wrapper:hover .copy-tooltip {
+  display: unset;
+}

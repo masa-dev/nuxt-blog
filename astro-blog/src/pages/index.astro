@@ -1,38 +1,39 @@
 ---
-import NoteList from "../components/NoteList.astro";
-import PostList from "../components/PostList.astro";
-import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import ContentList from "../components/content/ContentList.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { getAllEntries } from "../lib/content";
 import PostLayout from "../layouts/PostLayout.astro";
-import { fetchNotes, fetchPosts } from "../lib/newtClient";
-
-const postRes = await fetchPosts({ limit: 4, skip: 0 });
-const noteRes = await fetchNotes({ limit: 4, skip: 0 });
+const [posts, notes] = await Promise.all([
+  getAllEntries("post"),
+  getAllEntries("note"),
+]);
+const latestPosts = posts.slice(0, 4);
+const latestNotes = notes.slice(0, 4);
 ---
 
 <PostLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
   <div class="n-container-xl mx-auto mb-5" data-pagefind-ignore>
     <h2 class="mb-5 mt-4 font-weight-bold">投稿一覧</h2>
-    <PostList postList={postRes.items} />
+    <ContentList entries={latestPosts} />
     <div class="text-end">
       <a href="/post/" class="btn mb-4">投稿一覧を見る</a>
     </div>
-
     <h2 class="mb-5 mt-4 font-weight-bold">ノート一覧</h2>
-    <NoteList noteList={noteRes.items} />
+    <ContentList entries={latestNotes} />
     <div class="text-end">
       <a href="/note/" class="btn">ノート一覧を見る</a>
     </div>
   </div>
 </PostLayout>
 
-<style lang="scss" scoped>
+<style>
   a.btn {
     color: #5851ec;
     background-color: #ecf2fc;
     transition: 0.3s;
+  }
 
-    &:hover {
-      background-color: #dbe6f8;
-    }
+  a.btn:hover {
+    background-color: #dbe6f8;
   }
 </style>

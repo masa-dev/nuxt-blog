@@ -2,38 +2,35 @@ export const setCopyCodeButton = (body: string) => {
   return body.replaceAll(
     /<pre.+?><code.+?>([\s\S]+?)<\/code><\/pre>/g,
     (codeTagString) => {
-      return `<div class="code-wrapper">
-        ${codeTagString}
-        <button class="postBody_copyToClipboard" tabindex="-1">
-          <img src="/img/code_copy.svg" width="20" height="20">
-        </button>
-      </div>`;
+      return `<div class="code-wrapper">\n${codeTagString}\n<button class="postBody_copyToClipboard" tabindex="-1">\n<img src="/img/code_copy.svg" width="20" height="20">\n</button>\n</div>`;
     },
   );
 };
 
 export const handleClick_CopyToClipboard = async (event: MouseEvent) => {
-  const el = event.target as HTMLButtonElement;
-  const parentEl = el.parentElement?.parentElement;
-  const preEl = parentEl?.querySelector("code");
-  // クリップボードにコピー
-  if (preEl?.textContent) {
-    await navigator.clipboard.writeText(preEl?.textContent ?? "");
+  const target = event.target;
+  if (!(target instanceof Element)) return;
 
-    const tooltipClass = "copy-tooltip";
+  const button = target.closest(".postBody_copyToClipboard");
+  if (!(button instanceof HTMLButtonElement)) return;
 
-    // すでに表示されている場合は削除する
-    const currentTooltipEl = parentEl?.querySelector(`div.${tooltipClass}`);
-    if (currentTooltipEl) currentTooltipEl.remove();
+  const wrapper = button.parentElement;
+  const code = wrapper?.querySelector("code");
 
-    const newTooltipEl = document.createElement("div");
-    newTooltipEl.classList.add(tooltipClass);
-    newTooltipEl.innerText = "保存しました";
-    parentEl?.appendChild(newTooltipEl);
+  if (!code?.textContent) return;
 
-    // 5秒後に非表示にする
-    setTimeout(() => {
-      if (newTooltipEl) newTooltipEl.remove();
-    }, 3000);
-  }
+  await navigator.clipboard.writeText(code.textContent);
+
+  const tooltipClass = "copy-tooltip";
+  const currentTooltip = wrapper?.querySelector(`.${tooltipClass}`);
+  currentTooltip?.remove();
+
+  const tooltip = document.createElement("div");
+  tooltip.classList.add(tooltipClass);
+  tooltip.innerText = "保存しました";
+  wrapper?.appendChild(tooltip);
+
+  window.setTimeout(() => {
+    tooltip.remove();
+  }, 3000);
 };

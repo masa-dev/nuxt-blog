@@ -1,0 +1,90 @@
+---
+import PostSidebar from "../components/PostSidebar.astro";
+import PostTimeStamp from "../components/PostTimeStamp.astro";
+import TagList from "../components/content/TagList.astro";
+import PostLayout from "./PostLayout.astro";
+import type { NormalizedContentEntry } from "../types/content";
+
+interface Props {
+  entry: NormalizedContentEntry;
+}
+
+const { entry } = Astro.props;
+const pageTitle = `${entry.title} | masa`;
+---
+
+<PostLayout
+  title={pageTitle}
+  description={entry.description}
+  image={entry.heroImage}
+>
+  <div class="d-flex justify-content-center">
+    <div class="n-container-xl mb-5 px-lg-4">
+      <h1 class="mt-4 mb-3 mb-sm-5 font-weight-bold h2-lg">{entry.title}</h1>
+      {
+        entry.heroImage && (
+          <div class="mb-4 post-thumb-wrapper">
+            <img
+              src={
+                typeof entry.heroImage === "string"
+                  ? entry.heroImage
+                  : entry.heroImage.src
+              }
+              alt={entry.title}
+              class="d-block mx-auto h-auto"
+            />
+          </div>
+        )
+      }
+      <PostTimeStamp createdAt={entry.pubDate} updatedAt={entry.updatedDate} />
+      <div class="post-tag-list mb-4">
+        <TagList tags={entry.tags} />
+      </div>
+      <div class="post-content">
+        <slot />
+      </div>
+    </div>
+    <PostSidebar createdAt={entry.pubDate} updatedAt={entry.updatedDate} />
+  </div>
+</PostLayout>
+
+<script>
+  import { handleClick_CopyToClipboard } from "../util/setCopyCode";
+
+  document.addEventListener("click", (event) => {
+    void handleClick_CopyToClipboard(event);
+  });
+</script>
+
+<style>
+  .post-thumb-wrapper {
+    max-height: 480px;
+    text-align: center;
+  }
+
+  .post-thumb-wrapper img {
+    max-height: inherit;
+    max-width: 100%;
+  }
+
+  :global(.post-content pre.code-with-file) {
+    border-top-left-radius: 0;
+    margin-top: 0 !important;
+  }
+
+  :global(.post-content .post-code-info) {
+    font-family: Consolas, monospace;
+    font-size: 0.8rem;
+    margin-top: 1rem;
+    max-width: 100%;
+  }
+
+  :global(.post-content .post-code-info span) {
+    display: inline-block;
+    color: #e2e2e2;
+    background-color: #3a3a3b;
+    max-width: calc(100% - 10px);
+    padding: 0.15rem 1rem;
+    border-radius: 10px 10px 0 0;
+  }
+</style>
